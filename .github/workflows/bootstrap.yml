@@ -1,0 +1,82 @@
+name: Bootstrap OIDC
+
+# Run this ONCE, manually, to create the OIDC trust anchor that Deploy then uses
+# forever. It is the only step that needs pre-existing AWS credentials, because the
+# deploy role cannot create itself before it exists (OIDC chicken-and-egg).
+#
+# Setup (all in the GitHub UI — no local tooling):
+#   1. Settings → Secrets and variables → Actions → New repository secret:
+#        AWS_BOOTSTRAP_ACCESS_KEY_ID       (an admin/bootstrap IAM user's key)
+#        AWS_BOOTSTRAP_SECRET_ACCESS_KEY
+#   2. Settings → Secrets and variables → Actions → Variables → New variable:
+#        AWS_REGION        e.g. us-east-1
+#        ECR_REPOSITORY    multiagent-supervisor   (the agent_name)
+#   3. Actions tab → "Bootstrap OIDC" → Run workflow.
+#   4. Read the workflow summary: copy the printed role ARN into a new Actions
+#      variable AWS_ROLE_ARN, then DELETE the two bootstrap secrets. Deploy then
+#      uses OIDC — no keys, ever again.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (temporary keys)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_BOOTSTRAP_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_BOOTSTRAP_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.4
+
+      # Apply ONLY the deploy role + its policies. -target is appropriate here: a
+      # deliberate partial apply to lay the trust anchor; the next full deploy.yml
+      # run reconciles everything else. The OIDC provider already exists account-wide
+      # and is consumed via a data source, so it isn't targeted (nothing to create).
+      - name: Create deploy role
+        working-directory: infra
+        run: |
+          terraform init
+          terraform apply -auto-approve \
+            -target=aws_iam_role.github_deploy \
+            -target=aws_iam_role_policy_attachment.github_deploy_poweruser \
+            -target=aws_iam_role_policy.github_deploy_iam \
+            -target=aws_iam_role_policy.github_deploy_tfstate
+
+      # The default GITHUB_TOKEN can't write Actions variables, so instead of
+      # auto-setting it we print the role ARN with copy-paste instructions. The ARN
+      # is stable, so this is a genuine one-time manual step.
+      - name: Print deploy role ARN + next steps
+        working-directory: infra
+        run: |
+          ROLE_ARN=$(terraform output -raw github_deploy_role_arn)
+          echo "::notice title=Deploy role ARN::$ROLE_ARN"
+          echo ""
+          echo "=================================================================="
+          echo " BOOTSTRAP SUCCEEDED — two manual steps remain:"
+          echo "=================================================================="
+          echo ""
+          echo " 1. Set the Actions variable so Deploy can assume the role:"
+          echo "      GitHub → Settings → Secrets and variables → Actions"
+          echo "        → Variables tab → New repository variable"
+          echo "          Name:  AWS_ROLE_ARN"
+          echo "          Value: $ROLE_ARN"
+          echo ""
+          echo " 2. Delete the now-unneeded bootstrap secrets:"
+          echo "      same page → Secrets tab → delete:"
+          echo "        AWS_BOOTSTRAP_ACCESS_KEY_ID"
+          echo "        AWS_BOOTSTRAP_SECRET_ACCESS_KEY"
+          echo ""
+          echo " After step 1, push to main (or run Deploy manually) — it will"
+          echo " assume this role via OIDC. No more keys needed, ever."
+          echo "=================================================================="
