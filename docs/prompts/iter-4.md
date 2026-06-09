@@ -115,7 +115,7 @@ Deployed (verified live against runtime `multiagent_supervisor_a2a-8OvFnkHKQx`):
 - [x] `GET <endpoint>/.well-known/agent-card.json` with bearer token → card returned through the public endpoint; **card `url` already advertises the real public endpoint** — AgentCore injects `AGENTCORE_RUNTIME_URL` into the container, so the planned `supervisor_a2a_public_url` two-step apply is unnecessary
 - [x] A2A `message/send` `"what is 17 plus 25?"` → state `completed`, artifact `17 plus 25 equals **42**.`
 - [x] A2A `message/send` `"say hi to Priyan"` → friendly greeting artifact
-- [ ] a2d-ai tester (browser, A2A mode) with endpoint URL + bearer token — in the user's hands
+- [x] a2d-ai tester (browser, A2A mode) with endpoint URL + bearer token — **verified by the user** ("this iteration looks good i verified everything")
 
 ---
 

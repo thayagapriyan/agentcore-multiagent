@@ -323,8 +323,8 @@ plan-and-execute, capstone "agent fabric".
 ```
 - [x] Iter 1 — Supervisor + specialists (agent-as-tool)        ← done, verified live
 - [x] Iter 2 — Deploy the supervisor (infra + CI/CD)           ← done, verified live
-- [ ] Iter 3 — Extract packages/common + per-agent TF module   (refactor, non-destructive)
-- [ ] Iter 4 — A2A on the supervisor (public door)             ← unblocks a2d-ai tester
+- [x] Iter 3 — Extract packages/common + per-agent TF module   ← done, 0-change plan proof
+- [x] Iter 4 — A2A on the supervisor (public door)             ← done, verified via a2d-ai tester
 - [ ] Iter 5 — Conditional Graph router        (new agent: agents/router/)
 - [ ] Iter 6 — Critic / reflection loop        (new agent: agents/critic/)
 - [ ] Iter 7 — Second agent over MCP           (new agent + internal Gateway)

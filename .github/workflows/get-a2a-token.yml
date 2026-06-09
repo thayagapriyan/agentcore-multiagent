@@ -64,10 +64,21 @@ jobs:
           {
             echo "## A2A bearer token (encrypted — valid 1 hour from mint)"
             echo
-            echo "Decrypt locally with the passphrase you stored in \`A2A_TOKEN_PASSPHRASE\`:"
+            echo "Decrypt locally with the passphrase you stored in \`A2A_TOKEN_PASSPHRASE\`."
+            echo
+            echo "**Git Bash / Linux / macOS:**"
             echo
             echo '```bash'
             echo "echo '$BLOB' | openssl enc -d -aes-256-cbc -pbkdf2 -a -A -pass pass:<your passphrase>"
+            echo '```'
+            echo
+            echo "**Windows PowerShell** (PowerShell's pipe corrupts stdin to Git's openssl, so go via a temp file):"
+            echo
+            echo '```powershell'
+            echo "\$blob = '$BLOB'"
+            echo "Set-Content -Path \"\$env:TEMP\\a2a-blob.txt\" -Value \$blob -Encoding Ascii"
+            echo "& \"C:\\Program Files\\Git\\usr\\bin\\openssl.exe\" enc -d -aes-256-cbc -pbkdf2 -a -in \"\$env:TEMP\\a2a-blob.txt\" -pass pass:<your passphrase>"
+            echo "Remove-Item \"\$env:TEMP\\a2a-blob.txt\""
             echo '```'
             echo
             echo "**Agent URL** (paste into the a2d-ai tester):"
