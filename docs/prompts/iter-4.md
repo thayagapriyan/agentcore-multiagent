@@ -23,6 +23,12 @@ Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Stra
 3. **Prompt**: `my expectation is option 3 to use a2a protocol to call supervisor agent. please consider all necesary change to make it happen` (corrected from "option 2" mid-message)
    **Why**: extend the iteration to its planned deploy phase — the a2d-ai tester calling the **deployed** supervisor over A2A. Claude researched the AgentCore A2A protocol contract + JWT authorizer, then added the second runtime + Cognito auth + CI smoke test.
 
+4. **Prompt**: `i got this endpoint but not token value , tell me exatly how to test this "<endpoint url>"`
+   **Why**: post-deploy, how to actually call the live endpoint. Claude tested it live (card + math + greeting through the public endpoint, all passing) and documented the exact PowerShell steps; the token is minted on demand via `cognito-idp initiate-auth`, not stored anywhere.
+
+5. **Prompt**: `can you add separate github workflow to get token and output it`
+   **Why**: self-serve token minting from the Actions tab. Because the repo is **public**, the workflow publishes the token only encrypted (AES-256, `A2A_TOKEN_PASSPHRASE` repo secret) in the run summary — a raw token in logs would let anyone invoke the agent for an hour.
+
 ---
 
 ## Decisions made
@@ -73,6 +79,7 @@ Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Stra
 | `infra/versions.tf` | modified | + `hashicorp/random` provider (test-user password) |
 | `infra/.terraform.lock.hcl` | modified | random provider pin |
 | `.github/workflows/deploy.yml` | modified | + A2A smoke test (Cognito token → fetch agent card through the public endpoint) |
+| `.github/workflows/get-a2a-token.yml` | added | manual workflow minting a 1-hour bearer token; published **encrypted** with the `A2A_TOKEN_PASSPHRASE` repo secret (repo is public — never prints the raw token) |
 | `package-lock.json` | modified | lockfile for the new dep |
 | `docs/prompts/iter-4.md` | added | this file |
 | `CHANGELOG.md` | modified | iter-4 entry appended |
@@ -102,8 +109,13 @@ Deployed-A2A additions (local verification):
 - [x] A2A `message/send` `"what is 6 times 7?"` → `6 times 7 equals **42**.`
 - [x] `terraform init` (random provider), `fmt -check -recursive`, `validate` → clean
 - [x] `terraform plan` with the **live image tag** → **`5 to add, 0 to change, 0 to destroy`** — the new A2A stack only; the existing HTTP runtime byte-for-byte untouched (non-destructive proof)
-- [ ] Deployed (pending push): CI A2A smoke test fetches the agent card through the public endpoint with a Cognito bearer token
-- [ ] Deployed (pending push): a2d-ai tester (A2A mode) → endpoint URL + bearer token → math prompt → 42
+Deployed (verified live against runtime `multiagent_supervisor_a2a-8OvFnkHKQx`):
+
+- [x] Cognito `initiate-auth` (USER_PASSWORD_AUTH) → access token issued
+- [x] `GET <endpoint>/.well-known/agent-card.json` with bearer token → card returned through the public endpoint; **card `url` already advertises the real public endpoint** — AgentCore injects `AGENTCORE_RUNTIME_URL` into the container, so the planned `supervisor_a2a_public_url` two-step apply is unnecessary
+- [x] A2A `message/send` `"what is 17 plus 25?"` → state `completed`, artifact `17 plus 25 equals **42**.`
+- [x] A2A `message/send` `"say hi to Priyan"` → friendly greeting artifact
+- [ ] a2d-ai tester (browser, A2A mode) with endpoint URL + bearer token — in the user's hands
 
 ---
 
@@ -118,7 +130,7 @@ Deployed-A2A additions (local verification):
 
 ## Open questions / follow-ups
 
-- [ ] After the first deploy: read `terraform output a2a_endpoint_url`, set `supervisor_a2a_public_url` to it, and re-apply (in-place env-var update) so the Agent Card advertises the real public URL.
+- [x] ~~After the first deploy: set `supervisor_a2a_public_url` and re-apply so the Agent Card advertises the real public URL~~ — not needed: AgentCore injects `AGENTCORE_RUNTIME_URL` into the container and the card self-corrected on deploy (verified live). The variable stays as a manual override.
 - [ ] Verify the a2d-ai tester supports a custom `Authorization: Bearer` header (its docs are a JS app and weren't inspectable). If it can't send the header, fallback testers: the official [a2a-inspector](https://github.com/a2aproject/a2a-inspector), or the curl/Python client in [docs](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html).
 - [ ] The Strands SDK pins express `^5.1.0` as a peer; the repo is on express 4 (works — `@a2a-js/sdk` accepts both). Revisit when bumping express.
 

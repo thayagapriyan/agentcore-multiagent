@@ -1,0 +1,82 @@
+name: Get A2A token
+
+# Mints a 1-hour Cognito bearer token for the supervisor's public A2A door and
+# puts it in the run summary. The repo is PUBLIC, so the token is never printed
+# raw: it's encrypted with the A2A_TOKEN_PASSPHRASE repo secret (set once under
+# Settings → Secrets and variables → Actions) and decrypted locally:
+#
+#   echo '<blob>' | openssl enc -d -aes-256-cbc -pbkdf2 -a -A -pass pass:<your passphrase>
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  token:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.4
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init
+
+      - name: Mint token and write encrypted summary
+        working-directory: infra
+        env:
+          PASSPHRASE: ${{ secrets.A2A_TOKEN_PASSPHRASE }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+        run: |
+          if [ -z "$PASSPHRASE" ]; then
+            echo "::error::Set the A2A_TOKEN_PASSPHRASE repository secret first (Settings → Secrets and variables → Actions). The repo is public — the token is only ever published encrypted."
+            exit 1
+          fi
+
+          CLIENT_ID=$(terraform output -raw a2a_cognito_client_id)
+          USERNAME=$(terraform output -raw a2a_tester_username)
+          PASSWORD=$(terraform output -raw a2a_tester_password)
+          echo "::add-mask::$PASSWORD"
+
+          TOKEN=$(aws cognito-idp initiate-auth \
+            --auth-flow USER_PASSWORD_AUTH \
+            --client-id "$CLIENT_ID" \
+            --auth-parameters USERNAME="$USERNAME",PASSWORD="$PASSWORD" \
+            --region "$AWS_REGION" \
+            --query 'AuthenticationResult.AccessToken' --output text)
+          echo "::add-mask::$TOKEN"
+
+          BLOB=$(printf '%s' "$TOKEN" | openssl enc -aes-256-cbc -pbkdf2 -a -A -pass "pass:$PASSPHRASE")
+          A2A_URL=$(terraform output -raw a2a_endpoint_url)
+
+          {
+            echo "## A2A bearer token (encrypted — valid 1 hour from mint)"
+            echo
+            echo "Decrypt locally with the passphrase you stored in \`A2A_TOKEN_PASSPHRASE\`:"
+            echo
+            echo '```bash'
+            echo "echo '$BLOB' | openssl enc -d -aes-256-cbc -pbkdf2 -a -A -pass pass:<your passphrase>"
+            echo '```'
+            echo
+            echo "**Agent URL** (paste into the a2d-ai tester):"
+            echo
+            echo '```'
+            echo "$A2A_URL"
+            echo '```'
+            echo
+            echo "Use the decrypted token as \`Authorization: Bearer <token>\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Encrypted token written to the run summary."
