@@ -97,3 +97,26 @@ jobs:
             smoke.json
           cat smoke.json
           grep -q result smoke.json
+
+      # A2A door check: the A2A-protocol runtime only accepts bearer tokens (JWT
+      # authorizer), so fetch one from Cognito (initiate-auth is an unauthenticated
+      # API) and require the agent card to come back through the public endpoint.
+      - name: Smoke test (A2A)
+        working-directory: infra
+        run: |
+          A2A_URL=$(terraform output -raw a2a_endpoint_url)
+          CLIENT_ID=$(terraform output -raw a2a_cognito_client_id)
+          USERNAME=$(terraform output -raw a2a_tester_username)
+          PASSWORD=$(terraform output -raw a2a_tester_password)
+          TOKEN=$(aws cognito-idp initiate-auth \
+            --auth-flow USER_PASSWORD_AUTH \
+            --client-id "$CLIENT_ID" \
+            --auth-parameters USERNAME="$USERNAME",PASSWORD="$PASSWORD" \
+            --region "${{ vars.AWS_REGION }}" \
+            --query 'AuthenticationResult.AccessToken' --output text)
+          curl -sf "${A2A_URL}.well-known/agent-card.json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \
+            -o card.json
+          cat card.json
+          grep -q '"Multi-Agent Supervisor"' card.json

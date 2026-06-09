@@ -23,9 +23,15 @@ variable "model_id" {
 }
 
 variable "supervisor_a2a_enabled" {
-  description = "Start the supervisor's A2A server (Agent Card + JSON-RPC on A2A_PORT, default 9000). Container-level flag only — external A2A reachability additionally needs the runtime's protocol_configuration switched to A2A, which changes the invoke contract and is a separate, deliberate step."
+  description = "Start the A2A server inside the HTTP supervisor's container (Agent Card + JSON-RPC on A2A_PORT, default 9000). Not externally reachable on the HTTP-protocol runtime — the public A2A door is the separate A2A-protocol runtime in supervisor-a2a.tf."
   type        = bool
   default     = false
+}
+
+variable "supervisor_a2a_public_url" {
+  description = "Externally reachable URL of the A2A runtime (https://bedrock-agentcore.<region>.amazonaws.com/runtimes/<url-encoded-arn>/invocations/), advertised on the Agent Card. The ARN only exists after the first apply, so: apply once, read a2a_endpoint_url, set this, apply again. Empty = card advertises a placeholder; clients that use the URL they were given (not the card's) work regardless."
+  type        = string
+  default     = ""
 }
 
 variable "github_repo" {

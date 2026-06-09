@@ -48,9 +48,13 @@ export async function startA2AServer(): Promise<void> {
     name: AGENT_NAME,
     description: AGENT_DESCRIPTION,
     version: '0.1.0',
-    // The URL advertised on the Agent Card. Set A2A_PUBLIC_URL to the externally
-    // reachable endpoint when deployed; defaults to the local listener.
-    httpUrl: process.env.A2A_PUBLIC_URL ?? `http://localhost:${port}`,
+    // The URL advertised on the Agent Card, in precedence order: the AgentCore
+    // runtime URL (https://bedrock-agentcore.../runtimes/<arn>/invocations/),
+    // an explicit override, or the local listener.
+    httpUrl:
+      process.env.AGENTCORE_RUNTIME_URL ??
+      process.env.A2A_PUBLIC_URL ??
+      `http://localhost:${port}`,
     skills: specialistSkills(),
   });
 
@@ -58,6 +62,14 @@ export async function startA2AServer(): Promise<void> {
   // serve() binds 127.0.0.1 and overwrites the card URL with the bind address,
   // which breaks both container networking and the A2A_PUBLIC_URL override.
   const app = express();
+
+  // AgentCore's A2A contract health-checks GET /ping on this port (9000), not
+  // 8080. Registered before the A2A middleware so its root-mounted JSON-RPC
+  // handler never sees it.
+  app.get('/ping', (_req, res) => {
+    res.json({ status: 'Healthy' });
+  });
+
   app.use(a2a.createMiddleware());
 
   await new Promise<void>((resolve, reject) => {

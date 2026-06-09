@@ -8,14 +8,20 @@
 
 ## Goal
 
-Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Strands SDK's `a2a` module, opt-in behind `A2A_ENABLED`, without touching the AgentCore `/ping`+`/invocations` contract.
+Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Strands SDK's `a2a` module — locally behind `A2A_ENABLED`, and **publicly on AgentCore** via a second A2A-protocol runtime with Cognito JWT inbound auth — without touching the existing HTTP runtime's `/ping`+`/invocations` contract.
 
 ---
 
 ## Prompts used
 
 1. **Prompt**: `can you work on next iter for agentcore-multiagent project`
-   **Why**: kick off the next planned iteration (iter 4 per the plan's tracking checklist). Claude read the iteration plan, inspected the SDK's `a2a` module APIs, designed, built, and tested the iteration autonomously.
+   **Why**: kick off the next planned iteration (iter 4 per the plan's tracking checklist). Claude read the iteration plan, inspected the SDK's `a2a` module APIs, designed, built, and tested the container-level A2A support autonomously.
+
+2. **Prompt**: `how to test this supervisior agent using a2a protocol`
+   **Why**: understand the testing options. Claude laid out three levels: local curl, local + tunnel + a2d-ai tester, and deployed on AgentCore (which needed protocol + auth work).
+
+3. **Prompt**: `my expectation is option 3 to use a2a protocol to call supervisor agent. please consider all necesary change to make it happen` (corrected from "option 2" mid-message)
+   **Why**: extend the iteration to its planned deploy phase — the a2d-ai tester calling the **deployed** supervisor over A2A. Claude researched the AgentCore A2A protocol contract + JWT authorizer, then added the second runtime + Cognito auth + CI smoke test.
 
 ---
 
@@ -40,9 +46,16 @@ Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Stra
 - **Decision**: add `@a2a-js/sdk` as an explicit supervisor dependency.
   **Why**: it's a peer dependency of the Strands SDK that `legacy-peer-deps=true` (in `.npmrc` since iter 3) skips auto-installing, and the SDK's a2a express server imports `@a2a-js/sdk/server/express` at runtime. Installed 0.3.13; its express peer range `^4.21.2 || ^5.1.0` accepts our express 4.22.2.
 
-- **Decision**: infra change is **env-var only** (`supervisor_a2a_enabled` Terraform variable, default `false`, mapped to `A2A_ENABLED` through the agent module's existing `environment_variables` passthrough). The runtime's `protocol_configuration` stays `HTTP`.
-  **Alternatives considered**: switching `server_protocol` to `A2A` now.
-  **Why**: flipping the protocol changes how `InvokeAgentRuntime` routes (A2A on 9000 instead of `/invocations` on 8080), which would break the existing smoke test and isn't reversible by flag-flip. External A2A reachability (the a2d-ai tester) additionally needs inbound auth a browser tester can satisfy (runtime endpoints are SigV4-only by default; that needs the OAuth/JWT `authorizer_configuration`). That's a deliberate, separate deploy decision — left as an open follow-up rather than bundled (one concern per iteration).
+- **Decision**: public A2A = a **second runtime** (`aws_bedrockagentcore_agent_runtime.supervisor_a2a` in `infra/supervisor-a2a.tf`) from the **same image and execution role**, with `server_protocol = "A2A"` + Cognito JWT authorizer. The existing HTTP runtime keeps `server_protocol = "HTTP"`.
+  **Alternatives considered**: flipping the existing runtime's protocol to `A2A`.
+  **Why**: the protocol determines how `InvokeAgentRuntime` routes (A2A on 9000 at `/` vs HTTP on 8080 at `/invocations`) and the JWT authorizer **replaces** SigV4 — flipping in place would break the existing smoke test and every SigV4 caller, violating additive-only. Two runtimes from one image cost one extra serverless runtime (idle ≈ free) and roll back independently. Plain resource (not a second module instance) because the agent module creates its own ECR repo + role — this runtime deliberately *shares* the supervisor's.
+
+- **Decision**: inbound auth = Cognito user pool with `USER_PASSWORD_AUTH` (app client without secret + one terraform-managed test user, password from `random_password`).
+  **Alternatives considered**: client-credentials flow (resource server + hosted-UI domain + client secret); leaving SigV4.
+  **Why**: SigV4 is unusable from a browser tester. `USER_PASSWORD_AUTH` is AWS's documented pattern for AgentCore JWT inbound auth, needs no hosted-UI domain or resource server, and a bearer token is one unauthenticated `cognito-idp initiate-auth` call — also what the CI smoke test uses. The runtime's `custom_jwt_authorizer` validates against the pool's OIDC discovery URL with `allowed_clients` = the app client id.
+
+- **Decision**: the A2A listener also serves `GET /ping` on port 9000, and the card URL precedence is `AGENTCORE_RUNTIME_URL` → `A2A_PUBLIC_URL` → `http://localhost:<port>`.
+  **Why**: AgentCore's A2A protocol contract health-checks `/ping` on 9000 (not 8080) — without it the A2A runtime would never go healthy. `AGENTCORE_RUNTIME_URL` is the env var AWS's own SDK helper uses for the deployed card URL; the runtime ARN has a random suffix so the URL can't be known before the first apply — `supervisor_a2a_public_url` is set on a follow-up apply (documented two-step; clients that use the endpoint URL they were given work regardless).
 
 ---
 
@@ -50,12 +63,16 @@ Expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) via the Stra
 
 | File | Action | Notes |
 |------|--------|-------|
-| `agents/supervisor/src/a2a.ts` | added | Agent Card (skills derived from `ALL_SPECIALISTS`), fresh-per-request facade, A2A listener on `A2A_PORT` |
+| `agents/supervisor/src/a2a.ts` | added | Agent Card (skills derived from `ALL_SPECIALISTS`), fresh-per-request facade, A2A listener on `A2A_PORT` with `/ping` (AgentCore A2A health check), card-URL precedence |
 | `agents/supervisor/src/app.ts` | modified | starts A2A server when `A2A_ENABLED=true`; failure logged, never kills the invoke path |
 | `agents/supervisor/package.json` | modified | + `@a2a-js/sdk ^0.3.10` |
 | `agents/supervisor/Dockerfile` | modified | `EXPOSE 8080 9000` (documentation only) |
-| `infra/variables.tf` | modified | + `supervisor_a2a_enabled` (bool, default false) |
+| `infra/supervisor-a2a.tf` | added | Cognito pool/client/test-user + A2A-protocol runtime (same image/role, JWT authorizer) + endpoint/credential outputs |
+| `infra/variables.tf` | modified | + `supervisor_a2a_enabled` (bool, default false), `supervisor_a2a_public_url` (string, default "") |
 | `infra/supervisor.tf` | modified | passes `A2A_ENABLED` via module `environment_variables` when enabled |
+| `infra/versions.tf` | modified | + `hashicorp/random` provider (test-user password) |
+| `infra/.terraform.lock.hcl` | modified | random provider pin |
+| `.github/workflows/deploy.yml` | modified | + A2A smoke test (Cognito token → fetch agent card through the public endpoint) |
 | `package-lock.json` | modified | lockfile for the new dep |
 | `docs/prompts/iter-4.md` | added | this file |
 | `CHANGELOG.md` | modified | iter-4 entry appended |
@@ -78,6 +95,16 @@ Actual results, run locally (Node 20.16, live Bedrock calls with local AWS creds
 - [x] Flag OFF (default): `/ping` → 200; port 9000 → connection refused (rollback proof)
 - [x] ARM64 Docker build (`buildx --platform linux/arm64`) → success; container (`uname -m` → `aarch64`) with flag on serves `/ping` 200 + agent card on 9000
 
+Deployed-A2A additions (local verification):
+
+- [x] `GET :9000/ping` → `{"status":"Healthy"}` (AgentCore A2A health-check contract)
+- [x] Card URL precedence: with `AGENTCORE_RUNTIME_URL=https://example.test/runtimes/x/invocations/` the card advertises exactly that URL
+- [x] A2A `message/send` `"what is 6 times 7?"` → `6 times 7 equals **42**.`
+- [x] `terraform init` (random provider), `fmt -check -recursive`, `validate` → clean
+- [x] `terraform plan` with the **live image tag** → **`5 to add, 0 to change, 0 to destroy`** — the new A2A stack only; the existing HTTP runtime byte-for-byte untouched (non-destructive proof)
+- [ ] Deployed (pending push): CI A2A smoke test fetches the agent card through the public endpoint with a Cognito bearer token
+- [ ] Deployed (pending push): a2d-ai tester (A2A mode) → endpoint URL + bearer token → math prompt → 42
+
 ---
 
 ## Forward-compatibility check
@@ -91,12 +118,42 @@ Actual results, run locally (Node 20.16, live Bedrock calls with local AWS creds
 
 ## Open questions / follow-ups
 
-- [ ] **Deployed A2A reachability**: serving A2A externally on AgentCore needs (a) `protocol_configuration.server_protocol = "A2A"` on the runtime — which changes the invoke contract and smoke test — and (b) inbound auth the a2d-ai tester can satisfy (SigV4 by default; a browser tester needs the OAuth/JWT authorizer). Decide: flip the existing supervisor runtime, or stand up a second A2A-protocol runtime from the same image.
+- [ ] After the first deploy: read `terraform output a2a_endpoint_url`, set `supervisor_a2a_public_url` to it, and re-apply (in-place env-var update) so the Agent Card advertises the real public URL.
+- [ ] Verify the a2d-ai tester supports a custom `Authorization: Bearer` header (its docs are a JS app and weren't inspectable). If it can't send the header, fallback testers: the official [a2a-inspector](https://github.com/a2aproject/a2a-inspector), or the curl/Python client in [docs](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html).
 - [ ] The Strands SDK pins express `^5.1.0` as a peer; the repo is on express 4 (works — `@a2a-js/sdk` accepts both). Revisit when bumping express.
+
+---
+
+## How to call the deployed A2A endpoint
+
+```bash
+cd infra
+A2A_URL=$(terraform output -raw a2a_endpoint_url)
+TOKEN=$(aws cognito-idp initiate-auth \
+  --auth-flow USER_PASSWORD_AUTH \
+  --client-id "$(terraform output -raw a2a_cognito_client_id)" \
+  --auth-parameters USERNAME=a2a-tester,PASSWORD="$(terraform output -raw a2a_tester_password)" \
+  --query 'AuthenticationResult.AccessToken' --output text)
+
+# Agent card
+curl -s "${A2A_URL}.well-known/agent-card.json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)"
+
+# JSON-RPC message/send
+curl -s -X POST "$A2A_URL" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \
+  -d '{"jsonrpc":"2.0","id":"1","method":"message/send","params":{"message":{"kind":"message","messageId":"m1","role":"user","parts":[{"kind":"text","text":"what is 17 plus 25?"}]}}}'
+```
+
+For the a2d-ai tester: paste `a2a_endpoint_url` as the agent URL and supply the bearer token as the auth header. Tokens expire after 1 hour (re-run `initiate-auth`).
 
 ---
 
 ## Rollback
 
-- Deployed: leave `supervisor_a2a_enabled` at its default `false` (or set it back) and re-apply — the container stops opening 9000; the invoke path was never touched.
-- Code: revert the iter-4 commit. No Terraform resources were created or changed (env var only), so no state surgery.
+- Public A2A door only: `terraform destroy -target=aws_bedrockagentcore_agent_runtime.supervisor_a2a -target=aws_cognito_user_pool.a2a` (the user/client/password fall with the pool). The HTTP runtime and its smoke test are unaffected.
+- Container flag (HTTP runtime): leave `supervisor_a2a_enabled` at its default `false` — the container never opens 9000.
+- Code: revert the iter-4 commit. The HTTP runtime was never modified (plan with live tag: 0 changes to it).
