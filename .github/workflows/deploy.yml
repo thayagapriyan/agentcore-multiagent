@@ -33,13 +33,35 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      # Build the supervisor image from its folder (Dockerfile + src live there),
-      # pushed straight to ECR before any terraform apply — so the image the runtime
-      # points at always exists first.
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.4
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init
+
+      # Create the ECR repo (and its lifecycle policy) BEFORE the build, so the
+      # push has somewhere to land on a cold first deploy. A deliberate partial
+      # apply via -target; the full apply below reconciles the rest. The repo name
+      # is read back from terraform output so it always tracks var.agent_name and
+      # can't drift from a manually-set Actions variable.
+      - name: Pre-create ECR repository
+        id: tf_ecr
+        working-directory: infra
+        run: |
+          terraform apply -auto-approve \
+            -target=aws_ecr_repository.agent \
+            -target=aws_ecr_lifecycle_policy.agent
+          echo "ecr_url=$(terraform output -raw ecr_repository_url)" >> "$GITHUB_OUTPUT"
+
+      # Build the supervisor image from its folder (Dockerfile + src live there)
+      # and push to the just-created repo before the full terraform apply — so the
+      # image the runtime points at always exists first.
       - name: Build & push (ARM64)
         working-directory: agents/supervisor
         env:
-          ECR_URI: ${{ steps.ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}
+          ECR_URI: ${{ steps.tf_ecr.outputs.ecr_url }}
         run: |
           docker buildx build \
             --platform linux/arm64 \
@@ -48,14 +70,9 @@ jobs:
             -t "$ECR_URI:latest" \
             .
 
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.15.4
-
       - name: Terraform apply
         working-directory: infra
         run: |
-          terraform init
           terraform apply -auto-approve -var="image_tag=${{ github.sha }}"
 
       # Deployed-state check: invoke the live runtime with a math prompt and require
