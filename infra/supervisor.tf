@@ -8,6 +8,8 @@ module "supervisor" {
   image_tag   = var.image_tag
   account_id  = data.aws_caller_identity.current.account_id
   description = "Multi-agent supervisor (agent-as-tool: math + greeting specialists)"
+
+  environment_variables = var.supervisor_a2a_enabled ? { A2A_ENABLED = "true" } : {}
 }
 
 # State migration (iter 3): map the pre-refactor root resources to their new

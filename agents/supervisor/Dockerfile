@@ -45,7 +45,8 @@ COPY --from=build /app/agents/supervisor/node_modules ./agents/supervisor/node_m
 RUN useradd --create-home --uid 1001 agent
 USER agent
 
-EXPOSE 8080
+# 9000 = opt-in A2A door (A2A_ENABLED=true); inert when the flag is off
+EXPOSE 8080 9000
 # node-based check: node:20-bookworm-slim ships node but not wget/curl
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:8080/ping').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"

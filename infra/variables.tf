@@ -22,6 +22,12 @@ variable "model_id" {
   default     = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
 }
 
+variable "supervisor_a2a_enabled" {
+  description = "Start the supervisor's A2A server (Agent Card + JSON-RPC on A2A_PORT, default 9000). Container-level flag only — external A2A reachability additionally needs the runtime's protocol_configuration switched to A2A, which changes the invoke contract and is a separate, deliberate step."
+  type        = bool
+  default     = false
+}
+
 variable "github_repo" {
   description = "GitHub owner/repo allowed to assume the CI/CD deploy role via OIDC"
   type        = string

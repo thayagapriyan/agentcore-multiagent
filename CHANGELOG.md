@@ -54,4 +54,16 @@ Format:
 
 ---
 
+## [Iter 4] — 2026-06-09 — A2A on the supervisor (the public door)
+
+- Added: `agents/supervisor/src/a2a.ts` — A2A server (Agent Card + JSON-RPC) via `@strands-agents/sdk/a2a/express`, opt-in behind `A2A_ENABLED`, on its own port (`A2A_PORT`, default 9000 — AgentCore's A2A port). Card skills derive from `ALL_SPECIALISTS`; a fresh-supervisor-per-request facade keeps concurrent A2A requests isolated. `infra/variables.tf` gains `supervisor_a2a_enabled` (default `false`) passed through the agent module's `environment_variables`.
+- Changed: `app.ts` starts the A2A listener when flagged (failure logged, never kills the invoke path); supervisor `package.json` + `@a2a-js/sdk` (Strands peer dep skipped by `legacy-peer-deps`); Dockerfile `EXPOSE 8080 9000`.
+- Context: A2A is the public door — only the top-most agent of each project exposes it. The reusable A2A wrapper is the SDK itself, so `packages/common` stays SDK-agnostic (iter-3 decision) — a deliberate deviation from the plan's "A2A server lands in common" wording, documented in the prompt log. Runtime `protocol_configuration` stays `HTTP`; flipping to `A2A` (+ inbound auth for the a2d-ai tester) is a separate deliberate step, tracked as a follow-up.
+- Tests: build/typecheck/tf fmt+validate clean. Flag on: agent card served on 9000; A2A `message/send` math → `42` (delegation → `math_specialist`), greeting → friendly hello; `/invocations` math → same `42`; empty prompt → 400. Flag off: 9000 refuses connections, `/ping` 200. ARM64 image builds; container (aarch64) serves both ports.
+- Prompt log: [docs/prompts/iter-4.md](docs/prompts/iter-4.md)
+- Rollback: flip `supervisor_a2a_enabled` off (default) — env-var only, no Terraform resources changed; code rollback = revert the commit.
+- Forward-compatibility: every future public agent repeats the thin `src/a2a.ts` pattern with its own card; internal sub-agents never get one.
+
+---
+
 > **Convention**: append new entries at the **bottom** of the iteration list. Never edit a past entry — add a follow-up entry instead. Past commits stay immutable; the changelog reflects that.
