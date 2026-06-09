@@ -240,14 +240,20 @@ plan-and-execute, capstone "agent fabric".
 
 **Design**
 - New deployable `agents/router/`: `intake` node classifies → conditional edges to
-  branch agents → `summarize`. Imports the wrapper + model from `packages/common`;
-  A2A on its top (router) agent.
+  branch agents → `summarize`. Imports the `/ping`+`/invocations` wrapper from
+  `packages/common` (SDK-agnostic); owns its own Bedrock model factory like the
+  supervisor. A2A on its top (router) agent.
 - New `module "router"` block in `infra/` → its own ECR + runtime.
+- **Per-agent outputs (decided iter 3):** convert the flat `agent_runtime_arn` output
+  to a single **map keyed by agent** — `runtime_arns = { supervisor = …, router = … }`
+  — and update the deploy smoke test to `terraform output -json runtime_arns | jq -r
+  .<agent>`. This is the first iteration with >1 agent, so it's where the map lands.
 
 **Develop**
 - `agents/router/src/{graph,agent,app}.ts`, Dockerfile, package.json (extends base TS
   config, depends on `common`).
-- `infra/` — add `module "router"`; pipeline builds/deploys both supervisor + router.
+- `infra/` — add `module "router"`; convert outputs to the per-agent ARN map; pipeline
+  builds/deploys both supervisor + router (each resolving its own `agent_name`).
 
 **Test**
 - Local: a "refund" prompt routes to the billing branch, a "bug" prompt to tech, via

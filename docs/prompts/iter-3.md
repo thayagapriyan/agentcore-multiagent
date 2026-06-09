@@ -78,6 +78,7 @@ Per the iteration plan's Test phase. Record actual results, not expected.
 ## Forward-compatibility check
 
 - After this, a new agent = a new `agents/<type>/` folder importing `common` + a new `module "<type>"` block. This is the spine iter 4+ relies on. The A2A server lands in `packages/common` in iter 4.
+- **Per-agent outputs (ARNs etc.):** today there is one module, so the flat top-level `agent_runtime_arn` output is fine. When agent #2 arrives (iter 5), a flat output collides. **Decision (made in iter 3, implemented in iter 5):** expose a single **map output keyed by agent name** — e.g. `runtime_arns = { supervisor = "arn:…", router = "arn:…" }` — and have the deploy workflow look up its agent's ARN via `terraform output -json runtime_arns | jq -r .<agent>`. Pairs naturally with a future `for_each` over an agents map. The ECR repo name is already derived per-agent from `var.agent_name` (deploy resolves it via `terraform console`), so it scales the same way.
 
 ---
 
