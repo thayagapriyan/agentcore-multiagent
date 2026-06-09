@@ -10,17 +10,34 @@ patterns we reuse.
 
 ---
 
-## Strategy: local-first, deploy as its own concern
+## Strategy: one folder per agent type, each its own deployable
+
+Each multi-agent *pattern* is built as its **own agent type** in its own
+`agents/<type>/` folder, packaged as its **own deployable** — its own Docker image,
+ECR repo, and AgentCore runtime. Patterns are **separate agents, not modes of one
+agent.** This is the core shape of the repo:
+
+- **Never modify or replace an existing agent.** A new iteration adds a new
+  `agents/<type>/` folder alongside the others. The live supervisor from iter 1–2 is
+  never restructured by a later iteration. (This supersedes the earlier env-flag
+  approach — `ORCHESTRATION_MODE` is no longer how new patterns arrive.)
+- **Each agent = its own runtime.** Separate ECR repo + AgentCore runtime per agent
+  type, for maximum isolation and independent deploy/scale. The cost (N runtimes) is
+  accepted deliberately.
+- **Shared code lives in `packages/common`.** The Express `/ping`+`/invocations`
+  wrapper, the Bedrock model factory, and the A2A server are factored into a
+  workspace package every agent imports — reuse, not copy-paste.
+- **Terraform is a reusable per-agent module.** `infra/` defines an agent module
+  (ECR + runtime + IAM) instantiated once per agent type. Adding an agent = one
+  module block, not a new hand-written stack.
+- **A2A only on the top-most (public) agent of each project.** The entry-point agent
+  exposes an A2A server + Agent Card — the public door the [a2d-ai tester](https://www.a2d-ai.com/tester)
+  and other A2A clients call. Internal sub-agents stay in-process (or later, internal
+  MCP); they are not A2A-exposed.
 
 The sibling project already proved the deploy plumbing (ECR → AgentCore Runtime →
-OIDC CI/CD). The **learning** in this repo is the multi-agent *patterns* — fastest to
-iterate locally. So:
-
-- **Pattern iterations** (1, 3, 4, …) are built and verified **locally** first.
-- **Deploy is its own iteration** (iter 2 deploys the supervisor; later patterns
-  deploy as part of their flow once the pipeline exists).
-
-This keeps one concern per iteration and avoids re-proving solved infrastructure.
+OIDC CI/CD); the **learning** here is multi-agent *patterns*, each built and verified
+locally first, then deployed as its own runtime through the existing pipeline.
 
 ---
 
@@ -28,10 +45,13 @@ This keeps one concern per iteration and avoids re-proving solved infrastructure
 
 | Principle | What it means in practice |
 |-----------|---------------------------|
-| **Additive only** | Never delete or rename a working agent/pattern in the same iteration that adds a new one. |
-| **Forward-compatible** | New iterations must not require old ones to change. Use env flags (e.g. `ORCHESTRATION_MODE`, `LOG_DELEGATION`) and optional config. |
-| **Always green** | Every iteration ends with `/ping` → 200 and `/invocations` → a valid response (locally, and on AWS once deployed). |
-| **Reversible** | Every iteration has a documented rollback (env flip, image tag revert, Terraform target destroy). |
+| **Additive only** | A new iteration adds a new `agents/<type>/` folder; it never modifies or replaces an existing agent. |
+| **One agent per folder** | Each agent type is its own deployable (own image, ECR repo, runtime). Patterns are separate agents, not env-flag modes of one agent. |
+| **Reuse via `packages/common`** | Shared wrapper, model factory, and A2A server live in the common package; agents import them, never copy them. |
+| **A2A on the public agent only** | Each project's top-most agent exposes A2A; internal sub-agents do not. |
+| **Forward-compatible** | New iterations must not require old ones to change. New agents reuse the existing common package + Terraform module unchanged. |
+| **Always green** | Every iteration ends with each deployed agent's `/ping` → 200 and `/invocations` → a valid response (locally, and on AWS once deployed). |
+| **Reversible** | Every iteration has a documented rollback (`terraform destroy -target` the new agent's module, image tag revert). A new agent's rollback never touches existing agents. |
 | **One concern per iteration** | If tempted to bundle two changes, split. |
 | **Orchestration in code** | Routing/workflow logic is TypeScript (`Graph`/`Swarm`/agent-as-tool), never YAML. |
 
@@ -39,17 +59,20 @@ This keeps one concern per iteration and avoids re-proving solved infrastructure
 
 ## Iteration map (at a glance)
 
-| # | Iteration | Delivers | Pattern tier | Infra change |
-|---|-----------|----------|--------------|--------------|
-| 1 | Supervisor + specialists | Router agent delegates to math/greeting sub-agents (agent-as-tool) | 1.1 | none — **done** |
-| 2 | Deploy the supervisor | Iter-1 agent live on AgentCore via Terraform + OIDC CI/CD | — | ECR + runtime + pipeline |
-| 3 | Conditional `Graph` router | Classify → route → summarize, explicit edges | 1.3 | none |
-| 4 | Critic / reflection loop | Generator + critic, loop until approved | 2.6 | none |
-| 5 | Second runtime via MCP | A specialist deployed as its own runtime, called over MCP/Gateway | 3.8 | second runtime + Gateway |
-| 6 | A2A-exposed agent | An agent exposes an A2A Agent Card, callable over A2A | 3.9 | A2A server wiring |
+| # | Iteration | New deployable? | Delivers | Infra change |
+|---|-----------|-----------------|----------|--------------|
+| 1 | Supervisor + specialists | `agents/supervisor/` | Router delegates to math/greeting sub-agents (agent-as-tool) | none — **done** |
+| 2 | Deploy the supervisor | — | Iter-1 agent live on AgentCore via Terraform + OIDC CI/CD | ECR + runtime + pipeline — **done** |
+| 3 | Extract `packages/common` + per-agent TF module | — (refactor) | Shared wrapper/model factory in `packages/common`; `infra/` becomes a reusable per-agent module. Supervisor consumes both, behavior + state **identical**. | infra refactor, no resource recreate |
+| 4 | A2A on the supervisor (public door) | — | Supervisor exposes an A2A server + Agent Card via `packages/common`; the **a2d-ai tester can now call it** | A2A wiring on existing runtime |
+| 5 | Conditional `Graph` router | `agents/router/` | New agent: classify → route → summarize (explicit edges); A2A on top | new ECR + runtime (module) |
+| 6 | Critic / reflection loop | `agents/critic/` | New agent: generator + critic, loop until approved; A2A on top | new ECR + runtime (module) |
+| 7 | Second agent called over MCP | `agents/<specialist>/` | A specialist as its own runtime, called by a top agent over internal MCP/Gateway | new runtime + Gateway |
 
-Later (optional): parallel fan-out (2.5), plan-and-execute (2.7), capstone "agent
-fabric" (Tier 4).
+Each new-agent iteration (5+) is the same shape: a new `agents/<type>/` folder, a new
+module block in `infra/`, A2A on its top-most agent, deployed by the existing
+pipeline. Later (optional, same pattern): swarm w/ handoffs, parallel fan-out,
+plan-and-execute, capstone "agent fabric".
 
 ---
 
@@ -87,12 +110,13 @@ fabric" (Tier 4).
 
 **Forward-compatibility**
 - New specialists are just new entries in `ALL_SPECIALISTS` — additive.
-- The supervisor is a plain `Agent`, so swapping in a `Graph`/`Swarm` later (iter 3+)
-  is a change behind `createSupervisor()`, not a contract change to `app.ts`.
+- The supervisor stays a plain `Agent`. Later patterns (`Graph`, `Swarm`, critic loop)
+  are **separate agent folders**, not changes to this one — so the supervisor is never
+  restructured.
 
 ---
 
-## Iteration 2 — Deploy the supervisor
+## Iteration 2 — Deploy the supervisor ✅ done
 
 > Goal: iter-1's supervisor running live on AgentCore Runtime, deployed by the
 > sibling's proven Terraform + OIDC CI/CD path.
@@ -130,119 +154,174 @@ fabric" (Tier 4).
 
 ---
 
-## Iteration 3 — Conditional `Graph` router
+## Iteration 3 — Extract `packages/common` + per-agent Terraform module
 
-> Goal: replace the simple supervisor with an explicit `Graph` that classifies a
-> request and routes to the right branch — the heart of real workflows.
+> Goal: the enabling refactor. Factor the shared agent runtime code into
+> `packages/common` and turn `infra/` into a reusable per-agent module — so every
+> later agent is a thin folder + one module block. **Additive: the supervisor's
+> behavior and its live AWS resources are unchanged.**
 
 **Design**
-- `intake` node classifies → conditional edges to `billing`/`tech` (or reuse
-  math/greeting) → `summarize` node.
-- Gated behind `ORCHESTRATION_MODE` (`agent-as-tool` default | `graph`), so iter-1
-  behavior is preserved and rollback is an env flip.
+- `packages/common` (npm workspace): the Express `/ping`+`/invocations` wrapper, the
+  Bedrock model factory, and shared types. (The A2A server lands here in iter 4.)
+- Root `package.json` with npm workspaces (`packages/*`, `agents/*`).
+- `infra/` agent module (`infra/modules/agent/`): ECR repo + lifecycle + runtime +
+  runtime IAM role, parameterized by `agent_name`/`model_id`/`image_tag`. The root
+  `infra/` calls it once for `supervisor` and keeps shared resources (backend,
+  `cicd.tf` OIDC role) at the top level.
 
 **Develop**
-- `agents/supervisor/src/graph.ts` — build the `Graph` (nodes + conditional edges).
-- `createSupervisor()` branches on `ORCHESTRATION_MODE`.
+- Create `packages/common/`; move the wrapper + model factory out of
+  `agents/supervisor/src` into it; supervisor imports from `common`.
+- Refactor `infra/{ecr,iam,runtime}.tf` into `infra/modules/agent/`; replace the
+  bodies with a `module "supervisor"` call.
+- **State migration:** use `moved {}` blocks (or `terraform state mv`) so the
+  supervisor's existing resources map to their new module addresses — **no
+  destroy/recreate** of the live runtime.
 
 **Test**
-- Local: a "refund" prompt routes to billing branch; a "bug" prompt to tech; verify
-  via the delegation/`Graph` event log.
-- `ORCHESTRATION_MODE` unset → identical to iter 1 (additive proof).
+- Local: `npm install` (workspaces resolve), `tsc --noEmit` clean for supervisor.
+- `terraform plan` shows **only address moves, zero resource changes** (the proof
+  this refactor is non-destructive).
+- After deploy, re-invoke the live runtime → same `42` / greeting responses as iter 2.
 
 **Deploy**
-- Build/push new image; `terraform apply -var=image_tag=<sha>` (+ set env var).
+- Pipeline as usual; confirm `terraform apply` reports no resource replacement.
 
 **Rollback**
-- Unset `ORCHESTRATION_MODE` → reverts to agent-as-tool. No redeploy needed.
+- Revert the refactor commit; `moved` blocks are reversible. The live runtime is never
+  torn down, so rollback is code-only.
 
 **Forward-compatibility**
-- `Graph` vs agent-as-tool is a runtime choice — both code paths kept.
+- After this, a new agent = a new `agents/<type>/` folder importing `common` + a new
+  `module "<type>"` block. This is the spine every later iteration relies on.
 
 ---
 
-## Iteration 4 — Critic / reflection loop
+## Iteration 4 — A2A on the supervisor (the public door)
 
-> Goal: iterative refinement — a generator produces output, a critic reviews, loop
-> until approved or N tries.
+> Goal: expose the supervisor over the A2A protocol (Agent Card + JSON-RPC) using the
+> SDK's `a2a` module, so the [a2d-ai tester](https://www.a2d-ai.com/tester) and other
+> A2A clients can call it. A2A is the public front door — **only the top-most agent
+> gets it.**
 
 **Design**
-- `generator` + `critic` agents; a loop with a termination condition (approved or
-  max iterations). Expressed as a `Graph` with a back-edge, or a `Swarm`.
-- New `ORCHESTRATION_MODE=critic` value (additive to iter-3's modes).
+- An A2A server (`a2a/express-server`) in `packages/common`, reusable by any agent
+  that should be public. Publish the supervisor's Agent Card (name, description,
+  skills).
+- Runs alongside the AgentCore `/ping`+`/invocations` contract (additive — the
+  existing invoke path keeps working).
 
 **Develop**
-- `agents/supervisor/src/critic-loop.ts`.
+- `packages/common/src/a2a-server.ts` — generic A2A wrapper around an `Agent`.
+- `agents/supervisor/src/a2a.ts` — supervisor's Agent Card + skills; wire into `app.ts`.
+- Expose/port config via env so the runtime serves the A2A endpoint.
 
 **Test**
-- Local: a prompt that needs refinement shows ≥1 critic round in the log; verify it
-  terminates (no infinite loop) at the max-iteration cap.
+- Local: fetch the Agent Card; an A2A client call returns the same result as
+  `/invocations` for the math + greeting prompts.
+- Deployed: point the a2d-ai tester (A2A mode) at the supervisor's A2A endpoint →
+  `"what is 17 plus 25?"` → `42`.
 
-**Deploy / Rollback**
-- Same env-flag pattern as iter 3.
+**Rollback**
+- Remove the A2A wiring from `app.ts` (env flag off); the AgentCore invoke path is
+  untouched, so the agent still works.
+
+**Forward-compatibility**
+- The `packages/common` A2A server is reused by every future project's top agent —
+  internal sub-agents never import it.
 
 ---
 
-## Iteration 5 — Second runtime via MCP (first distribution)
+## Iteration 5 — Conditional `Graph` router (new agent)
 
-> Goal: take one specialist out-of-process — deploy it as its **own** AgentCore
-> runtime, called by the supervisor over MCP via the Gateway.
+> Goal: a **new** agent type — `agents/router/` — that classifies a request and routes
+> via an explicit `Graph` with conditional edges. The supervisor is untouched.
 
 **Design**
-- New deployable `agents/<specialist>/` with its own Dockerfile + runtime.
-- Supervisor connects to it as an MCP tool (reuse the sibling's Gateway pattern).
-- This is the in-process → distributed jump; the cost (extra runtime, IAM, latency)
-  is the lesson.
+- New deployable `agents/router/`: `intake` node classifies → conditional edges to
+  branch agents → `summarize`. Imports the wrapper + model from `packages/common`;
+  A2A on its top (router) agent.
+- New `module "router"` block in `infra/` → its own ECR + runtime.
 
 **Develop**
-- Second agent folder; `infra/` gains a second ECR + runtime + Gateway target;
+- `agents/router/src/{graph,agent,app}.ts`, Dockerfile, package.json (extends base TS
+  config, depends on `common`).
+- `infra/` — add `module "router"`; pipeline builds/deploys both supervisor + router.
+
+**Test**
+- Local: a "refund" prompt routes to the billing branch, a "bug" prompt to tech, via
+  the `Graph` event log.
+- Deployed: router runtime healthy; A2A call via a2d-ai tester returns a routed answer.
+
+**Rollback**
+- `terraform destroy -target=module.router`; supervisor unaffected.
+
+**Forward-compatibility**
+- Establishes the new-agent template (folder + module + A2A-on-top) every later
+  pattern reuses.
+
+---
+
+## Iteration 6 — Critic / reflection loop (new agent)
+
+> Goal: a **new** agent type — `agents/critic/` — iterative refinement: a generator
+> produces output, a critic reviews, loop until approved or N tries.
+
+**Design**
+- New deployable `agents/critic/`: `generator` + `critic` agents with a termination
+  condition (approved or max iterations), as a `Graph` with a back-edge (or `Swarm`).
+- New `module "critic"` block; A2A on its top agent.
+
+**Develop**
+- `agents/critic/src/{critic-loop,agent,app}.ts`, Dockerfile, package.json.
+- `infra/` — add `module "critic"`.
+
+**Test**
+- Local: a prompt needing refinement shows ≥1 critic round; verify it terminates at
+  the max-iteration cap (no infinite loop).
+- Deployed: A2A call returns a refined answer; loop count visible in logs.
+
+**Rollback**
+- `terraform destroy -target=module.critic`; other agents unaffected.
+
+---
+
+## Iteration 7 — Second agent called over MCP (internal distribution)
+
+> Goal: a top agent calls a **separate** agent runtime over **internal** MCP/Gateway —
+> the in-process → distributed jump. The callee is internal (no A2A); only the top
+> caller stays public.
+
+**Design**
+- New deployable specialist `agents/<specialist>/` with its own runtime.
+- A top agent connects to it as an MCP tool via the Gateway (reuse the sibling's
+  Gateway pattern). Internal sub-agents are **not** A2A-exposed.
+
+**Develop**
+- New agent folder + `module "<specialist>"`; `infra/` gains a Gateway + target;
   pipeline builds/deploys both images.
 
 **Test**
-- Both runtimes healthy; supervisor invocation that needs the remote specialist shows
-  the cross-runtime call in traces.
+- Both runtimes healthy; a top-agent invocation that needs the remote specialist shows
+  the cross-runtime MCP call in traces.
 
 **Rollback**
-- `terraform destroy -target` the second runtime + Gateway target; supervisor falls
-  back to in-process specialists.
-
-**Forward-compatibility**
-- Monorepo structure (`agents/*`, per-agent Dockerfiles) was laid down in iter 1 for
-  exactly this.
-
----
-
-## Iteration 6 — A2A-exposed agent
-
-> Goal: expose an agent via the A2A protocol (Agent Card + JSON-RPC) using the SDK's
-> `a2a` module — the open inter-agent standard.
-
-**Design**
-- One agent runs an A2A server (`a2a/express-server`) alongside or instead of the
-  AgentCore HTTP contract; publish its Agent Card.
-- Another agent calls it over A2A.
-
-**Develop**
-- `agents/<agent>/src/a2a-server.ts`; wire the Agent Card + skills.
-
-**Test**
-- Validate the Agent Card; a cross-agent A2A call returns a correct result.
-- (Optional) point an external A2A inspector at the Agent Card.
-
-**Rollback**
-- Remove the A2A server; agents revert to MCP/in-process.
+- `terraform destroy -target` the specialist module + Gateway target; the caller falls
+  back to its in-process specialists.
 
 ---
 
 ## Tracking progress
 
 ```
-- [x] Iter 1 — Supervisor + specialists (agent-as-tool)   ← done, verified locally
-- [ ] Iter 2 — Deploy the supervisor (infra + CI/CD)
-- [ ] Iter 3 — Conditional Graph router
-- [ ] Iter 4 — Critic / reflection loop
-- [ ] Iter 5 — Second runtime via MCP
-- [ ] Iter 6 — A2A-exposed agent
+- [x] Iter 1 — Supervisor + specialists (agent-as-tool)        ← done, verified live
+- [x] Iter 2 — Deploy the supervisor (infra + CI/CD)           ← done, verified live
+- [ ] Iter 3 — Extract packages/common + per-agent TF module   (refactor, non-destructive)
+- [ ] Iter 4 — A2A on the supervisor (public door)             ← unblocks a2d-ai tester
+- [ ] Iter 5 — Conditional Graph router        (new agent: agents/router/)
+- [ ] Iter 6 — Critic / reflection loop        (new agent: agents/critic/)
+- [ ] Iter 7 — Second agent over MCP           (new agent + internal Gateway)
 ```
 
 ---

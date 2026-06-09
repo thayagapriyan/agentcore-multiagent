@@ -120,10 +120,18 @@ agentcore-multiagent/
     └── prompts/                 ← prompt archive (one per iteration)
 ```
 
-**Key decisions still open** (ask the user before assuming): how agents share code
-(workspaces `common` package vs. per-agent copies), how deployed agents communicate
-(MCP via Gateway vs. A2A vs. direct `invoke-agent-runtime`), and how many agents the
-POC includes.
+**Key decisions (resolved — see [docs/iteration-plan.md](docs/iteration-plan.md)):**
+- **One agent type per folder, each its own deployable** (own image, ECR repo,
+  AgentCore runtime). Patterns are *separate agents*, not env-flag modes of one agent.
+- **Iterations are additive** — a new pattern adds a new `agents/<type>/` folder; it
+  never modifies or replaces an existing agent (the live supervisor is never
+  restructured).
+- **Shared code in `packages/common`** (npm workspace): Express wrapper, model factory,
+  A2A server — imported, not copied.
+- **Terraform is a reusable per-agent module** instantiated once per agent type.
+- **A2A on the top-most (public) agent only** of each project — the door the
+  [a2d-ai tester](https://www.a2d-ai.com/tester) calls. Internal sub-agents stay
+  in-process or use internal MCP; they are not A2A-exposed.
 
 ---
 

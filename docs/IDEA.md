@@ -81,26 +81,27 @@ pipeline.
 
 ---
 
-## Suggested sequencing
+## Suggested sequencing (conceptual order by pattern tier)
 
-Done as mini-iterations, env-flagged so each is reversible:
+| Project | Tier |
+|---------|------|
+| Supervisor + agent-as-tool ← **start here** | 1.1 |
+| Conditional `Graph` router | 1.3 |
+| Critic / reflection loop | 2.6 |
+| Second agent over MCP (first distribution) | 3.8 |
+| A2A-exposed agent | 3.9 |
 
-| Iteration | Project | Tier |
-|-----------|---------|------|
-| 1 | Supervisor + agent-as-tool ← **start here** | 1.1 |
-| 2 | Conditional `Graph` router | 1.3 |
-| 3 | Critic / reflection loop | 2.6 |
-| 4 | Second runtime via MCP (first infra change) | 3.8 |
-| 5 | A2A-exposed agent | 3.9 |
-
-Each uses an orchestration env flag, defaults to a single agent, and rolls back by
-flipping the flag — the same forward-compatible pattern as `SESSION_BUCKET` /
-`AGENTCORE_GATEWAY_URL` in the sibling project.
+**Delivery model:** each pattern is built as its **own agent type** in its own
+`agents/<type>/` folder — a separate deployable (own image, ECR repo, AgentCore
+runtime). New iterations **add** agent folders; they never modify or replace an
+existing agent. Shared code lives in `packages/common`; only each project's top-most
+(public) agent exposes A2A. (This supersedes the earlier env-flag idea, where patterns
+were modes of one agent.)
 
 > This table is the *conceptual* order by pattern tier. The **authoritative
-> execution order** is [iteration-plan.md](iteration-plan.md), which inserts
-> "deploy the supervisor" as iteration 2 (deploy is its own concern), shifting the
-> later patterns down by one.
+> execution order** is [iteration-plan.md](iteration-plan.md), which inserts "deploy
+> the supervisor" (iter 2) and an enabling "extract `packages/common` + per-agent
+> Terraform module" refactor (iter 3) before the later patterns.
 
 ---
 
@@ -116,8 +117,10 @@ actually deploying to AWS.
 
 ## Current project
 
-**Iteration 1 — Supervisor + specialists (agent-as-tool).** See
-[iteration-plan.md](iteration-plan.md) for the Design → Develop → Test → Deploy →
+**Iterations 1–2 done** (supervisor built + deployed live). **Next: iteration 3** —
+extract `packages/common` + a per-agent Terraform module (the enabling refactor), then
+iteration 4 adds A2A to the supervisor (the public door for the a2d-ai tester). See
+[iteration-plan.md](iteration-plan.md) for the full Design → Develop → Test → Deploy →
 Rollback breakdown.
 
 
