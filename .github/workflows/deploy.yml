@@ -51,21 +51,22 @@ jobs:
         working-directory: infra
         run: |
           terraform apply -auto-approve \
-            -target=aws_ecr_repository.agent \
-            -target=aws_ecr_lifecycle_policy.agent
+            -target=module.supervisor.aws_ecr_repository.this \
+            -target=module.supervisor.aws_ecr_lifecycle_policy.this
           echo "ecr_url=$(terraform output -raw ecr_repository_url)" >> "$GITHUB_OUTPUT"
 
-      # Build the supervisor image from its folder (Dockerfile + src live there)
-      # and push to the just-created repo before the full terraform apply — so the
-      # image the runtime points at always exists first.
+      # Build from the REPO ROOT (monorepo workspace build) so the image can see
+      # packages/common, which the supervisor imports. Pushed to the just-created
+      # repo before the full terraform apply — so the image the runtime points at
+      # always exists first.
       - name: Build & push (ARM64)
-        working-directory: agents/supervisor
         env:
           ECR_URI: ${{ steps.tf_ecr.outputs.ecr_url }}
         run: |
           docker buildx build \
             --platform linux/arm64 \
             --push \
+            -f agents/supervisor/Dockerfile \
             -t "$ECR_URI:${{ github.sha }}" \
             -t "$ECR_URI:latest" \
             .

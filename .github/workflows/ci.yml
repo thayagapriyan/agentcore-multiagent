@@ -18,12 +18,15 @@ jobs:
         with:
           node-version: 20
 
-      # App + Dockerfile live under agents/supervisor (monorepo layout).
+      # Monorepo: install all workspaces from the root.
       - name: Install
-        working-directory: agents/supervisor
         run: npm install
 
-      - name: Typecheck
+      # Build the shared package first — agents import its emitted .d.ts types.
+      - name: Build common
+        run: npm run build --workspace @multiagent/common
+
+      - name: Typecheck supervisor
         working-directory: agents/supervisor
         run: npx tsc --noEmit
 

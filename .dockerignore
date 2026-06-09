@@ -1,0 +1,21 @@
+# Build context is the repo root (monorepo workspace build). Exclude everything the
+# image doesn't need; the Dockerfile reinstalls deps and rebuilds dist from source.
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.git
+.gitignore
+.env
+.env.*
+*.log
+.vscode
+.idea
+**/*.md
+.dockerignore
+**/Dockerfile
+
+# Not part of any agent image
+infra
+.github
+docs
+.claude

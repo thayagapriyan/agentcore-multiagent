@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "@multiagent/common": "*",
     "@opentelemetry/api": "^1.9.1",
     "@strands-agents/sdk": "^1.4.0",
     "express": "^4.19.0",

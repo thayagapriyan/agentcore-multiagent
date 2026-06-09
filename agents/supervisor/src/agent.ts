@@ -12,6 +12,10 @@ const SUPERVISOR_PROMPT =
   'Use math_specialist for calculations and greeting_specialist for greetings. ' +
   'For anything else, answer directly. Always return the specialist\'s result to the user.';
 
+// Bedrock model factory. MODEL_ID/region come from the runtime's env; low
+// temperature for deterministic routing. Memoized across invocations. (Kept local
+// to the agent: packages/common stays SDK-agnostic to avoid the SDK's large peer
+// set — agents own their model.)
 const DEFAULT_MODEL_ID = 'global.anthropic.claude-haiku-4-5-20251001-v1:0';
 
 let model: BedrockModel | null = null;
@@ -51,6 +55,14 @@ export function createSupervisor(): Agent {
   }
 
   return supervisor;
+}
+
+// The invoke callback handed to the shared server wrapper: build a fresh
+// supervisor and run one prompt, returning the result text.
+export async function invokeSupervisor(prompt: string): Promise<string> {
+  const supervisor = createSupervisor();
+  const result = await supervisor.invoke(prompt);
+  return result.toString();
 }
 
 // Boot-time log so container logs show which specialists are wired.

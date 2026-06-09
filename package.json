@@ -1,0 +1,17 @@
+{
+  "name": "agentcore-multiagent",
+  "version": "0.1.0",
+  "description": "Multi-agent POC on Amazon Bedrock AgentCore — one deployable agent per folder, shared code in packages/common.",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "agents/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present"
+  }
+}
