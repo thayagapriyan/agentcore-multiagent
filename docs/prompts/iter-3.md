@@ -36,6 +36,10 @@ Factor the shared agent runtime code into a `packages/common` npm workspace and 
 - **Decision**: Docker build context moved to the **repo root** (`-f agents/supervisor/Dockerfile .`); a root `.dockerignore` added.
   **Why**: the image must see `packages/common`, which lives outside the supervisor folder. Runtime stage copies each workspace's `node_modules` + `dist` (required under nested install).
 
+- **Decision**: Deploy workflow's "pre-create ECR" step changed from a **targeted `terraform apply`** to an idempotent `aws ecr describe || create` (repo name resolved via `terraform console var.agent_name`), leaving a **single full `terraform apply`** to run the `moved {}` blocks.
+  **Alternatives considered**: listing all old+new moved addresses in `-target` for this one migration deploy.
+  **Why**: Terraform refuses a partial (`-target`) apply while `moved {}` blocks are pending ("Moved resource instances excluded by targeting"). Decoupling ECR existence from a targeted apply permanently removes the cold-start/move collision and is more robust.
+
 ---
 
 ## Files created / modified

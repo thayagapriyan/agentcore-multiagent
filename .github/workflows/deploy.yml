@@ -41,19 +41,23 @@ jobs:
         working-directory: infra
         run: terraform init
 
-      # Create the ECR repo (and its lifecycle policy) BEFORE the build, so the
-      # push has somewhere to land on a cold first deploy. A deliberate partial
-      # apply via -target; the full apply below reconciles the rest. The repo name
-      # is read back from terraform output so it always tracks var.agent_name and
-      # can't drift from a manually-set Actions variable.
-      - name: Pre-create ECR repository
+      # Resolve the repo name from terraform (the agent_name variable) — drift-proof,
+      # and reading a var is safe even with pending `moved {}` blocks (it's not an
+      # apply). Then ensure the repo exists BEFORE the build via a direct, idempotent
+      # ECR API call. We deliberately do NOT pre-create with a targeted terraform
+      # apply: a partial apply can't coexist with pending moves. Terraform still owns
+      # the repo — the single full apply below reconciles it (and runs the moves).
+      - name: Ensure ECR repository
         id: tf_ecr
         working-directory: infra
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
         run: |
-          terraform apply -auto-approve \
-            -target=module.supervisor.aws_ecr_repository.this \
-            -target=module.supervisor.aws_ecr_lifecycle_policy.this
-          echo "ecr_url=$(terraform output -raw ecr_repository_url)" >> "$GITHUB_OUTPUT"
+          REPO=$(terraform console <<<'var.agent_name' | tr -d '"')
+          aws ecr describe-repositories --repository-names "$REPO" --region "$AWS_REGION" >/dev/null 2>&1 \
+            || aws ecr create-repository --repository-name "$REPO" --region "$AWS_REGION" >/dev/null
+          ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
+          echo "ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO}" >> "$GITHUB_OUTPUT"
 
       # Build from the REPO ROOT (monorepo workspace build) so the image can see
       # packages/common, which the supervisor imports. Pushed to the just-created
