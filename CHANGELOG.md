@@ -65,6 +65,16 @@ Format:
 - Rollback: public door — `terraform destroy -target` the A2A runtime + Cognito pool (HTTP runtime unaffected); container flag — `supervisor_a2a_enabled=false` (default); code — revert the commit.
 - Forward-compatibility: every future public agent repeats the thin `src/a2a.ts` + per-agent A2A-runtime pattern with its own card; internal sub-agents never get one.
 
+## [Iter 4 follow-up] — 2026-06-13 — SigV4 A2A door (MuleSoft scanner discovery)
+
+- Added: `infra/supervisor-a2a-sigv4.tf` — a **third** supervisor runtime from the **same image and role**, `server_protocol = "A2A"` but with **no authorizer**, so inbound auth is AgentCore's default **SigV4**. Outputs: `a2a_sigv4_runtime_arn`, `a2a_sigv4_endpoint_url`.
+- Changed: `infra/variables.tf` — added `supervisor_a2a_sigv4_public_url` (manual Agent Card URL override; normally empty — AgentCore injects `AGENTCORE_RUNTIME_URL` and the card self-corrects, mirroring `supervisor_a2a_public_url`).
+- Removed: stray `agent-card.json` scratch file (a card fetched from the JWT runtime during iter-4 testing — never belonged in the repo).
+- Context: the **MuleSoft Agent Registry scanner** discovers agents by fetching the Agent Card with **SigV4-signed** requests (its IAM policy carries `bedrock-agentcore:InvokeAgentRuntime`). The iter-4 JWT runtime only accepts Cognito bearer tokens, so it rejects the scanner. AgentCore Runtime has no true public/no-auth mode — **SigV4 is the floor** — and SigV4 is exactly what the scanner's access keys can sign. So this door is SigV4-only; the JWT door (a2d-ai tester) and the HTTP `/invocations` door are both untouched. Three doors now run side by side off one image: HTTP/SigV4 `/invocations`, A2A/JWT, A2A/SigV4.
+- Tests: `terraform fmt -check -recursive` clean; `terraform validate` → "Success! The configuration is valid." **Code-only — not yet applied or scanner-verified** (deploy pending; `terraform plan` expected to show 1 runtime to add, 0 change, 0 destroy).
+- Rollback: `terraform destroy -target=aws_bedrockagentcore_agent_runtime.supervisor_a2a_sigv4` (the other two doors are unaffected); code — revert the commit.
+- Forward-compatibility: any future public agent that must be scanner-discoverable repeats this thin SigV4-A2A-runtime pattern alongside its JWT door; the two auth modes stay separate runtimes so neither contract can break the other.
+
 ---
 
 > **Convention**: append new entries at the **bottom** of the iteration list. Never edit a past entry — add a follow-up entry instead. Past commits stay immutable; the changelog reflects that.

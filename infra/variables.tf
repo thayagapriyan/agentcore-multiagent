@@ -34,6 +34,12 @@ variable "supervisor_a2a_public_url" {
   default     = ""
 }
 
+variable "supervisor_a2a_sigv4_public_url" {
+  description = "Manual override for the Agent Card URL of the SigV4 A2A runtime. Normally leave empty: AgentCore injects AGENTCORE_RUNTIME_URL into the container, so the card advertises the real endpoint without it (see iter-4 findings; mirrors supervisor_a2a_public_url)."
+  type        = string
+  default     = ""
+}
+
 variable "github_repo" {
   description = "GitHub owner/repo allowed to assume the CI/CD deploy role via OIDC"
   type        = string
