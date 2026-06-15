@@ -211,10 +211,35 @@ jobs:
         working-directory: infra
         env:
           AWS_REGION: ${{ vars.AWS_REGION }}
+          # Optional: set the PROMPTFOO_API_KEY repo secret to publish each run to
+          # your promptfoo cloud account and print a shareable results URL. If the
+          # secret is unset, the eval still runs and still GATES the deploy (offline
+          # pass/fail) — sharing is the only thing skipped.
+          PROMPTFOO_API_KEY: ${{ secrets.PROMPTFOO_API_KEY }}
         run: |
           # Select each agent's live ARN from the per-agent map; the custom provider
           # (eval/agentcore-provider.js) reads this and calls invoke-agent-runtime.
           export RUNTIME_ARNS="$(terraform output -json runtime_arns)"
           echo "RUNTIME_ARNS=$RUNTIME_ARNS"
-          npx -y promptfoo@latest eval -c ../agents/supervisor/eval/promptfooconfig.yaml --no-progress-bar
-          npx -y promptfoo@latest eval -c ../agents/router/eval/promptfooconfig.yaml --no-progress-bar
+
+          if [ -n "$PROMPTFOO_API_KEY" ]; then
+            npx -y promptfoo@latest auth login --api-key "$PROMPTFOO_API_KEY"
+          else
+            echo "PROMPTFOO_API_KEY not set — running evals offline (no cloud share)."
+          fi
+
+          # Eval each agent; `eval` exits non-zero on assertion failure, so a failed
+          # eval fails the deploy. When authed, `share` publishes that run and prints
+          # its URL into the Actions log.
+          for agent in supervisor router; do
+            echo "::group::promptfoo eval — $agent"
+            npx -y promptfoo@latest eval \
+              -c "../agents/$agent/eval/promptfooconfig.yaml" \
+              -o "eval-$agent.json" \
+              --no-progress-bar
+            if [ -n "$PROMPTFOO_API_KEY" ]; then
+              echo "Sharing $agent eval results:"
+              npx -y promptfoo@latest share -y || echo "share failed (non-fatal)"
+            fi
+            echo "::endgroup::"
+          done
