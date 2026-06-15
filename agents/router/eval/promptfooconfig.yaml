@@ -69,21 +69,3 @@ tests:
       - type: llm-rubric
         value: The response is a coherent helpful reply (it should ask for clarification
           or offer general help), not an error or empty.
-Transform: AWS::Serverless-2016-10-31
-Resources:
-  Api:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: !Sub
-        - ${ResourceName} From Stack ${AWS::StackName}
-        - ResourceName: Api
-      StageName: Prod
-      DefinitionBody:
-        openapi: '3.0'
-        info: {}
-        paths:
-          /:
-            get:
-              responses: {}
-      EndpointConfiguration: REGIONAL
-      TracingEnabled: true
