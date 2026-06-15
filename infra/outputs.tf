@@ -9,13 +9,35 @@ output "agent_runtime_role_arn" {
 }
 
 output "agent_runtime_arn" {
-  description = "Pass to: aws bedrock-agentcore invoke-agent-runtime --agent-runtime-arn"
+  description = "Supervisor HTTP runtime ARN. Kept for backward compatibility; new callers should prefer runtime_arns[\"supervisor\"]."
   value       = module.supervisor.agent_runtime_arn
 }
 
 output "agent_runtime_id" {
   description = "AgentCore runtime ID"
   value       = module.supervisor.agent_runtime_id
+}
+
+# Per-agent HTTP-runtime ARN map (iter 5): the first iteration with >1 deployable.
+# Smoke tests and callers select by agent — `terraform output -json runtime_arns |
+# jq -r .<agent>` — instead of the flat single-agent output. Every future agent
+# adds one entry here.
+output "runtime_arns" {
+  description = "Map of agent name → its HTTP-runtime ARN (invoke-agent-runtime target). Keyed by agent: supervisor, router, ..."
+  value = {
+    supervisor = module.supervisor.agent_runtime_arn
+    router     = module.router.agent_runtime_arn
+  }
+}
+
+output "router_ecr_repository_url" {
+  description = "Push router images here"
+  value       = module.router.ecr_repository_url
+}
+
+output "router_runtime_arn" {
+  description = "Router HTTP runtime ARN (also in runtime_arns[\"router\"])"
+  value       = module.router.agent_runtime_arn
 }
 
 output "github_deploy_role_arn" {

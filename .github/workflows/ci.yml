@@ -30,6 +30,10 @@ jobs:
         working-directory: agents/supervisor
         run: npx tsc --noEmit
 
+      - name: Typecheck router
+        working-directory: agents/router
+        run: npx tsc --noEmit
+
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.15.4

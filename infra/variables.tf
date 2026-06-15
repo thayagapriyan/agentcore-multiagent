@@ -45,3 +45,30 @@ variable "github_repo" {
   type        = string
   default     = "thayagapriyan/agentcore-multiagent"
 }
+
+# --- Router agent (iter 5) — a second deployable: conditional Graph router.
+# Its own ECR repo + runtime via module "router"; the supervisor is untouched.
+
+variable "router_agent_name" {
+  description = "Logical name for the router agent — drives its ECR repo and IAM role names. Distinct prefix so it never collides with the supervisor's resources."
+  type        = string
+  default     = "multiagent-router"
+}
+
+variable "router_image_tag" {
+  description = "ECR image tag to deploy for the router. Defaults to image_tag so a single pipeline run can tag both agents with the same git sha; override to pin the router independently."
+  type        = string
+  default     = ""
+}
+
+variable "router_a2a_enabled" {
+  description = "Start the A2A server inside the router's HTTP container (Agent Card + JSON-RPC on A2A_PORT). Not externally reachable on the HTTP-protocol runtime — the public A2A door is the separate A2A-protocol runtime in router-a2a.tf."
+  type        = bool
+  default     = false
+}
+
+variable "router_a2a_public_url" {
+  description = "Manual override for the router's A2A Agent Card URL. Normally leave empty: AgentCore injects AGENTCORE_RUNTIME_URL into the container and the card self-corrects on deploy (mirrors supervisor_a2a_public_url)."
+  type        = string
+  default     = ""
+}

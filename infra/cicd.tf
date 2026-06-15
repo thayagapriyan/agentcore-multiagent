@@ -75,8 +75,13 @@ data "aws_iam_policy_document" "github_deploy_iam" {
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",
     ]
+    # Project-wide prefix (not per-agent): from iter 5 the stack owns more than one
+    # agent (multiagent-supervisor-*, multiagent-router-*, ...). Both agent_name
+    # defaults share the "multiagent-" prefix, so scoping here covers every current
+    # and future agent's runtime role without re-editing this file per agent, while
+    # still excluding unrelated IAM in the account.
     resources = [
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.agent_name}-*",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/multiagent-*",
     ]
   }
 

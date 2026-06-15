@@ -112,11 +112,13 @@ agentcore-multiagent/
 ├── packages/
 │   └── common/                  ← shared: Express wrapper, session storage, model
 ├── agents/
-│   ├── supervisor/              ← one deployable (own Dockerfile, own runtime)
-│   └── <specialist>/            ← additional deployable agents
+│   ├── supervisor/              ← deployable: agent-as-tool router (iter 1–4)
+│   ├── router/                  ← deployable: conditional Graph router (iter 5)
+│   └── <type>/                  ← future deployable agents (iter 6+)
 ├── infra/                       ← Terraform: per-agent ECR + runtime, shared role
 └── docs/
     ├── iteration-plan.md        ← multi-agent roadmap
+    ├── agents/<type>/ARCHITECTURE.md  ← one per agent (flow/topology reference)
     └── prompts/                 ← prompt archive (one per iteration)
 ```
 

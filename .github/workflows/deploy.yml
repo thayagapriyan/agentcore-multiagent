@@ -41,35 +41,41 @@ jobs:
         working-directory: infra
         run: terraform init
 
-      # Resolve the repo name from the agent_name variable's default in
+      # Resolve each agent's repo name from its agent_name variable default in
       # variables.tf — read non-interactively (no `terraform console`, which is an
-      # interactive REPL that hangs in CI). Drift-proof: it's the same value the
-      # module uses to name the repo. Then ensure the repo exists BEFORE the build
-      # via a direct, idempotent ECR API call. We deliberately do NOT pre-create
-      # with a targeted terraform apply: a partial apply can't coexist with pending
-      # `moved {}` blocks. Terraform still owns the repo — the single full apply
-      # below reconciles it (and runs the moves).
-      - name: Ensure ECR repository
+      # interactive REPL that hangs in CI). Drift-proof: same value the module uses
+      # to name the repo. Then ensure each repo exists BEFORE the build via direct,
+      # idempotent ECR API calls. We deliberately do NOT pre-create with a targeted
+      # terraform apply: a partial apply can't coexist with pending `moved {}`
+      # blocks. Terraform still owns the repos — the single full apply below
+      # reconciles them (and runs the moves).
+      - name: Ensure ECR repositories
         id: tf_ecr
         working-directory: infra
         env:
           AWS_REGION: ${{ vars.AWS_REGION }}
         run: |
-          REPO=$(sed -n '/variable "agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
-          if [ -z "$REPO" ]; then echo "could not resolve agent_name default" >&2; exit 1; fi
-          echo "Resolved ECR repository: $REPO"
-          aws ecr describe-repositories --repository-names "$REPO" --region "$AWS_REGION" >/dev/null 2>&1 \
-            || aws ecr create-repository --repository-name "$REPO" --region "$AWS_REGION" >/dev/null
+          SUP_REPO=$(sed -n '/variable "agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
+          ROUTER_REPO=$(sed -n '/variable "router_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
+          if [ -z "$SUP_REPO" ] || [ -z "$ROUTER_REPO" ]; then
+            echo "could not resolve agent_name / router_agent_name defaults" >&2; exit 1
+          fi
           ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
-          echo "ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO}" >> "$GITHUB_OUTPUT"
+          for REPO in "$SUP_REPO" "$ROUTER_REPO"; do
+            echo "Resolved ECR repository: $REPO"
+            aws ecr describe-repositories --repository-names "$REPO" --region "$AWS_REGION" >/dev/null 2>&1 \
+              || aws ecr create-repository --repository-name "$REPO" --region "$AWS_REGION" >/dev/null
+          done
+          echo "supervisor_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SUP_REPO}" >> "$GITHUB_OUTPUT"
+          echo "router_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ROUTER_REPO}" >> "$GITHUB_OUTPUT"
 
-      # Build from the REPO ROOT (monorepo workspace build) so the image can see
-      # packages/common, which the supervisor imports. Pushed to the just-created
-      # repo before the full terraform apply — so the image the runtime points at
-      # always exists first.
-      - name: Build & push (ARM64)
+      # Build each agent from the REPO ROOT (monorepo workspace build) so the image
+      # can see packages/common, which both agents import. Pushed to the just-created
+      # repos before the full terraform apply — so the images the runtimes point at
+      # always exist first. Both images are tagged with the same git sha.
+      - name: Build & push supervisor (ARM64)
         env:
-          ECR_URI: ${{ steps.tf_ecr.outputs.ecr_url }}
+          ECR_URI: ${{ steps.tf_ecr.outputs.supervisor_ecr_url }}
         run: |
           docker buildx build \
             --platform linux/arm64 \
@@ -79,17 +85,30 @@ jobs:
             -t "$ECR_URI:latest" \
             .
 
+      - name: Build & push router (ARM64)
+        env:
+          ECR_URI: ${{ steps.tf_ecr.outputs.router_ecr_url }}
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --push \
+            -f agents/router/Dockerfile \
+            -t "$ECR_URI:${{ github.sha }}" \
+            -t "$ECR_URI:latest" \
+            .
+
       - name: Terraform apply
         working-directory: infra
         run: |
           terraform apply -auto-approve -var="image_tag=${{ github.sha }}"
 
-      # Deployed-state check: invoke the live runtime with a math prompt and require
-      # a result field (proves the supervisor + math_specialist round-trip).
-      - name: Smoke test
+      # Deployed-state check (supervisor): invoke its HTTP runtime with a math
+      # prompt and require a result field (proves the supervisor + math_specialist
+      # round-trip). Selects the ARN from the per-agent runtime_arns map (iter 5).
+      - name: Smoke test (supervisor)
         working-directory: infra
         run: |
-          ARN=$(terraform output -raw agent_runtime_arn)
+          ARN=$(terraform output -json runtime_arns | jq -r '.supervisor')
           aws bedrock-agentcore invoke-agent-runtime \
             --agent-runtime-arn "$ARN" \
             --payload "$(printf '%s' '{"prompt":"add 2 and 3"}' | base64)" \
@@ -98,10 +117,26 @@ jobs:
           cat smoke.json
           grep -q result smoke.json
 
-      # A2A door check: the A2A-protocol runtime only accepts bearer tokens (JWT
-      # authorizer), so fetch one from Cognito (initiate-auth is an unauthenticated
-      # API) and require the agent card to come back through the public endpoint.
-      - name: Smoke test (A2A)
+      # Deployed-state check (router): invoke its HTTP runtime with a billing prompt
+      # and require a result field (proves intake → conditional edge → billing →
+      # summarize round-trips through the Graph).
+      - name: Smoke test (router)
+        working-directory: infra
+        run: |
+          ARN=$(terraform output -json runtime_arns | jq -r '.router')
+          aws bedrock-agentcore invoke-agent-runtime \
+            --agent-runtime-arn "$ARN" \
+            --payload "$(printf '%s' '{"prompt":"I was double charged on my invoice, can I get a refund?"}' | base64)" \
+            --region "${{ vars.AWS_REGION }}" \
+            smoke-router.json
+          cat smoke-router.json
+          grep -q result smoke-router.json
+
+      # A2A door check (supervisor): the A2A-protocol runtime only accepts bearer
+      # tokens (JWT authorizer), so fetch one from Cognito (initiate-auth is an
+      # unauthenticated API) and require the agent card to come back through the
+      # public endpoint.
+      - name: Smoke test (A2A — supervisor)
         working-directory: infra
         run: |
           A2A_URL=$(terraform output -raw a2a_endpoint_url)
@@ -120,3 +155,25 @@ jobs:
             -o card.json
           cat card.json
           grep -q '"Multi-Agent Supervisor"' card.json
+
+      # A2A door check (router): same flow against the router's own Cognito pool +
+      # A2A runtime; require the router's agent card through its public endpoint.
+      - name: Smoke test (A2A — router)
+        working-directory: infra
+        run: |
+          A2A_URL=$(terraform output -raw router_a2a_endpoint_url)
+          CLIENT_ID=$(terraform output -raw router_a2a_cognito_client_id)
+          USERNAME=$(terraform output -raw router_a2a_tester_username)
+          PASSWORD=$(terraform output -raw router_a2a_tester_password)
+          TOKEN=$(aws cognito-idp initiate-auth \
+            --auth-flow USER_PASSWORD_AUTH \
+            --client-id "$CLIENT_ID" \
+            --auth-parameters USERNAME="$USERNAME",PASSWORD="$PASSWORD" \
+            --region "${{ vars.AWS_REGION }}" \
+            --query 'AuthenticationResult.AccessToken' --output text)
+          curl -sf "${A2A_URL}.well-known/agent-card.json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \
+            -o router-card.json
+          cat router-card.json
+          grep -q '"Multi-Agent Router"' router-card.json
