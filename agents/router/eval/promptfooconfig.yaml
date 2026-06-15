@@ -30,38 +30,60 @@ defaultTest:
 tests:
   # --- billing ---
   - vars:
-      prompt: 'I was double charged on my invoice, can I get a refund?'
+      prompt: I was double charged on my invoice, can I get a refund?
     assert:
       - type: llm-rubric
-        value: 'The response addresses a billing/refund/payment issue. It must NOT be generic technical troubleshooting.'
+        value: The response addresses a billing/refund/payment issue. It must NOT be
+          generic technical troubleshooting.
   - vars:
-      prompt: 'My subscription renewed but I want a pro-rated refund.'
+      prompt: My subscription renewed but I want a pro-rated refund.
     assert:
       - type: llm-rubric
-        value: 'The response is about billing/subscription/refunds.'
+        value: The response is about billing/subscription/refunds.
 
   # --- tech ---
   - vars:
-      prompt: 'The app crashes with a null pointer error when I open settings.'
+      prompt: The app crashes with a null pointer error when I open settings.
     assert:
       - type: llm-rubric
-        value: 'The response gives technical troubleshooting guidance (e.g. steps to diagnose/fix a bug or crash). It must NOT be about billing.'
+        value: The response gives technical troubleshooting guidance (e.g. steps to
+          diagnose/fix a bug or crash). It must NOT be about billing.
   - vars:
-      prompt: 'How do I reset my password? The reset link returns a 500 error.'
+      prompt: How do I reset my password? The reset link returns a 500 error.
     assert:
       - type: llm-rubric
-        value: 'The response gives technical/how-to troubleshooting guidance.'
+        value: The response gives technical/how-to troubleshooting guidance.
 
   # --- general ---
   - vars:
-      prompt: 'What are your customer support hours?'
+      prompt: What are your customer support hours?
     assert:
       - type: llm-rubric
-        value: 'The response is a general informational/support answer, not specifically billing or technical troubleshooting.'
+        value: The response is a general informational/support answer, not specifically
+          billing or technical troubleshooting.
 
   # --- fallback (ambiguous → must still answer, not error) ---
   - vars:
-      prompt: 'I have a problem.'
+      prompt: I have a problem.
     assert:
       - type: llm-rubric
-        value: 'The response is a coherent helpful reply (it should ask for clarification or offer general help), not an error or empty.'
+        value: The response is a coherent helpful reply (it should ask for clarification
+          or offer general help), not an error or empty.
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub
+        - ${ResourceName} From Stack ${AWS::StackName}
+        - ResourceName: Api
+      StageName: Prod
+      DefinitionBody:
+        openapi: '3.0'
+        info: {}
+        paths:
+          /:
+            get:
+              responses: {}
+      EndpointConfiguration: REGIONAL
+      TracingEnabled: true

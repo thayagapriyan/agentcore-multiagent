@@ -30,6 +30,16 @@ agent behavior changes — this iteration only adds tests around the existing ag
    promptfoo)**; own iteration = **yes, iter 6** (critic shifts to iter 7); unit runner
    = **Vitest**; eval timing = **post-deploy in deploy.yml**.
 
+3. **Prompt**: `for your information i have promptfoo account` → cloud sharing = **add
+   `share` to CI post-deploy**.
+   **Why**: the user has a promptfoo cloud account, so the post-deploy eval step was
+   extended to optionally publish runs and print a shareable URL.
+
+4. **Prompt**: `i am seeing option to create api token not key`
+   **Why**: clarified that promptfoo's UI "API token" is the same value the CLI takes via
+   `--api-key` (confirmed in the CLI source: `auth login` assigns `cmdObj.apiKey` to
+   `token`). The repo secret name is `PROMPTFOO_API_KEY`.
+
 ---
 
 ## Decisions made
@@ -102,7 +112,7 @@ agent behavior changes — this iteration only adds tests around the existing ag
 | `agents/router/eval/promptfooconfig.yaml` | added | 6 cases (billing×2, tech×2, general, ambiguous) graded by Bedrock llm-rubric. |
 | `agents/supervisor/eval/promptfooconfig.yaml` | added | 3 cases (math×2 via `contains`, greeting via llm-rubric). |
 | `.github/workflows/ci.yml` | modified | + `npm test` step (every PR, no AWS). |
-| `.github/workflows/deploy.yml` | modified | + Node 22 setup + post-deploy promptfoo eval step for both agents (live runtimes). |
+| `.github/workflows/deploy.yml` | modified | + Node 22 setup + post-deploy promptfoo eval step for both agents (live runtimes); optional `promptfoo share` gated on the `PROMPTFOO_API_KEY` secret. |
 | `package-lock.json` | modified | vitest. |
 | `docs/prompts/iter-6.md` | added | this file. |
 | `CHANGELOG.md` | modified | iter-6 entry. |
@@ -147,6 +157,10 @@ Actual results (Node 20.16 local; live Bedrock via local AWS creds):
 
 ## Open questions / follow-ups
 
+- [ ] Set the `PROMPTFOO_API_KEY` repo secret (promptfoo cloud "API token") to turn on
+  cloud sharing of post-deploy eval runs. Until set, evals run offline (still gate the
+  deploy); only the shareable URL is skipped. Add `--host <url>` to `auth login` if on a
+  custom/enterprise promptfoo host.
 - [ ] Move to Vitest 4 (clean audit) once a win32-arm64 rolldown binary ships, or switch
   to `node:test` if the audit noise becomes a problem.
 - [ ] Pin a promptfoo version in the deploy step (currently `@latest` via npx) once a
