@@ -1,14 +1,25 @@
 name: Get A2A token
 
-# Mints a 1-hour Cognito bearer token for the supervisor's public A2A door and
-# puts it in the run summary. The repo is PUBLIC, so the token is never printed
-# raw: it's encrypted with the A2A_TOKEN_PASSPHRASE repo secret (set once under
+# Mints a 1-hour Cognito bearer token for an agent's public A2A door and puts it
+# in the run summary. Pick the agent with the `agent` input (each agent has its
+# OWN Cognito pool, so a supervisor token does NOT work against the router and
+# vice versa). The repo is PUBLIC, so the token is never printed raw: it's
+# encrypted with the A2A_TOKEN_PASSPHRASE repo secret (set once under
 # Settings → Secrets and variables → Actions) and decrypted locally:
 #
 #   echo '<blob>' | openssl enc -d -aes-256-cbc -pbkdf2 -a -A -pass pass:<your passphrase>
 
 on:
   workflow_dispatch:
+    inputs:
+      agent:
+        description: "Which agent's A2A door to mint a token for"
+        type: choice
+        required: true
+        default: supervisor
+        options:
+          - supervisor
+          - router
 
 permissions:
   id-token: write
@@ -45,9 +56,26 @@ jobs:
             exit 1
           fi
 
-          CLIENT_ID=$(terraform output -raw a2a_cognito_client_id)
-          USERNAME=$(terraform output -raw a2a_tester_username)
-          PASSWORD=$(terraform output -raw a2a_tester_password)
+          # Resolve the right outputs for the chosen agent. The router's A2A
+          # outputs are prefixed `router_`; the supervisor's are unprefixed. Each
+          # agent has its OWN Cognito pool — tokens are not interchangeable.
+          AGENT="${{ inputs.agent }}"
+          if [ "$AGENT" = "router" ]; then
+            CLIENT_OUT=router_a2a_cognito_client_id
+            USER_OUT=router_a2a_tester_username
+            PASS_OUT=router_a2a_tester_password
+            URL_OUT=router_a2a_endpoint_url
+          else
+            CLIENT_OUT=a2a_cognito_client_id
+            USER_OUT=a2a_tester_username
+            PASS_OUT=a2a_tester_password
+            URL_OUT=a2a_endpoint_url
+          fi
+          echo "Minting A2A token for agent: $AGENT"
+
+          CLIENT_ID=$(terraform output -raw "$CLIENT_OUT")
+          USERNAME=$(terraform output -raw "$USER_OUT")
+          PASSWORD=$(terraform output -raw "$PASS_OUT")
           echo "::add-mask::$PASSWORD"
 
           TOKEN=$(aws cognito-idp initiate-auth \
@@ -59,10 +87,10 @@ jobs:
           echo "::add-mask::$TOKEN"
 
           BLOB=$(printf '%s' "$TOKEN" | openssl enc -aes-256-cbc -pbkdf2 -a -A -pass "pass:$PASSPHRASE")
-          A2A_URL=$(terraform output -raw a2a_endpoint_url)
+          A2A_URL=$(terraform output -raw "$URL_OUT")
 
           {
-            echo "## A2A bearer token (encrypted — valid 1 hour from mint)"
+            echo "## A2A bearer token — \`$AGENT\` (encrypted — valid 1 hour from mint)"
             echo
             echo "Decrypt locally with the passphrase you stored in \`A2A_TOKEN_PASSPHRASE\`."
             echo
