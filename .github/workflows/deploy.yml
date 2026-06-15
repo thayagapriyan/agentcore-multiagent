@@ -44,11 +44,18 @@ jobs:
       # Resolve each agent's repo name from its agent_name variable default in
       # variables.tf — read non-interactively (no `terraform console`, which is an
       # interactive REPL that hangs in CI). Drift-proof: same value the module uses
-      # to name the repo. Then ensure each repo exists BEFORE the build via direct,
-      # idempotent ECR API calls. We deliberately do NOT pre-create with a targeted
-      # terraform apply: a partial apply can't coexist with pending `moved {}`
-      # blocks. Terraform still owns the repos — the single full apply below
-      # reconciles them (and runs the moves).
+      # to name the repo. Then make each repo BOTH exist AND be tracked in state
+      # before the build, idempotently:
+      #   1. create it via the ECR API if AWS doesn't have it (so the image push
+      #      below has a target — runtimes must point at an image that exists first);
+      #   2. `terraform import` it into the module address if state doesn't already
+      #      track it — otherwise the full apply's CreateRepository hits
+      #      RepositoryAlreadyExists (the repo exists in AWS but not in TF state, as
+      #      happens the first time a new agent deploys, or after out-of-band repo
+      #      deletion left state pointing at a now-recreated repo).
+      # We deliberately do NOT pre-create with a targeted terraform apply: a partial
+      # apply can't coexist with any pending `moved {}` blocks. The single full apply
+      # below still owns and reconciles everything.
       - name: Ensure ECR repositories
         id: tf_ecr
         working-directory: infra
@@ -61,11 +68,23 @@ jobs:
             echo "could not resolve agent_name / router_agent_name defaults" >&2; exit 1
           fi
           ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
-          for REPO in "$SUP_REPO" "$ROUTER_REPO"; do
-            echo "Resolved ECR repository: $REPO"
-            aws ecr describe-repositories --repository-names "$REPO" --region "$AWS_REGION" >/dev/null 2>&1 \
-              || aws ecr create-repository --repository-name "$REPO" --region "$AWS_REGION" >/dev/null
-          done
+
+          ensure_repo() {            # $1 = repo name, $2 = terraform module address
+            local repo="$1" addr="$2"
+            echo "Ensuring ECR repository: $repo ($addr)"
+            aws ecr describe-repositories --repository-names "$repo" --region "$AWS_REGION" >/dev/null 2>&1 \
+              || aws ecr create-repository --repository-name "$repo" --region "$AWS_REGION" >/dev/null
+            # Import into state only if not already tracked (import is not idempotent
+            # — it errors if the address already exists, so guard on state list).
+            if ! terraform state list "$addr" >/dev/null 2>&1; then
+              echo "Importing $repo into $addr"
+              terraform import "$addr" "$repo"
+            fi
+          }
+
+          ensure_repo "$SUP_REPO"    'module.supervisor.aws_ecr_repository.this'
+          ensure_repo "$ROUTER_REPO" 'module.router.aws_ecr_repository.this'
+
           echo "supervisor_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SUP_REPO}" >> "$GITHUB_OUTPUT"
           echo "router_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ROUTER_REPO}" >> "$GITHUB_OUTPUT"
 
