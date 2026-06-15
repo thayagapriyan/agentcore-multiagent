@@ -34,6 +34,13 @@ jobs:
         working-directory: agents/router
         run: npx tsc --noEmit
 
+      # Deterministic unit tests (Vitest) — routing/registry logic, no Bedrock, no
+      # AWS creds needed. This is the regression gate: a change to shared code that
+      # breaks an agent's routing contract turns this red on the PR. LLM-quality
+      # evals (promptfoo) run post-deploy instead (they need AWS + live runtimes).
+      - name: Unit tests
+        run: npm test
+
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.15.4

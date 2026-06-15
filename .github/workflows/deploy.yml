@@ -196,3 +196,25 @@ jobs:
             -o router-card.json
           cat router-card.json
           grep -q '"Multi-Agent Router"' router-card.json
+
+      # --- LLM-quality evals (promptfoo) — run POST-DEPLOY against the live
+      # runtimes. Unlike the smoke tests (one prompt, presence of a result field),
+      # these grade classification/delegation quality across a dataset via Bedrock
+      # llm-rubric. They need AWS creds + live runtimes, which is why they live here
+      # and not in PR CI. Deterministic routing is already gated by Vitest in ci.yml.
+      # promptfoo needs Node >=20.20 / >=22; the deploy job otherwise has no Node.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Eval (promptfoo — supervisor + router)
+        working-directory: infra
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+        run: |
+          # Select each agent's live ARN from the per-agent map; the custom provider
+          # (eval/agentcore-provider.js) reads this and calls invoke-agent-runtime.
+          export RUNTIME_ARNS="$(terraform output -json runtime_arns)"
+          echo "RUNTIME_ARNS=$RUNTIME_ARNS"
+          npx -y promptfoo@latest eval -c ../agents/supervisor/eval/promptfooconfig.yaml --no-progress-bar
+          npx -y promptfoo@latest eval -c ../agents/router/eval/promptfooconfig.yaml --no-progress-bar

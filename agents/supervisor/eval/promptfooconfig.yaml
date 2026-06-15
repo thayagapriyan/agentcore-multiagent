@@ -1,0 +1,44 @@
+# promptfoo eval for the deployed supervisor agent. Runs POST-DEPLOY against the
+# live AgentCore runtime (see .github/workflows/deploy.yml), not on PRs. The
+# supervisor routes via the model (agent-as-tool), so this measures whether real
+# prompts get the right specialist's behavior end to end.
+#
+# Run locally:
+#   cd infra && export RUNTIME_ARNS=$(terraform output -json runtime_arns)
+#   cd ../agents/supervisor/eval && npx promptfoo@latest eval
+
+description: Supervisor agent — delegation quality (live runtime)
+
+providers:
+  - id: file://../../../eval/agentcore-provider.js
+    config:
+      agent: supervisor
+
+defaultTest:
+  options:
+    provider:
+      # promptfoo Bedrock grader: id is `bedrock:<full-model-id>`. Use the same
+      # global inference profile the agents use (Haiku 4.5 is profile-only).
+      id: bedrock:global.anthropic.claude-haiku-4-5-20251001-v1:0
+      config:
+        region: us-east-1
+
+tests:
+  # --- math specialist: deterministic answer, assert the exact number ---
+  - vars:
+      prompt: 'what is 17 plus 25?'
+    assert:
+      - type: contains
+        value: '42'
+  - vars:
+      prompt: 'what is 8 times 9?'
+    assert:
+      - type: contains
+        value: '72'
+
+  # --- greeting specialist: tone, not exact text ---
+  - vars:
+      prompt: 'say hi to Priyan'
+    assert:
+      - type: llm-rubric
+        value: 'The response is a warm, friendly greeting addressed to Priyan.'

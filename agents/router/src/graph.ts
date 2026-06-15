@@ -62,16 +62,23 @@ function nodeText(state: MultiAgentState, nodeId: string): string {
     .trim();
 }
 
+// Pure label matcher: map a raw intake string to a known branch label (or the
+// fallback). Exported so the routing contract is unit-testable without building a
+// MultiAgentState. Prefer an exact match; fall back to a word-boundary substring
+// so a chatty model that wraps the label in stray text still routes; unknown →
+// fallback branch (keeps the graph total).
+export function labelFromText(raw: string): string {
+  const text = raw.toLowerCase().trim();
+  const exact = VALID_LABELS.find((l) => text === l);
+  if (exact) return exact;
+  const contained = VALID_LABELS.find((l) => new RegExp(`\\b${l}\\b`).test(text));
+  return contained ?? FALLBACK_BRANCH_ID;
+}
+
 // The classification intake produced, normalized to a known label (or the
 // fallback). Centralized so every edge handler and the log hook agree.
 export function classifiedLabel(state: MultiAgentState): string {
-  const raw = nodeText(state, INTAKE_ID).toLowerCase();
-  // Prefer an exact word match; fall back to substring so a chatty model that
-  // wraps the label in stray text still routes. Unknown → fallback branch.
-  const exact = VALID_LABELS.find((l) => raw === l);
-  if (exact) return exact;
-  const contained = VALID_LABELS.find((l) => new RegExp(`\\b${l}\\b`).test(raw));
-  return contained ?? FALLBACK_BRANCH_ID;
+  return labelFromText(nodeText(state, INTAKE_ID));
 }
 
 // One edge handler per branch: traverse iff intake classified into this branch.

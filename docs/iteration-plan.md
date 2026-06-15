@@ -326,9 +326,15 @@ plan-and-execute, capstone "agent fabric".
 - [x] Iter 3 — Extract packages/common + per-agent TF module   ← done, 0-change plan proof
 - [x] Iter 4 — A2A on the supervisor (public door)             ← done, verified via a2d-ai tester
 - [x] Iter 5 — Conditional Graph router        (new agent: agents/router/)  ← done, verified locally + ARM64 container
-- [ ] Iter 6 — Critic / reflection loop        (new agent: agents/critic/)
-- [ ] Iter 7 — Second agent over MCP           (new agent + internal Gateway)
+- [x] Iter 6 — Testing harness (Vitest units + promptfoo evals)  ← done, units 18/18, live evals 100%
+- [ ] Iter 7 — Critic / reflection loop        (new agent: agents/critic/)   (was iter 6)
+- [ ] Iter 8 — Second agent over MCP           (new agent + internal Gateway)  (was iter 7)
 ```
+
+> **Note (iter 6):** the testing harness was inserted as its own iteration (one
+> concern). The critic-loop and MCP agents shifted down by one (now iters 7 and 8).
+> The detailed §"Iteration 6 — Critic" and §"Iteration 7 — MCP" sections above still
+> describe those agents; only their numbers moved.
 
 ---
 

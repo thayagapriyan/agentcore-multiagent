@@ -1,0 +1,67 @@
+# promptfoo eval for the deployed router agent. Runs POST-DEPLOY against the live
+# AgentCore runtime (see .github/workflows/deploy.yml), not on PRs — it calls
+# Bedrock and needs AWS creds. Deterministic routing is covered by the Vitest unit
+# tests (agents/router/test); this eval measures CLASSIFICATION QUALITY end to end:
+# does a real billing/tech/general prompt actually come back with the right kind of
+# answer through intake → conditional edge → branch → summarize.
+#
+# Run locally:
+#   cd infra && export RUNTIME_ARNS=$(terraform output -json runtime_arns)
+#   cd ../agents/router/eval && npx promptfoo@latest eval
+
+description: Router agent — classification/routing quality (live runtime)
+
+providers:
+  - id: file://../../../eval/agentcore-provider.js
+    config:
+      agent: router
+
+# Model-graded assertions run through Bedrock too (no OpenAI key needed). Uses the
+# same Haiku model the agents use.
+defaultTest:
+  options:
+    provider:
+      # promptfoo Bedrock grader: id is `bedrock:<full-model-id>`. Use the same
+      # global inference profile the agents use (Haiku 4.5 is profile-only).
+      id: bedrock:global.anthropic.claude-haiku-4-5-20251001-v1:0
+      config:
+        region: us-east-1
+
+tests:
+  # --- billing ---
+  - vars:
+      prompt: 'I was double charged on my invoice, can I get a refund?'
+    assert:
+      - type: llm-rubric
+        value: 'The response addresses a billing/refund/payment issue. It must NOT be generic technical troubleshooting.'
+  - vars:
+      prompt: 'My subscription renewed but I want a pro-rated refund.'
+    assert:
+      - type: llm-rubric
+        value: 'The response is about billing/subscription/refunds.'
+
+  # --- tech ---
+  - vars:
+      prompt: 'The app crashes with a null pointer error when I open settings.'
+    assert:
+      - type: llm-rubric
+        value: 'The response gives technical troubleshooting guidance (e.g. steps to diagnose/fix a bug or crash). It must NOT be about billing.'
+  - vars:
+      prompt: 'How do I reset my password? The reset link returns a 500 error.'
+    assert:
+      - type: llm-rubric
+        value: 'The response gives technical/how-to troubleshooting guidance.'
+
+  # --- general ---
+  - vars:
+      prompt: 'What are your customer support hours?'
+    assert:
+      - type: llm-rubric
+        value: 'The response is a general informational/support answer, not specifically billing or technical troubleshooting.'
+
+  # --- fallback (ambiguous → must still answer, not error) ---
+  - vars:
+      prompt: 'I have a problem.'
+    assert:
+      - type: llm-rubric
+        value: 'The response is a coherent helpful reply (it should ask for clarification or offer general help), not an error or empty.'
