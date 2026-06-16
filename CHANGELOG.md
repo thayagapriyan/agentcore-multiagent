@@ -115,6 +115,7 @@ Format:
 - Prompt log: [docs/prompts/iter-7.md](docs/prompts/iter-7.md)
 - Rollback: whole agent — `terraform destroy -target=module.critic` + the A2A runtime & Cognito pool; A2A door only — destroy the `critic_a2a` runtime + pool (HTTP runtime unaffected); container A2A — `critic_a2a_enabled=false` (default); code — revert the commit (supervisor + router untouched).
 - Forward-compatibility: `runtime_arns` gains one key per agent (the established extension point); `parseVerdict`/`reflect` are the tested control-flow seams — keep them pure so the loop stays unit-testable; `MAX_ITERATIONS` is an env knob (raise without code change). Iter 8 (second agent over MCP) repeats the same new-agent template.
+- Follow-up (same iteration): wired the critic into `.github/workflows/get-a2a-token.yml` — added `critic` to the agent picker and a `case` branch resolving its `critic_*` A2A outputs, so the encrypted-token workflow mints a bearer token for the critic's public door like it does for supervisor/router. (Missed in the initial commit; the `if/else` agent resolver was generalized to a `case` so future prefixed agents add one word in two places.)
 
 ---
 

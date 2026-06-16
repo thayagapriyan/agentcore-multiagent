@@ -20,6 +20,7 @@ on:
         options:
           - supervisor
           - router
+          - critic
 
 permissions:
   id-token: write
@@ -56,21 +57,25 @@ jobs:
             exit 1
           fi
 
-          # Resolve the right outputs for the chosen agent. The router's A2A
-          # outputs are prefixed `router_`; the supervisor's are unprefixed. Each
-          # agent has its OWN Cognito pool — tokens are not interchangeable.
+          # Resolve the right outputs for the chosen agent. Each non-supervisor
+          # agent prefixes its A2A outputs with its name (`router_`, `critic_`);
+          # the supervisor's are unprefixed. Each agent has its OWN Cognito pool —
+          # tokens are not interchangeable.
           AGENT="${{ inputs.agent }}"
-          if [ "$AGENT" = "router" ]; then
-            CLIENT_OUT=router_a2a_cognito_client_id
-            USER_OUT=router_a2a_tester_username
-            PASS_OUT=router_a2a_tester_password
-            URL_OUT=router_a2a_endpoint_url
-          else
-            CLIENT_OUT=a2a_cognito_client_id
-            USER_OUT=a2a_tester_username
-            PASS_OUT=a2a_tester_password
-            URL_OUT=a2a_endpoint_url
-          fi
+          case "$AGENT" in
+            router|critic)
+              CLIENT_OUT=${AGENT}_a2a_cognito_client_id
+              USER_OUT=${AGENT}_a2a_tester_username
+              PASS_OUT=${AGENT}_a2a_tester_password
+              URL_OUT=${AGENT}_a2a_endpoint_url
+              ;;
+            *)
+              CLIENT_OUT=a2a_cognito_client_id
+              USER_OUT=a2a_tester_username
+              PASS_OUT=a2a_tester_password
+              URL_OUT=a2a_endpoint_url
+              ;;
+          esac
           echo "Minting A2A token for agent: $AGENT"
 
           CLIENT_ID=$(terraform output -raw "$CLIENT_OUT")

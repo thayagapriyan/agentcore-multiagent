@@ -88,6 +88,7 @@ supervisor and router are byte-unchanged.
 | `infra/outputs.tf` | modified | `runtime_arns` gains a `critic` key; `critic_*` outputs. |
 | `.github/workflows/ci.yml` | modified | critic typecheck (npm test auto-globs the new suite). |
 | `.github/workflows/deploy.yml` | modified | ensure critic ECR repo, build+push critic image, smoke test (HTTP + A2A), critic in the eval loop. |
+| `.github/workflows/get-a2a-token.yml` | modified | **(follow-up)** add `critic` to the agent picker + a `case` branch resolving its `critic_*` A2A outputs, so the encrypted-token workflow can mint a bearer token for the critic's public door. Missed in the initial iter-7 work; caught when testing with the a2d-ai tester. |
 | `docs/agents/critic/ARCHITECTURE.md` | added | per-agent architecture doc. |
 
 ---
