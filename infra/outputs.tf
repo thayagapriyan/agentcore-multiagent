@@ -23,10 +23,11 @@ output "agent_runtime_id" {
 # jq -r .<agent>` — instead of the flat single-agent output. Every future agent
 # adds one entry here.
 output "runtime_arns" {
-  description = "Map of agent name → its HTTP-runtime ARN (invoke-agent-runtime target). Keyed by agent: supervisor, router, ..."
+  description = "Map of agent name → its HTTP-runtime ARN (invoke-agent-runtime target). Keyed by agent: supervisor, router, critic, ..."
   value = {
     supervisor = module.supervisor.agent_runtime_arn
     router     = module.router.agent_runtime_arn
+    critic     = module.critic.agent_runtime_arn
   }
 }
 
@@ -38,6 +39,16 @@ output "router_ecr_repository_url" {
 output "router_runtime_arn" {
   description = "Router HTTP runtime ARN (also in runtime_arns[\"router\"])"
   value       = module.router.agent_runtime_arn
+}
+
+output "critic_ecr_repository_url" {
+  description = "Push critic images here"
+  value       = module.critic.ecr_repository_url
+}
+
+output "critic_runtime_arn" {
+  description = "Critic HTTP runtime ARN (also in runtime_arns[\"critic\"])"
+  value       = module.critic.agent_runtime_arn
 }
 
 output "github_deploy_role_arn" {

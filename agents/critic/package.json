@@ -1,0 +1,31 @@
+{
+  "name": "critic",
+  "version": "0.1.0",
+  "description": "Critic / reflection-loop agent (generator ↔ critic, revise until approved or capped)",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/app.js",
+    "dev": "tsc && node dist/app.js",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@a2a-js/sdk": "^0.3.10",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@multiagent/common": "*",
+    "@opentelemetry/api": "^1.9.1",
+    "@strands-agents/sdk": "1.4.0",
+    "express": "^4.19.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "rimraf": "^5.0.10",
+    "typescript": "^5.4.0"
+  }
+}

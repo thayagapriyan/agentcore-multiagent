@@ -72,3 +72,31 @@ variable "router_a2a_public_url" {
   type        = string
   default     = ""
 }
+
+# --- Critic agent (iter 7) — a third deployable: generator↔critic reflection loop.
+# Its own ECR repo + runtime via module "critic"; the supervisor and router are
+# untouched.
+
+variable "critic_agent_name" {
+  description = "Logical name for the critic agent — drives its ECR repo and IAM role names. Distinct prefix so it never collides with the other agents' resources."
+  type        = string
+  default     = "multiagent-critic"
+}
+
+variable "critic_image_tag" {
+  description = "ECR image tag to deploy for the critic. Defaults to image_tag so a single pipeline run can tag every agent with the same git sha; override to pin the critic independently."
+  type        = string
+  default     = ""
+}
+
+variable "critic_a2a_enabled" {
+  description = "Start the A2A server inside the critic's HTTP container (Agent Card + JSON-RPC on A2A_PORT). Not externally reachable on the HTTP-protocol runtime — the public A2A door is the separate A2A-protocol runtime in critic-a2a.tf."
+  type        = bool
+  default     = false
+}
+
+variable "critic_a2a_public_url" {
+  description = "Manual override for the critic's A2A Agent Card URL. Normally leave empty: AgentCore injects AGENTCORE_RUNTIME_URL into the container and the card self-corrects on deploy (mirrors supervisor_a2a_public_url)."
+  type        = string
+  default     = ""
+}

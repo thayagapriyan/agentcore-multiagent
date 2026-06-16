@@ -66,10 +66,11 @@ locally first, then deployed as its own runtime through the existing pipeline.
 | 3 | Extract `packages/common` + per-agent TF module | — (refactor) | Shared wrapper/model factory in `packages/common`; `infra/` becomes a reusable per-agent module. Supervisor consumes both, behavior + state **identical**. | infra refactor, no resource recreate |
 | 4 | A2A on the supervisor (public door) | — | Supervisor exposes an A2A server + Agent Card via `packages/common`; the **a2d-ai tester can now call it** | A2A wiring on existing runtime |
 | 5 | Conditional `Graph` router | `agents/router/` | New agent: classify → route → summarize (explicit edges); A2A on top | new ECR + runtime (module) |
-| 6 | Critic / reflection loop | `agents/critic/` | New agent: generator + critic, loop until approved; A2A on top | new ECR + runtime (module) |
-| 7 | Second agent called over MCP | `agents/<specialist>/` | A specialist as its own runtime, called by a top agent over internal MCP/Gateway | new runtime + Gateway |
+| 6 | Testing harness | — | Vitest unit tests (every PR, no AWS) + promptfoo evals (post-deploy, live runtimes) | none — CI/CD only |
+| 7 | Critic / reflection loop | `agents/critic/` | New agent: generator + critic, loop until approved; A2A on top | new ECR + runtime (module) |
+| 8 | Second agent called over MCP | `agents/<specialist>/` | A specialist as its own runtime, called by a top agent over internal MCP/Gateway | new runtime + Gateway |
 
-Each new-agent iteration (5+) is the same shape: a new `agents/<type>/` folder, a new
+Each new-agent iteration (5, 7+) is the same shape: a new `agents/<type>/` folder, a new
 module block in `infra/`, A2A on its top-most agent, deployed by the existing
 pipeline. Later (optional, same pattern): swarm w/ handoffs, parallel fan-out,
 plan-and-execute, capstone "agent fabric".
@@ -269,7 +270,45 @@ plan-and-execute, capstone "agent fabric".
 
 ---
 
-## Iteration 6 — Critic / reflection loop (new agent)
+## Iteration 6 — Testing harness (Vitest units + promptfoo evals) ✅ done
+
+> Goal: an automated test layer that enforces "always green / never break a prior
+> iteration" — **no new agent, no infra change**, just tests around the existing
+> agents.
+
+**Design**
+- Two layers, split by where they run. **Unit (Vitest)** — deterministic
+  routing/registry logic, no Bedrock, runs on every PR (the regression gate).
+  **Eval (promptfoo)** — LLM classification/delegation quality, calls Bedrock against
+  live runtimes, runs post-deploy.
+
+**Develop**
+- `vitest.config.ts` (globs `agents/*/test/**` + `packages/*/test/**`),
+  `agents/router/test/routing.test.ts`, `agents/supervisor/test/specialists.test.ts`.
+- Extract pure `labelFromText(raw)` from the router's `classifiedLabel` so routing is
+  unit-testable without faking `MultiAgentState` (behavior-preserving).
+- `eval/agentcore-provider.js` (custom promptfoo provider → `aws bedrock-agentcore
+  invoke-agent-runtime`, ARN from the `runtime_arns` map), per-agent
+  `eval/promptfooconfig.yaml`.
+- `ci.yml` `npm test` step; `deploy.yml` post-deploy eval step (optional `promptfoo
+  share` gated on `PROMPTFOO_API_KEY`).
+
+**Test** (actual results)
+- `npm test` → **18 passed** (router 14, supervisor 4), no AWS.
+- promptfoo against live runtimes → router **6/6**, supervisor **3/3**.
+
+**Rollback**
+- Delete `vitest.config.ts`, `agents/*/test/`, `agents/*/eval/`, `eval/`, the test
+  scripts + vitest dep, and the CI/deploy test steps. No agent behavior depends on it.
+
+**Forward-compatibility**
+- Every future agent adds `test/*.test.ts` (auto-globbed) + an
+  `eval/promptfooconfig.yaml` (one line in the deploy eval step). `labelFromText` is the
+  tested routing seam — keep it pure.
+
+---
+
+## Iteration 7 — Critic / reflection loop (new agent)
 
 > Goal: a **new** agent type — `agents/critic/` — iterative refinement: a generator
 > produces output, a critic reviews, loop until approved or N tries.
@@ -293,7 +332,7 @@ plan-and-execute, capstone "agent fabric".
 
 ---
 
-## Iteration 7 — Second agent called over MCP (internal distribution)
+## Iteration 8 — Second agent called over MCP (internal distribution)
 
 > Goal: a top agent calls a **separate** agent runtime over **internal** MCP/Gateway —
 > the in-process → distributed jump. The callee is internal (no A2A); only the top
@@ -327,14 +366,14 @@ plan-and-execute, capstone "agent fabric".
 - [x] Iter 4 — A2A on the supervisor (public door)             ← done, verified via a2d-ai tester
 - [x] Iter 5 — Conditional Graph router        (new agent: agents/router/)  ← done, verified locally + ARM64 container
 - [x] Iter 6 — Testing harness (Vitest units + promptfoo evals)  ← done, units 18/18, live evals 100%
-- [ ] Iter 7 — Critic / reflection loop        (new agent: agents/critic/)   (was iter 6)
+- [x] Iter 7 — Critic / reflection loop        (new agent: agents/critic/)   ← done, units 16/16, local 1- & 2-round runs + A2A verified
 - [ ] Iter 8 — Second agent over MCP           (new agent + internal Gateway)  (was iter 7)
 ```
 
 > **Note (iter 6):** the testing harness was inserted as its own iteration (one
 > concern). The critic-loop and MCP agents shifted down by one (now iters 7 and 8).
-> The detailed §"Iteration 6 — Critic" and §"Iteration 7 — MCP" sections above still
-> describe those agents; only their numbers moved.
+> The detailed sections above have been renumbered to match (§"Iteration 7 — Critic",
+> §"Iteration 8 — MCP").
 
 ---
 

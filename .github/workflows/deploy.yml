@@ -64,8 +64,9 @@ jobs:
         run: |
           SUP_REPO=$(sed -n '/variable "agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
           ROUTER_REPO=$(sed -n '/variable "router_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
-          if [ -z "$SUP_REPO" ] || [ -z "$ROUTER_REPO" ]; then
-            echo "could not resolve agent_name / router_agent_name defaults" >&2; exit 1
+          CRITIC_REPO=$(sed -n '/variable "critic_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
+          if [ -z "$SUP_REPO" ] || [ -z "$ROUTER_REPO" ] || [ -z "$CRITIC_REPO" ]; then
+            echo "could not resolve agent_name / router_agent_name / critic_agent_name defaults" >&2; exit 1
           fi
           ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
 
@@ -84,9 +85,11 @@ jobs:
 
           ensure_repo "$SUP_REPO"    'module.supervisor.aws_ecr_repository.this'
           ensure_repo "$ROUTER_REPO" 'module.router.aws_ecr_repository.this'
+          ensure_repo "$CRITIC_REPO" 'module.critic.aws_ecr_repository.this'
 
           echo "supervisor_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SUP_REPO}" >> "$GITHUB_OUTPUT"
           echo "router_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ROUTER_REPO}" >> "$GITHUB_OUTPUT"
+          echo "critic_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CRITIC_REPO}" >> "$GITHUB_OUTPUT"
 
       # Build each agent from the REPO ROOT (monorepo workspace build) so the image
       # can see packages/common, which both agents import. Pushed to the just-created
@@ -112,6 +115,18 @@ jobs:
             --platform linux/arm64 \
             --push \
             -f agents/router/Dockerfile \
+            -t "$ECR_URI:${{ github.sha }}" \
+            -t "$ECR_URI:latest" \
+            .
+
+      - name: Build & push critic (ARM64)
+        env:
+          ECR_URI: ${{ steps.tf_ecr.outputs.critic_ecr_url }}
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            --push \
+            -f agents/critic/Dockerfile \
             -t "$ECR_URI:${{ github.sha }}" \
             -t "$ECR_URI:latest" \
             .
@@ -150,6 +165,21 @@ jobs:
             smoke-router.json
           cat smoke-router.json
           grep -q result smoke-router.json
+
+      # Deployed-state check (critic): invoke its HTTP runtime and require a result
+      # field (proves the generator↔critic reflection loop runs and returns a
+      # best-effort answer within the iteration cap).
+      - name: Smoke test (critic)
+        working-directory: infra
+        run: |
+          ARN=$(terraform output -json runtime_arns | jq -r '.critic')
+          aws bedrock-agentcore invoke-agent-runtime \
+            --agent-runtime-arn "$ARN" \
+            --payload "$(printf '%s' '{"prompt":"Write a one-sentence tagline for a coffee shop."}' | base64)" \
+            --region "${{ vars.AWS_REGION }}" \
+            smoke-critic.json
+          cat smoke-critic.json
+          grep -q result smoke-critic.json
 
       # A2A door check (supervisor): the A2A-protocol runtime only accepts bearer
       # tokens (JWT authorizer), so fetch one from Cognito (initiate-auth is an
@@ -197,6 +227,28 @@ jobs:
           cat router-card.json
           grep -q '"Multi-Agent Router"' router-card.json
 
+      # A2A door check (critic): same flow against the critic's own Cognito pool +
+      # A2A runtime; require the critic's agent card through its public endpoint.
+      - name: Smoke test (A2A — critic)
+        working-directory: infra
+        run: |
+          A2A_URL=$(terraform output -raw critic_a2a_endpoint_url)
+          CLIENT_ID=$(terraform output -raw critic_a2a_cognito_client_id)
+          USERNAME=$(terraform output -raw critic_a2a_tester_username)
+          PASSWORD=$(terraform output -raw critic_a2a_tester_password)
+          TOKEN=$(aws cognito-idp initiate-auth \
+            --auth-flow USER_PASSWORD_AUTH \
+            --client-id "$CLIENT_ID" \
+            --auth-parameters USERNAME="$USERNAME",PASSWORD="$PASSWORD" \
+            --region "${{ vars.AWS_REGION }}" \
+            --query 'AuthenticationResult.AccessToken' --output text)
+          curl -sf "${A2A_URL}.well-known/agent-card.json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \
+            -o critic-card.json
+          cat critic-card.json
+          grep -q '"Multi-Agent Critic"' critic-card.json
+
       # --- LLM-quality evals (promptfoo) — run POST-DEPLOY against the live
       # runtimes. Unlike the smoke tests (one prompt, presence of a result field),
       # these grade classification/delegation quality across a dataset via Bedrock
@@ -231,7 +283,7 @@ jobs:
           # Eval each agent; `eval` exits non-zero on assertion failure, so a failed
           # eval fails the deploy. When authed, `share` publishes that run and prints
           # its URL into the Actions log.
-          for agent in supervisor router; do
+          for agent in supervisor router critic; do
             echo "::group::promptfoo eval — $agent"
             npx -y promptfoo@latest eval \
               -c "../agents/$agent/eval/promptfooconfig.yaml" \

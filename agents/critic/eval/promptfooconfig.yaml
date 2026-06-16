@@ -1,0 +1,56 @@
+# promptfoo eval for the deployed critic agent. Runs POST-DEPLOY against the live
+# AgentCore runtime (see .github/workflows/deploy.yml), not on PRs — it calls
+# Bedrock and needs AWS creds. Deterministic loop termination + verdict parsing are
+# covered by the Vitest unit tests (agents/critic/test); this eval measures OUTPUT
+# QUALITY end to end: does the generator↔critic reflection loop return a polished,
+# correct, on-task answer.
+#
+# Run locally:
+#   cd infra && export RUNTIME_ARNS=$(terraform output -json runtime_arns)
+#   cd ../agents/critic/eval && npx promptfoo@latest eval
+
+description: Critic agent — refined-answer quality (live runtime)
+
+providers:
+  - id: file://../../../eval/agentcore-provider.js
+    config:
+      agent: critic
+
+# Model-graded assertions run through Bedrock too (no OpenAI key needed). Uses the
+# same Haiku model the agents use.
+defaultTest:
+  options:
+    provider:
+      # promptfoo Bedrock grader: id is `bedrock:<full-model-id>`. Use the same
+      # global inference profile the agents use (Haiku 4.5 is profile-only).
+      id: bedrock:global.anthropic.claude-haiku-4-5-20251001-v1:0
+      config:
+        region: us-east-1
+
+tests:
+  # --- a concrete writing task: the refined answer should be on-task and polished ---
+  - vars:
+      prompt: Write a one-sentence tagline for an eco-friendly coffee shop.
+    assert:
+      - type: llm-rubric
+        value: The response is a single, polished tagline for an eco-friendly/coffee
+          business. It must be a finished answer, NOT a critique, feedback, or notes
+          about revisions.
+
+  # --- a factual/explanatory task: clear and correct, not meta-commentary ---
+  - vars:
+      prompt: Explain in two sentences why the sky appears blue.
+    assert:
+      - type: llm-rubric
+        value: The response is a clear, correct two-ish-sentence explanation of why the
+          sky appears blue (Rayleigh scattering / shorter wavelengths). It must be the
+          answer itself, not a review of an answer.
+
+  # --- a vague prompt that benefits from refinement: still returns a coherent answer ---
+  - vars:
+      prompt: Give me a short, motivating message for someone starting a new job.
+    assert:
+      - type: llm-rubric
+        value: The response is a short, encouraging, coherent message appropriate for
+          someone starting a new job. It must NOT contain words like "APPROVED",
+          "REVISE", or reviewer feedback — only the final message.
