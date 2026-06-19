@@ -21,6 +21,7 @@ on:
           - supervisor
           - router
           - critic
+          - researcher
 
 permissions:
   id-token: write
@@ -63,7 +64,7 @@ jobs:
           # tokens are not interchangeable.
           AGENT="${{ inputs.agent }}"
           case "$AGENT" in
-            router|critic)
+            router|critic|researcher)
               CLIENT_OUT=${AGENT}_a2a_cognito_client_id
               USER_OUT=${AGENT}_a2a_tester_username
               PASS_OUT=${AGENT}_a2a_tester_password

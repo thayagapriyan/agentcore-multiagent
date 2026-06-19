@@ -133,7 +133,20 @@ resource "aws_bedrockagentcore_agent_runtime" "this" {
   }
 
   protocol_configuration {
-    server_protocol = "HTTP"
+    server_protocol = var.server_protocol
+  }
+
+  # Optional Cognito JWT authorizer (iter 8). Absent by default → SigV4 floor (every
+  # pre-iter-8 runtime). Present for the knowledge MCP runtime so the researcher can
+  # authenticate with a bearer token (the McpClient transport can't SigV4-sign).
+  dynamic "authorizer_configuration" {
+    for_each = var.jwt_authorizer == null ? [] : [var.jwt_authorizer]
+    content {
+      custom_jwt_authorizer {
+        discovery_url   = authorizer_configuration.value.discovery_url
+        allowed_clients = authorizer_configuration.value.allowed_clients
+      }
+    }
   }
 
   # LOG_LEVEL + MODEL_ID are the baseline; per-agent extras merge on top so later

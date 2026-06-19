@@ -23,11 +23,13 @@ output "agent_runtime_id" {
 # jq -r .<agent>` — instead of the flat single-agent output. Every future agent
 # adds one entry here.
 output "runtime_arns" {
-  description = "Map of agent name → its HTTP-runtime ARN (invoke-agent-runtime target). Keyed by agent: supervisor, router, critic, ..."
+  description = "Map of agent name → its runtime ARN. supervisor/router/critic/researcher are HTTP /invocations targets; knowledge is an MCP-protocol runtime (call it over MCP, not invoke-agent-runtime)."
   value = {
     supervisor = module.supervisor.agent_runtime_arn
     router     = module.router.agent_runtime_arn
     critic     = module.critic.agent_runtime_arn
+    knowledge  = module.knowledge.agent_runtime_arn
+    researcher = module.researcher.agent_runtime_arn
   }
 }
 

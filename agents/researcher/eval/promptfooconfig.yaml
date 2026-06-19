@@ -1,0 +1,56 @@
+# promptfoo eval for the deployed researcher agent. Runs POST-DEPLOY against the live
+# AgentCore HTTP runtime (see .github/workflows/deploy.yml), not on PRs — it calls
+# Bedrock AND exercises the cross-runtime MCP hop to the knowledge agent, so it needs
+# AWS creds and both runtimes live. Deterministic kb_lookup output + URL gating are
+# covered by Vitest (agents/knowledge/test, agents/researcher/test); this eval measures
+# the END-TO-END result: does the researcher fetch a fact over MCP and ground its answer
+# in it.
+#
+# The knowledge agent has NO eval of its own: it serves MCP (no /invocations contract
+# the provider can call), and its lookup is deterministic (unit-tested). Its correctness
+# shows up here, in the researcher's grounded answer.
+#
+# Run locally:
+#   cd infra && export RUNTIME_ARNS=$(terraform output -json runtime_arns)
+#   cd ../agents/researcher/eval && npx promptfoo@latest eval
+
+description: Researcher agent — MCP-grounded answer quality (live runtimes)
+
+providers:
+  - id: file://../../../eval/agentcore-provider.js
+    config:
+      agent: researcher
+
+defaultTest:
+  options:
+    provider:
+      id: bedrock:global.anthropic.claude-haiku-4-5-20251001-v1:0
+      config:
+        region: us-east-1
+
+tests:
+  # --- a known KB topic: the answer must reflect the looked-up fact (proof of the hop) ---
+  - vars:
+      prompt: What does the knowledge base say about MCP?
+    assert:
+      - type: llm-rubric
+        value: The response explains that MCP (Model Context Protocol) is an open
+          standard for exposing tools to agents (JSON-RPC / streamable HTTP). It is a
+          direct answer about MCP, grounded in a looked-up fact, NOT a refusal or a note
+          that no tool is available.
+
+  # --- another known topic ---
+  - vars:
+      prompt: Tell me about AgentCore Runtime requirements.
+    assert:
+      - type: llm-rubric
+        value: The response states that Amazon Bedrock AgentCore Runtime requires ARM64
+          container images and serves on port 8080. It is a grounded, on-topic answer.
+
+  # --- an unknown topic: still returns a coherent answer (always-green degrade) ---
+  - vars:
+      prompt: What is the capital of France?
+    assert:
+      - type: llm-rubric
+        value: The response coherently answers that the capital of France is Paris. It
+          does not crash, error, or return reviewer/critique meta-commentary.

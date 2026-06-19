@@ -367,7 +367,7 @@ plan-and-execute, capstone "agent fabric".
 - [x] Iter 5 — Conditional Graph router        (new agent: agents/router/)  ← done, verified locally + ARM64 container
 - [x] Iter 6 — Testing harness (Vitest units + promptfoo evals)  ← done, units 18/18, live evals 100%
 - [x] Iter 7 — Critic / reflection loop        (new agent: agents/critic/)   ← done, units 16/16, local 1- & 2-round runs + A2A verified
-- [ ] Iter 8 — Second agent over MCP           (new agent + internal Gateway)  (was iter 7)
+- [x] Iter 8 — Second agent over MCP   (new agents: agents/knowledge/ MCP server + agents/researcher/ caller)  ← done, units 54/54, local cross-runtime MCP hop + ARM64 container verified
 ```
 
 > **Note (iter 6):** the testing harness was inserted as its own iteration (one

@@ -38,6 +38,14 @@ jobs:
         working-directory: agents/critic
         run: npx tsc --noEmit
 
+      - name: Typecheck knowledge
+        working-directory: agents/knowledge
+        run: npx tsc --noEmit
+
+      - name: Typecheck researcher
+        working-directory: agents/researcher
+        run: npx tsc --noEmit
+
       # Deterministic unit tests (Vitest) — routing/registry logic, no Bedrock, no
       # AWS creds needed. This is the regression gate: a change to shared code that
       # breaks an agent's routing contract turns this red on the PR. LLM-quality
