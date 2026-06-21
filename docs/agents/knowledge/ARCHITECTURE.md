@@ -95,7 +95,7 @@ sequenceDiagram
 
     R->>COG: initiate-auth USER_PASSWORD_AUTH (researcher-kb-bot)
     COG-->>R: JWT access token
-    R->>DP: POST /runtimes/{arn}/invocations/mcp<br/>Authorization: Bearer JWT<br/>{jsonrpc, method:"tools/call", params:{name:"kb_lookup", arguments:{topic}}}
+    R->>DP: POST /runtimes/{arn}/invocations?qualifier=DEFAULT<br/>Authorization: Bearer JWT<br/>{jsonrpc, method:"tools/call", params:{name:"kb_lookup", arguments:{topic}}}
     DP->>DP: validate JWT against discovery_url; client_id ∈ allowed_clients
     alt token invalid/missing
         DP-->>R: 401 / 403

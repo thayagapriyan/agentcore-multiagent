@@ -87,7 +87,7 @@ resource "aws_bedrockagentcore_agent_runtime" "researcher_a2a" {
       MODEL_ID         = var.model_id
       A2A_ENABLED      = "true"
       LOG_DELEGATION   = "true"
-      KB_MCP_URL       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations/mcp"
+      KB_MCP_URL       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations?qualifier=DEFAULT"
       KB_MCP_CLIENT_ID = aws_cognito_user_pool_client.knowledge_mcp.id
       KB_MCP_USERNAME  = aws_cognito_user.knowledge_mcp_bot.username
       KB_MCP_PASSWORD  = random_password.knowledge_mcp_bot.result

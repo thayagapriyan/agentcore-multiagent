@@ -31,9 +31,10 @@ function getModel(): BedrockModel {
   }));
 }
 
-// Resolve the knowledge runtime's MCP endpoint. AgentCore exposes a runtime's MCP
-// server under its invocation URL at the /mcp path; KB_MCP_URL carries the full URL.
-// Pure + exported so URL handling is unit-testable without constructing an McpClient.
+// Resolve the knowledge runtime's MCP endpoint. The MCP JSON-RPC message is POSTed to
+// the runtime's InvokeAgentRuntime path (/runtimes/{arn}/invocations?qualifier=DEFAULT);
+// AgentCore proxies it to the container's internal /mcp route. KB_MCP_URL carries the
+// full public URL. Pure + exported so URL handling is unit-testable without an McpClient.
 export function resolveKbMcpUrl(env: NodeJS.ProcessEnv = process.env): string | undefined {
   const url = env.KB_MCP_URL?.trim();
   return url ? url : undefined;

@@ -23,7 +23,7 @@ module "researcher" {
 
   environment_variables = merge(
     {
-      KB_MCP_URL       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations/mcp?qualifier=DEFAULT"
+      KB_MCP_URL       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations?qualifier=DEFAULT"
       KB_MCP_CLIENT_ID = aws_cognito_user_pool_client.knowledge_mcp.id
       KB_MCP_USERNAME  = aws_cognito_user.knowledge_mcp_bot.username
       KB_MCP_PASSWORD  = random_password.knowledge_mcp_bot.result

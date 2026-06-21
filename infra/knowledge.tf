@@ -95,12 +95,15 @@ output "knowledge_runtime_arn" {
 
 # The MCP endpoint the researcher's McpClient POSTs to. AgentCore exposes a runtime
 # under its invocations URL; the knowledge app serves MCP at the /mcp path.
-# AgentCore's MCP data-plane URL: the ARN is URL-encoded into the path, the container
-# serves the streamable-http endpoint at /mcp, and qualifier=DEFAULT selects the
-# default endpoint (per AWS "MCP protocol contract" + InvokeAgentRuntime).
+# AgentCore's MCP data-plane URL = the InvokeAgentRuntime operation path:
+# POST /runtimes/{ENCODED_ARN}/invocations?qualifier=DEFAULT. The MCP JSON-RPC message
+# is the POST *payload*; there is NO /mcp on the public path (that's the container's
+# internal listen path, which AgentCore proxies to). Appending /mcp here yields a
+# 404 <UnknownOperationException/> at the service front door. (AWS InvokeAgentRuntime
+# API reference + MCP protocol contract.)
 output "knowledge_mcp_url" {
   description = "Knowledge agent's MCP endpoint (POST JSON-RPC here)"
-  value       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations/mcp?qualifier=DEFAULT"
+  value       = "https://bedrock-agentcore.${var.aws_region}.amazonaws.com/runtimes/${urlencode(module.knowledge.agent_runtime_arn)}/invocations?qualifier=DEFAULT"
 }
 
 output "knowledge_mcp_cognito_client_id" {
