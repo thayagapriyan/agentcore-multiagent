@@ -1,0 +1,2473 @@
+2026-06-20T23:23:53.9630341Z Current runner version: '2.335.1'
+2026-06-20T23:23:53.9656684Z ##[group]Runner Image Provisioner
+2026-06-20T23:23:53.9657601Z Hosted Compute Agent
+2026-06-20T23:23:53.9658230Z Version: 20260611.554
+2026-06-20T23:23:53.9658976Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-20T23:23:53.9659803Z Build Date: 2026-06-11T21:40:46Z
+2026-06-20T23:23:53.9660547Z Worker ID: {a055adcc-73b6-43dc-8980-52343c44010a}
+2026-06-20T23:23:53.9661637Z Azure Region: eastus
+2026-06-20T23:23:53.9662295Z ##[endgroup]
+2026-06-20T23:23:53.9663729Z ##[group]Operating System
+2026-06-20T23:23:53.9664445Z Ubuntu
+2026-06-20T23:23:53.9665001Z 24.04.4
+2026-06-20T23:23:53.9665612Z LTS
+2026-06-20T23:23:53.9666206Z ##[endgroup]
+2026-06-20T23:23:53.9666867Z ##[group]Runner Image
+2026-06-20T23:23:53.9667581Z Image: ubuntu-24.04
+2026-06-20T23:23:53.9668180Z Version: 20260615.205.1
+2026-06-20T23:23:53.9669541Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260615.205/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-20T23:23:53.9671217Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260615.205
+2026-06-20T23:23:53.9672315Z ##[endgroup]
+2026-06-20T23:23:53.9673533Z ##[group]GITHUB_TOKEN Permissions
+2026-06-20T23:23:53.9675789Z Contents: read
+2026-06-20T23:23:53.9676550Z Metadata: read
+2026-06-20T23:23:53.9677251Z ##[endgroup]
+2026-06-20T23:23:53.9680337Z Secret source: Actions
+2026-06-20T23:23:53.9681487Z Prepare workflow directory
+2026-06-20T23:23:54.0004504Z Prepare all required actions
+2026-06-20T23:23:54.0041893Z Getting action download info
+2026-06-20T23:23:54.2793959Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-20T23:23:54.3468332Z Download action repository 'aws-actions/configure-aws-credentials@v4' (SHA:7474bc4690e29a8392af63c5b98e7449536d5c3a)
+2026-06-20T23:23:54.4980701Z Download action repository 'aws-actions/amazon-ecr-login@v2' (SHA:d539f0932e70871a027e9d5a9d8fc38589180a64)
+2026-06-20T23:23:54.6309320Z Download action repository 'docker/setup-buildx-action@v3' (SHA:8d2750c68a42422c14e847fe6c8ac0403b4cbd6f)
+2026-06-20T23:23:54.8130180Z Download action repository 'hashicorp/setup-terraform@v3' (SHA:b9cd54a3c349d3f38e8881555d616ced269862dd)
+2026-06-20T23:23:54.9296310Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-06-20T23:23:55.1341491Z Complete job name: deploy
+2026-06-20T23:23:55.2252693Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:23:55.2262301Z ##[group]Run actions/checkout@v4
+2026-06-20T23:23:55.2263091Z with:
+2026-06-20T23:23:55.2263664Z   repository: thayagapriyan/agentcore-multiagent
+2026-06-20T23:23:55.2269069Z   token: ***
+2026-06-20T23:23:55.2269590Z   ssh-strict: true
+2026-06-20T23:23:55.2270130Z   ssh-user: git
+2026-06-20T23:23:55.2270659Z   persist-credentials: true
+2026-06-20T23:23:55.2271423Z   clean: true
+2026-06-20T23:23:55.2271945Z   sparse-checkout-cone-mode: true
+2026-06-20T23:23:55.2272543Z   fetch-depth: 1
+2026-06-20T23:23:55.2273045Z   fetch-tags: false
+2026-06-20T23:23:55.2273569Z   show-progress: true
+2026-06-20T23:23:55.2274100Z   lfs: false
+2026-06-20T23:23:55.2274634Z   submodules: false
+2026-06-20T23:23:55.2275159Z   set-safe-directory: true
+2026-06-20T23:23:55.2275991Z ##[endgroup]
+2026-06-20T23:23:55.3272552Z Syncing repository: thayagapriyan/agentcore-multiagent
+2026-06-20T23:23:55.3274579Z ##[group]Getting Git version info
+2026-06-20T23:23:55.3275514Z Working directory is '/home/runner/work/agentcore-multiagent/agentcore-multiagent'
+2026-06-20T23:23:55.3276841Z [command]/usr/bin/git version
+2026-06-20T23:23:55.3303865Z git version 2.54.0
+2026-06-20T23:23:55.3323598Z ##[endgroup]
+2026-06-20T23:23:55.3337667Z Temporarily overriding HOME='/home/runner/work/_temp/060e8938-8185-49aa-86bf-d2e642393777' before making global git config changes
+2026-06-20T23:23:55.3340712Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-20T23:23:55.3343728Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agentcore-multiagent/agentcore-multiagent
+2026-06-20T23:23:55.3386406Z Deleting the contents of '/home/runner/work/agentcore-multiagent/agentcore-multiagent'
+2026-06-20T23:23:55.3390613Z ##[group]Initializing the repository
+2026-06-20T23:23:55.3396194Z [command]/usr/bin/git init /home/runner/work/agentcore-multiagent/agentcore-multiagent
+2026-06-20T23:23:55.3465369Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-06-20T23:23:55.3466693Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-06-20T23:23:55.3467814Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-06-20T23:23:55.3468717Z hint: call:
+2026-06-20T23:23:55.3469468Z hint:
+2026-06-20T23:23:55.3470132Z hint: 	git config --global init.defaultBranch <name>
+2026-06-20T23:23:55.3470904Z hint:
+2026-06-20T23:23:55.3471938Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-06-20T23:23:55.3473061Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-06-20T23:23:55.3473973Z hint:
+2026-06-20T23:23:55.3474530Z hint: 	git branch -m <name>
+2026-06-20T23:23:55.3475169Z hint:
+2026-06-20T23:23:55.3475947Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-06-20T23:23:55.3481860Z Initialized empty Git repository in /home/runner/work/agentcore-multiagent/agentcore-multiagent/.git/
+2026-06-20T23:23:55.3493449Z [command]/usr/bin/git remote add origin https://github.com/thayagapriyan/agentcore-multiagent
+2026-06-20T23:23:55.3532168Z ##[endgroup]
+2026-06-20T23:23:55.3533691Z ##[group]Disabling automatic garbage collection
+2026-06-20T23:23:55.3536121Z [command]/usr/bin/git config --local gc.auto 0
+2026-06-20T23:23:55.3565923Z ##[endgroup]
+2026-06-20T23:23:55.3567377Z ##[group]Setting up auth
+2026-06-20T23:23:55.3573094Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-20T23:23:55.3608601Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-20T23:23:55.3909625Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-20T23:23:55.3940729Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-20T23:23:55.4171178Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-20T23:23:55.4201957Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-20T23:23:55.4431904Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-06-20T23:23:55.4466261Z ##[endgroup]
+2026-06-20T23:23:55.4467742Z ##[group]Fetching the repository
+2026-06-20T23:23:55.4476703Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +1a80a88688c1a2db1206921710405645c6ce4b37:refs/remotes/origin/main
+2026-06-20T23:23:55.6795638Z From https://github.com/thayagapriyan/agentcore-multiagent
+2026-06-20T23:23:55.6796891Z  * [new ref]         1a80a88688c1a2db1206921710405645c6ce4b37 -> origin/main
+2026-06-20T23:23:55.6829016Z ##[endgroup]
+2026-06-20T23:23:55.6830403Z ##[group]Determining the checkout info
+2026-06-20T23:23:55.6832568Z ##[endgroup]
+2026-06-20T23:23:55.6839925Z [command]/usr/bin/git sparse-checkout disable
+2026-06-20T23:23:55.6888582Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-06-20T23:23:55.6917967Z ##[group]Checking out the ref
+2026-06-20T23:23:55.6923074Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-06-20T23:23:55.7067686Z Switched to a new branch 'main'
+2026-06-20T23:23:55.7070039Z branch 'main' set up to track 'origin/main'.
+2026-06-20T23:23:55.7077402Z ##[endgroup]
+2026-06-20T23:23:55.7115198Z [command]/usr/bin/git log -1 --format=%H
+2026-06-20T23:23:55.7138448Z 1a80a88688c1a2db1206921710405645c6ce4b37
+2026-06-20T23:23:55.7422646Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:23:55.7425322Z ##[group]Run aws-actions/configure-aws-credentials@v4
+2026-06-20T23:23:55.7425951Z with:
+2026-06-20T23:23:55.7426604Z   role-to-assume: arn:aws:iam::224193574799:role/multiagent-supervisor-github-deploy
+2026-06-20T23:23:55.7427431Z   aws-region: us-east-1
+2026-06-20T23:23:55.7427918Z   audience: sts.amazonaws.com
+2026-06-20T23:23:55.7428450Z   output-env-credentials: true
+2026-06-20T23:23:55.7428960Z ##[endgroup]
+2026-06-20T23:23:55.9099397Z Assuming role with OIDC
+2026-06-20T23:23:56.0372695Z Authenticated as assumedRoleId AROATIMX2O6HTBZJQZ3YK:GitHubActions
+2026-06-20T23:23:56.0660084Z ##[group]Run aws-actions/amazon-ecr-login@v2
+2026-06-20T23:23:56.0660735Z with:
+2026-06-20T23:23:56.0661478Z   mask-password: true
+2026-06-20T23:23:56.0661998Z   registry-type: private
+2026-06-20T23:23:56.0662518Z   skip-logout: false
+2026-06-20T23:23:56.0662990Z env:
+2026-06-20T23:23:56.0663449Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:23:56.0663996Z   AWS_REGION: us-east-1
+2026-06-20T23:23:56.0664630Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:23:56.0665307Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:23:56.0673412Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:23:56.0673930Z ##[endgroup]
+2026-06-20T23:23:56.1680660Z Using environment variable credentials.
+2026-06-20T23:23:56.3654938Z Logging into registry 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:23:56.5241681Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:23:56.5246945Z ##[group]Run docker/setup-buildx-action@v3
+2026-06-20T23:23:56.5248265Z with:
+2026-06-20T23:23:56.5249237Z   driver: docker-container
+2026-06-20T23:23:56.5250361Z   use: true
+2026-06-20T23:23:56.5251584Z   keep-state: false
+2026-06-20T23:23:56.5252632Z   cache-binary: true
+2026-06-20T23:23:56.5253671Z   cleanup: true
+2026-06-20T23:23:56.5254661Z   install: false
+2026-06-20T23:23:56.5255621Z env:
+2026-06-20T23:23:56.5256553Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:23:56.5257744Z   AWS_REGION: us-east-1
+2026-06-20T23:23:56.5259191Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:23:56.5260702Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:23:56.5280314Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:23:56.5281598Z ##[endgroup]
+2026-06-20T23:23:56.7732714Z (node:2315) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-20T23:23:56.7737709Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-20T23:23:56.7777550Z ##[group]Docker info
+2026-06-20T23:23:56.7795908Z [command]/usr/bin/docker version
+2026-06-20T23:23:56.8002246Z Client: Docker Engine - Community
+2026-06-20T23:23:56.8004984Z  Version:           28.0.4
+2026-06-20T23:23:56.8007077Z  API version:       1.48
+2026-06-20T23:23:56.8008938Z  Go version:        go1.23.7
+2026-06-20T23:23:56.8010386Z  Git commit:        b8034c0
+2026-06-20T23:23:56.8012294Z  Built:             Tue Mar 25 15:07:16 2025
+2026-06-20T23:23:56.8014335Z  OS/Arch:           linux/amd64
+2026-06-20T23:23:56.8016506Z  Context:           default
+2026-06-20T23:23:56.8017442Z
+2026-06-20T23:23:56.8017975Z Server: Docker Engine - Community
+2026-06-20T23:23:56.8019920Z  Engine:
+2026-06-20T23:23:56.8021689Z   Version:          28.0.4
+2026-06-20T23:23:56.8023694Z   API version:      1.48 (minimum version 1.24)
+2026-06-20T23:23:56.8025926Z   Go version:       go1.23.7
+2026-06-20T23:23:56.8027842Z   Git commit:       6430e49
+2026-06-20T23:23:56.8029755Z   Built:            Tue Mar 25 15:07:16 2025
+2026-06-20T23:23:56.8032241Z   OS/Arch:          linux/amd64
+2026-06-20T23:23:56.8034174Z   Experimental:     false
+2026-06-20T23:23:56.8035930Z  containerd:
+2026-06-20T23:23:56.8037529Z   Version:          v2.2.4
+2026-06-20T23:23:56.8039698Z   GitCommit:        193637f7ee8ae5f5aa5248f49e7baa3e6164966e
+2026-06-20T23:23:56.8042275Z  runc:
+2026-06-20T23:23:56.8043803Z   Version:          1.3.5
+2026-06-20T23:23:56.8045607Z   GitCommit:        v1.3.5-0-g488fc13e
+2026-06-20T23:23:56.8047651Z  docker-init:
+2026-06-20T23:23:56.8049381Z   Version:          0.19.0
+2026-06-20T23:23:56.8051886Z   GitCommit:        de40ad0
+2026-06-20T23:23:56.8055890Z [command]/usr/bin/docker info
+2026-06-20T23:23:56.9780537Z Client: Docker Engine - Community
+2026-06-20T23:23:56.9782687Z  Version:    28.0.4
+2026-06-20T23:23:56.9784226Z  Context:    default
+2026-06-20T23:23:56.9785517Z  Debug Mode: false
+2026-06-20T23:23:56.9786718Z  Plugins:
+2026-06-20T23:23:56.9787927Z   buildx: Docker Buildx (Docker Inc.)
+2026-06-20T23:23:56.9789395Z     Version:  v0.34.1
+2026-06-20T23:23:56.9791115Z     Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+2026-06-20T23:23:56.9793061Z   compose: Docker Compose (Docker Inc.)
+2026-06-20T23:23:56.9794909Z     Version:  v2.38.2
+2026-06-20T23:23:56.9796620Z     Path:     /usr/libexec/docker/cli-plugins/docker-compose
+2026-06-20T23:23:56.9797926Z
+2026-06-20T23:23:56.9798323Z Server:
+2026-06-20T23:23:56.9799423Z  Containers: 0
+2026-06-20T23:23:56.9800573Z   Running: 0
+2026-06-20T23:23:56.9802188Z   Paused: 0
+2026-06-20T23:23:56.9803685Z   Stopped: 0
+2026-06-20T23:23:56.9805181Z  Images: 6
+2026-06-20T23:23:56.9806605Z  Server Version: 28.0.4
+2026-06-20T23:23:56.9808585Z  Storage Driver: overlay2
+2026-06-20T23:23:56.9810186Z   Backing Filesystem: extfs
+2026-06-20T23:23:56.9811882Z   Supports d_type: true
+2026-06-20T23:23:56.9813486Z   Using metacopy: false
+2026-06-20T23:23:56.9815026Z   Native Overlay Diff: false
+2026-06-20T23:23:56.9816555Z   userxattr: false
+2026-06-20T23:23:56.9818040Z  Logging Driver: json-file
+2026-06-20T23:23:56.9819672Z  Cgroup Driver: systemd
+2026-06-20T23:23:56.9821391Z  Cgroup Version: 2
+2026-06-20T23:23:56.9822986Z  Plugins:
+2026-06-20T23:23:56.9824462Z   Volume: local
+2026-06-20T23:23:56.9826219Z   Network: bridge host ipvlan macvlan null overlay
+2026-06-20T23:23:56.9828586Z   Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+2026-06-20T23:23:56.9830853Z  Swarm: inactive
+2026-06-20T23:23:56.9832575Z  Runtimes: io.containerd.runc.v2 runc
+2026-06-20T23:23:56.9834359Z  Default Runtime: runc
+2026-06-20T23:23:56.9836028Z  Init Binary: docker-init
+2026-06-20T23:23:56.9837850Z  containerd version: 193637f7ee8ae5f5aa5248f49e7baa3e6164966e
+2026-06-20T23:23:56.9839727Z  runc version: v1.3.5-0-g488fc13e
+2026-06-20T23:23:56.9841206Z  init version: de40ad0
+2026-06-20T23:23:56.9842570Z  Security Options:
+2026-06-20T23:23:56.9843861Z   apparmor
+2026-06-20T23:23:56.9845039Z   seccomp
+2026-06-20T23:23:56.9846214Z    Profile: builtin
+2026-06-20T23:23:56.9847463Z   cgroupns
+2026-06-20T23:23:56.9848966Z  Kernel Version: 6.17.0-1018-azure
+2026-06-20T23:23:56.9850595Z  Operating System: Ubuntu 24.04.4 LTS
+2026-06-20T23:23:56.9852382Z  OSType: linux
+2026-06-20T23:23:56.9853632Z  Architecture: x86_64
+2026-06-20T23:23:56.9854928Z  CPUs: 4
+2026-06-20T23:23:56.9856126Z  Total Memory: 15.61GiB
+2026-06-20T23:23:56.9857915Z  Name: runnervm7b5n9
+2026-06-20T23:23:56.9859644Z  ID: 7a7d34d3-770d-4566-9e4d-e5550f5910d1
+2026-06-20T23:23:56.9862174Z  Docker Root Dir: /var/lib/docker
+2026-06-20T23:23:56.9864355Z  Debug Mode: false
+2026-06-20T23:23:56.9866012Z  Username: githubactions
+2026-06-20T23:23:56.9867869Z  Experimental: false
+2026-06-20T23:23:56.9869721Z  Insecure Registries:
+2026-06-20T23:23:56.9875544Z   ::1/128
+2026-06-20T23:23:56.9877070Z   127.0.0.0/8
+2026-06-20T23:23:56.9878716Z  Live Restore Enabled: false
+2026-06-20T23:23:56.9879956Z
+2026-06-20T23:23:56.9882938Z ##[endgroup]
+2026-06-20T23:23:57.0425228Z ##[group]Buildx version
+2026-06-20T23:23:57.0448267Z [command]/usr/bin/docker buildx version
+2026-06-20T23:23:57.0964683Z github.com/docker/buildx v0.34.1 e0b0e77d18d3379bc1e0d55f3b37de288d36fe47
+2026-06-20T23:23:57.0992485Z ##[endgroup]
+2026-06-20T23:23:57.1171592Z ##[group]Inspecting default docker context
+2026-06-20T23:23:57.1327219Z [
+2026-06-20T23:23:57.1328445Z   {
+2026-06-20T23:23:57.1330075Z     "Name": "default",
+2026-06-20T23:23:57.1331748Z     "Metadata": {},
+2026-06-20T23:23:57.1333404Z     "Endpoints": {
+2026-06-20T23:23:57.1335000Z       "docker": {
+2026-06-20T23:23:57.1336705Z         "Host": "unix:///var/run/docker.sock",
+2026-06-20T23:23:57.1338624Z         "SkipTLSVerify": false
+2026-06-20T23:23:57.1340310Z       }
+2026-06-20T23:23:57.1341782Z     },
+2026-06-20T23:23:57.1343210Z     "TLSMaterial": {},
+2026-06-20T23:23:57.1344886Z     "Storage": {
+2026-06-20T23:23:57.1346516Z       "MetadataPath": "<IN MEMORY>",
+2026-06-20T23:23:57.1348475Z       "TLSPath": "<IN MEMORY>"
+2026-06-20T23:23:57.1350051Z     }
+2026-06-20T23:23:57.1351423Z   }
+2026-06-20T23:23:57.1352702Z ]
+2026-06-20T23:23:57.1355159Z ##[endgroup]
+2026-06-20T23:23:57.1357920Z ##[group]Creating a new builder instance
+2026-06-20T23:23:57.2535951Z [command]/usr/bin/docker buildx create --name builder-3e3962e8-1336-4edc-9425-11fca57e456a --driver docker-container --buildkitd-flags --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host --use
+2026-06-20T23:23:57.3083184Z builder-3e3962e8-1336-4edc-9425-11fca57e456a
+2026-06-20T23:23:57.3115726Z ##[endgroup]
+2026-06-20T23:23:57.3117585Z ##[group]Booting builder
+2026-06-20T23:23:57.3146578Z [command]/usr/bin/docker buildx inspect --bootstrap --builder builder-3e3962e8-1336-4edc-9425-11fca57e456a
+2026-06-20T23:23:57.3654383Z #1 [internal] booting buildkit
+2026-06-20T23:23:57.5157508Z #1 pulling image moby/buildkit:buildx-stable-1
+2026-06-20T23:23:59.5125963Z #1 pulling image moby/buildkit:buildx-stable-1 2.1s done
+2026-06-20T23:23:59.6653138Z #1 creating container buildx_buildkit_builder-3e3962e8-1336-4edc-9425-11fca57e456a0
+2026-06-20T23:23:59.7300473Z #1 creating container buildx_buildkit_builder-3e3962e8-1336-4edc-9425-11fca57e456a0 0.2s done
+2026-06-20T23:23:59.7315699Z #1 DONE 2.4s
+2026-06-20T23:23:59.7624995Z Name:          builder-3e3962e8-1336-4edc-9425-11fca57e456a
+2026-06-20T23:23:59.7651303Z Driver:        docker-container
+2026-06-20T23:23:59.7651991Z Last Activity: 2026-06-20 23:23:57 +0000 UTC
+2026-06-20T23:23:59.7655654Z
+2026-06-20T23:23:59.7656209Z Nodes:
+2026-06-20T23:23:59.7657289Z Name:                  builder-3e3962e8-1336-4edc-9425-11fca57e456a0
+2026-06-20T23:23:59.7658130Z Endpoint:              unix:///var/run/docker.sock
+2026-06-20T23:23:59.7658625Z Status:                running
+2026-06-20T23:23:59.7659540Z BuildKit daemon flags: --allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host
+2026-06-20T23:23:59.7660452Z BuildKit version:      v0.30.0
+2026-06-20T23:23:59.7661333Z Platforms:             linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/386
+2026-06-20T23:23:59.7661937Z Labels:
+2026-06-20T23:23:59.7662369Z  org.mobyproject.buildkit.worker.executor:         oci
+2026-06-20T23:23:59.7663054Z  org.mobyproject.buildkit.worker.hostname:         d5a99ddf8d98
+2026-06-20T23:23:59.7663712Z  org.mobyproject.buildkit.worker.network:          host
+2026-06-20T23:23:59.7664412Z  org.mobyproject.buildkit.worker.oci.process-mode: sandbox
+2026-06-20T23:23:59.7665145Z  org.mobyproject.buildkit.worker.selinux.enabled:  false
+2026-06-20T23:23:59.7665853Z  org.mobyproject.buildkit.worker.snapshotter:      overlayfs
+2026-06-20T23:23:59.7666893Z GC Policy rule#0:
+2026-06-20T23:23:59.7667264Z  All:            false
+2026-06-20T23:23:59.7667853Z  Filters:        type==source.local,type==exec.cachemount,type==source.git.checkout
+2026-06-20T23:23:59.7668544Z  Keep Duration:  48h0m0s
+2026-06-20T23:23:59.7671216Z  Max Used Space: 488.3MiB
+2026-06-20T23:23:59.7671617Z GC Policy rule#1:
+2026-06-20T23:23:59.7671911Z  All:            false
+2026-06-20T23:23:59.7672207Z  Keep Duration:  1440h0m0s
+2026-06-20T23:23:59.7672533Z  Reserved Space: 9.313GiB
+2026-06-20T23:23:59.7672902Z  Max Used Space: 93.13GiB
+2026-06-20T23:23:59.7673264Z  Min Free Space: 27.01GiB
+2026-06-20T23:23:59.7673590Z GC Policy rule#2:
+2026-06-20T23:23:59.7673954Z  All:            false
+2026-06-20T23:23:59.7674311Z  Reserved Space: 9.313GiB
+2026-06-20T23:23:59.7674657Z  Max Used Space: 93.13GiB
+2026-06-20T23:23:59.7675006Z  Min Free Space: 27.01GiB
+2026-06-20T23:23:59.7675349Z GC Policy rule#3:
+2026-06-20T23:23:59.7675679Z  All:            true
+2026-06-20T23:23:59.7676028Z  Reserved Space: 9.313GiB
+2026-06-20T23:23:59.7676389Z  Max Used Space: 93.13GiB
+2026-06-20T23:23:59.7676750Z  Min Free Space: 27.01GiB
+2026-06-20T23:23:59.7685476Z ##[endgroup]
+2026-06-20T23:23:59.8550227Z ##[group]Inspect builder
+2026-06-20T23:23:59.8551442Z {
+2026-06-20T23:23:59.8552073Z   "nodes": [
+2026-06-20T23:23:59.8552406Z     {
+2026-06-20T23:23:59.8552818Z       "name": "builder-3e3962e8-1336-4edc-9425-11fca57e456a0",
+2026-06-20T23:23:59.8553402Z       "endpoint": "unix:///var/run/docker.sock",
+2026-06-20T23:23:59.8553894Z       "status": "running",
+2026-06-20T23:23:59.8554760Z       "buildkitd-flags": "--allow-insecure-entitlement security.insecure --allow-insecure-entitlement network.host",
+2026-06-20T23:23:59.8555544Z       "buildkit": "v0.30.0",
+2026-06-20T23:23:59.8555912Z       "platforms": "linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386",
+2026-06-20T23:23:59.8556291Z       "features": {
+2026-06-20T23:23:59.8556639Z         "Automatically load images to the Docker Engine image store": true,
+2026-06-20T23:23:59.8557074Z         "Cache export": true,
+2026-06-20T23:23:59.8557339Z         "Direct push": true,
+2026-06-20T23:23:59.8557863Z         "Docker exporter": true,
+2026-06-20T23:23:59.8558167Z         "Multi-platform build": true,
+2026-06-20T23:23:59.8558449Z         "OCI exporter": true
+2026-06-20T23:23:59.8558729Z       },
+2026-06-20T23:23:59.8558927Z       "labels": {
+2026-06-20T23:23:59.8559220Z         "org.mobyproject.buildkit.worker.executor": "oci",
+2026-06-20T23:23:59.8559681Z         "org.mobyproject.buildkit.worker.hostname": "d5a99ddf8d98",
+2026-06-20T23:23:59.8560146Z         "org.mobyproject.buildkit.worker.network": "host",
+2026-06-20T23:23:59.8560595Z         "org.mobyproject.buildkit.worker.oci.process-mode": "sandbox",
+2026-06-20T23:23:59.8561651Z         "org.mobyproject.buildkit.worker.selinux.enabled": "false",
+2026-06-20T23:23:59.8562104Z         "org.mobyproject.buildkit.worker.snapshotter": "overlayfs"
+2026-06-20T23:23:59.8562489Z       },
+2026-06-20T23:23:59.8562778Z       "gcPolicy": [
+2026-06-20T23:23:59.8563018Z         {
+2026-06-20T23:23:59.8563250Z           "all": false,
+2026-06-20T23:23:59.8563510Z           "filter": [
+2026-06-20T23:23:59.8563751Z             "type==source.local",
+2026-06-20T23:23:59.8564022Z             "type==exec.cachemount",
+2026-06-20T23:23:59.8564313Z             "type==source.git.checkout"
+2026-06-20T23:23:59.8564585Z           ],
+2026-06-20T23:23:59.8564821Z           "keepDuration": "48h0m0s",
+2026-06-20T23:23:59.8565136Z           "maxUsedSpace": "488.3MiB"
+2026-06-20T23:23:59.8565425Z         },
+2026-06-20T23:23:59.8565632Z         {
+2026-06-20T23:23:59.8565854Z           "all": false,
+2026-06-20T23:23:59.8566133Z           "keepDuration": "1440h0m0s",
+2026-06-20T23:23:59.8566458Z           "reservedSpace": "9.313GiB",
+2026-06-20T23:23:59.8566754Z           "maxUsedSpace": "93.13GiB",
+2026-06-20T23:23:59.8567046Z           "minFreeSpace": "27.01GiB"
+2026-06-20T23:23:59.8567304Z         },
+2026-06-20T23:23:59.8567535Z         {
+2026-06-20T23:23:59.8567981Z           "all": false,
+2026-06-20T23:23:59.8568248Z           "reservedSpace": "9.313GiB",
+2026-06-20T23:23:59.8568562Z           "maxUsedSpace": "93.13GiB",
+2026-06-20T23:23:59.8568860Z           "minFreeSpace": "27.01GiB"
+2026-06-20T23:23:59.8569131Z         },
+2026-06-20T23:23:59.8569349Z         {
+2026-06-20T23:23:59.8569546Z           "all": true,
+2026-06-20T23:23:59.8569792Z           "reservedSpace": "9.313GiB",
+2026-06-20T23:23:59.8570075Z           "maxUsedSpace": "93.13GiB",
+2026-06-20T23:23:59.8570371Z           "minFreeSpace": "27.01GiB"
+2026-06-20T23:23:59.8570636Z         }
+2026-06-20T23:23:59.8570829Z       ]
+2026-06-20T23:23:59.8571235Z     }
+2026-06-20T23:23:59.8571448Z   ],
+2026-06-20T23:23:59.8571717Z   "name": "builder-3e3962e8-1336-4edc-9425-11fca57e456a",
+2026-06-20T23:23:59.8572173Z   "driver": "docker-container",
+2026-06-20T23:23:59.8572486Z   "lastActivity": "2026-06-20T23:23:57.000Z"
+2026-06-20T23:23:59.8572818Z }
+2026-06-20T23:23:59.8573380Z ##[endgroup]
+2026-06-20T23:23:59.8573802Z ##[group]BuildKit version
+2026-06-20T23:23:59.8574144Z builder-3e3962e8-1336-4edc-9425-11fca57e456a0: v0.30.0
+2026-06-20T23:23:59.8574657Z ##[endgroup]
+2026-06-20T23:23:59.8721275Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:23:59.8722604Z ##[group]Run hashicorp/setup-terraform@v3
+2026-06-20T23:23:59.8722901Z with:
+2026-06-20T23:23:59.8723128Z   terraform_version: 1.15.4
+2026-06-20T23:23:59.8723431Z   cli_config_credentials_hostname: app.terraform.io
+2026-06-20T23:23:59.8723765Z   terraform_wrapper: true
+2026-06-20T23:23:59.8724003Z env:
+2026-06-20T23:23:59.8724224Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:23:59.8724499Z   AWS_REGION: us-east-1
+2026-06-20T23:23:59.8724918Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:23:59.8725289Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:23:59.8729866Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:23:59.8730111Z ##[endgroup]
+2026-06-20T23:24:00.0086981Z (node:2798) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-06-20T23:24:00.0088183Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-20T23:24:00.3104655Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/c8b941ef-4ef1-4928-8dd5-0f5b8610fef6
+2026-06-20T23:24:01.1446578Z ##[group]Run terraform init
+2026-06-20T23:24:01.1446939Z [36;1mterraform init[0m
+2026-06-20T23:24:01.1583428Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:24:01.1583713Z env:
+2026-06-20T23:24:01.1583951Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:24:01.1584239Z   AWS_REGION: us-east-1
+2026-06-20T23:24:01.1584618Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:24:01.1585000Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:24:01.1589643Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:24:01.1590033Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:24:01.1590457Z ##[endgroup]
+2026-06-20T23:24:01.4377215Z [0m[1mInitializing modules...[0m
+2026-06-20T23:24:01.4400384Z - critic in modules/agent
+2026-06-20T23:24:01.4412263Z - supervisor in modules/agent
+2026-06-20T23:24:01.4412975Z - knowledge in modules/agent
+2026-06-20T23:24:01.4415104Z - researcher in modules/agent
+2026-06-20T23:24:01.4419024Z - router in modules/agent
+2026-06-20T23:24:01.4467995Z [0m[1mInitializing provider plugins found in the configuration...[0m
+2026-06-20T23:24:01.4469489Z - Finding hashicorp/aws versions matching ">= 5.70.0"...
+2026-06-20T23:24:01.5521553Z - Finding hashicorp/random versions matching ">= 3.6.0"...
+2026-06-20T23:24:01.6263904Z - Installing hashicorp/aws v6.51.0...
+2026-06-20T23:24:06.6200812Z - Installed hashicorp/aws v6.51.0 (signed by HashiCorp)
+2026-06-20T23:24:06.6853038Z - Installing hashicorp/random v3.9.0...
+2026-06-20T23:24:06.9018183Z - Installed hashicorp/random v3.9.0 (signed by HashiCorp)
+2026-06-20T23:24:06.9018739Z
+2026-06-20T23:24:06.9019456Z [0m[1mInitializing the backend...[0m
+2026-06-20T23:24:07.0132460Z [0m[32m
+2026-06-20T23:24:07.0133062Z Successfully configured the backend "s3"! Terraform will automatically
+2026-06-20T23:24:07.0133854Z use this backend unless the backend configuration changes.[0m
+2026-06-20T23:24:07.0134169Z
+2026-06-20T23:24:07.1113663Z [0m[1mInitializing provider plugins found in the state...[0m
+2026-06-20T23:24:07.1114175Z - Reusing previous version of hashicorp/random
+2026-06-20T23:24:07.1114552Z - Reusing previous version of hashicorp/aws
+2026-06-20T23:24:07.8509183Z - Using previously-installed hashicorp/aws v6.51.0
+2026-06-20T23:24:07.8655483Z - Using previously-installed hashicorp/random v3.9.0
+2026-06-20T23:24:07.8655930Z
+2026-06-20T23:24:07.8656654Z Terraform has created a lock file [1m.terraform.lock.hcl[0m to record the provider
+2026-06-20T23:24:07.8657579Z selections it made above. Include this file in your version control repository
+2026-06-20T23:24:07.8658425Z so that Terraform can guarantee to make the same selections by default when
+2026-06-20T23:24:07.8659167Z you run "terraform init" in the future.[0m
+2026-06-20T23:24:07.8659492Z
+2026-06-20T23:24:07.8659907Z [0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+2026-06-20T23:24:07.8660516Z [0m[32m
+2026-06-20T23:24:07.8661218Z You may now begin working with Terraform. Try running "terraform plan" to see
+2026-06-20T23:24:07.8662059Z any changes that are required for your infrastructure. All Terraform commands
+2026-06-20T23:24:07.8662458Z should now work.
+2026-06-20T23:24:07.8662591Z
+2026-06-20T23:24:07.8662788Z If you ever set or change modules or backend configuration for Terraform,
+2026-06-20T23:24:07.8663332Z rerun this command to reinitialize your working directory. If you forget, other
+2026-06-20T23:24:07.8663895Z commands will detect it and remind you to do so if necessary.[0m
+2026-06-20T23:24:07.8822985Z ##[group]Run SUP_REPO=$(sed -n '/variable "agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)
+2026-06-20T23:24:07.8823758Z [36;1mSUP_REPO=$(sed -n '/variable "agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)[0m
+2026-06-20T23:24:07.8824433Z [36;1mROUTER_REPO=$(sed -n '/variable "router_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)[0m
+2026-06-20T23:24:07.8825114Z [36;1mCRITIC_REPO=$(sed -n '/variable "critic_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)[0m
+2026-06-20T23:24:07.8825801Z [36;1mKNOWLEDGE_REPO=$(sed -n '/variable "knowledge_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)[0m
+2026-06-20T23:24:07.8826563Z [36;1mRESEARCHER_REPO=$(sed -n '/variable "researcher_agent_name"/,/}/ s/.*default *= *"\([^"]*\)".*/\1/p' variables.tf)[0m
+2026-06-20T23:24:07.8827372Z [36;1mif [ -z "$SUP_REPO" ] || [ -z "$ROUTER_REPO" ] || [ -z "$CRITIC_REPO" ] || [ -z "$KNOWLEDGE_REPO" ] || [ -z "$RESEARCHER_REPO" ]; then[0m
+2026-06-20T23:24:07.8828036Z [36;1m  echo "could not resolve one or more agent_name defaults" >&2; exit 1[0m
+2026-06-20T23:24:07.8828435Z [36;1mfi[0m
+2026-06-20T23:24:07.8828781Z [36;1mACCOUNT=$(aws sts get-caller-identity --query Account --output text)[0m
+2026-06-20T23:24:07.8829185Z [36;1m[0m
+2026-06-20T23:24:07.8829503Z [36;1mensure_repo() {            # $1 = repo name, $2 = terraform module address[0m
+2026-06-20T23:24:07.8829904Z [36;1m  local repo="$1" addr="$2"[0m
+2026-06-20T23:24:07.8830248Z [36;1m  echo "Ensuring ECR repository: $repo ($addr)"[0m
+2026-06-20T23:24:07.8830816Z [36;1m  aws ecr describe-repositories --repository-names "$repo" --region "$AWS_REGION" >/dev/null 2>&1 \[0m
+2026-06-20T23:24:07.8831782Z [36;1m    || aws ecr create-repository --repository-name "$repo" --region "$AWS_REGION" >/dev/null[0m
+2026-06-20T23:24:07.8832390Z [36;1m  # Import into state only if not already tracked (import is not idempotent[0m
+2026-06-20T23:24:07.8833143Z [36;1m  # — it errors if the address already exists, so guard on state list).[0m
+2026-06-20T23:24:07.8833631Z [36;1m  if ! terraform state list "$addr" >/dev/null 2>&1; then[0m
+2026-06-20T23:24:07.8834012Z [36;1m    echo "Importing $repo into $addr"[0m
+2026-06-20T23:24:07.8834347Z [36;1m    terraform import "$addr" "$repo"[0m
+2026-06-20T23:24:07.8834642Z [36;1m  fi[0m
+2026-06-20T23:24:07.8834846Z [36;1m}[0m
+2026-06-20T23:24:07.8835060Z [36;1m[0m
+2026-06-20T23:24:07.8835404Z [36;1mensure_repo "$SUP_REPO"        'module.supervisor.aws_ecr_repository.this'[0m
+2026-06-20T23:24:07.8835931Z [36;1mensure_repo "$ROUTER_REPO"     'module.router.aws_ecr_repository.this'[0m
+2026-06-20T23:24:07.8836420Z [36;1mensure_repo "$CRITIC_REPO"     'module.critic.aws_ecr_repository.this'[0m
+2026-06-20T23:24:07.8836934Z [36;1mensure_repo "$KNOWLEDGE_REPO"  'module.knowledge.aws_ecr_repository.this'[0m
+2026-06-20T23:24:07.8837468Z [36;1mensure_repo "$RESEARCHER_REPO" 'module.researcher.aws_ecr_repository.this'[0m
+2026-06-20T23:24:07.8837883Z [36;1m[0m
+2026-06-20T23:24:07.8838308Z [36;1mecho "supervisor_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${SUP_REPO}" >> "$GITHUB_OUTPUT"[0m
+2026-06-20T23:24:07.8839003Z [36;1mecho "router_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ROUTER_REPO}" >> "$GITHUB_OUTPUT"[0m
+2026-06-20T23:24:07.8839710Z [36;1mecho "critic_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CRITIC_REPO}" >> "$GITHUB_OUTPUT"[0m
+2026-06-20T23:24:07.8840410Z [36;1mecho "knowledge_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${KNOWLEDGE_REPO}" >> "$GITHUB_OUTPUT"[0m
+2026-06-20T23:24:07.8841455Z [36;1mecho "researcher_ecr_url=${ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com/${RESEARCHER_REPO}" >> "$GITHUB_OUTPUT"[0m
+2026-06-20T23:24:07.8874616Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:24:07.8874905Z env:
+2026-06-20T23:24:07.8875133Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:24:07.8875426Z   AWS_REGION: us-east-1
+2026-06-20T23:24:07.8876145Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:24:07.8876519Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:24:07.8881307Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:24:07.8881693Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:24:07.8882120Z ##[endgroup]
+2026-06-20T23:24:10.5955020Z Ensuring ECR repository: multiagent-supervisor (module.supervisor.aws_ecr_repository.this)
+2026-06-20T23:24:12.3793048Z Ensuring ECR repository: multiagent-router (module.router.aws_ecr_repository.this)
+2026-06-20T23:24:14.1111506Z Ensuring ECR repository: multiagent-critic (module.critic.aws_ecr_repository.this)
+2026-06-20T23:24:15.8883591Z Ensuring ECR repository: multiagent-knowledge (module.knowledge.aws_ecr_repository.this)
+2026-06-20T23:24:18.2867826Z Importing multiagent-knowledge into module.knowledge.aws_ecr_repository.this
+2026-06-20T23:24:21.3617389Z [0m[1mmodule.knowledge.aws_ecr_repository.this: Importing from ID "multiagent-knowledge"...[0m
+2026-06-20T23:24:21.3812417Z [0m[1mdata.aws_iam_openid_connect_provider.github: Reading...[0m[0m
+2026-06-20T23:24:21.3842157Z [0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+2026-06-20T23:24:21.3852744Z [0m[1m[32mmodule.knowledge.aws_ecr_repository.this: Import prepared![0m
+2026-06-20T23:24:21.3913162Z [0m[32m  Prepared aws_ecr_repository for import[0m
+2026-06-20T23:24:21.3914395Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Reading...[0m[0m
+2026-06-20T23:24:21.3915908Z [0m[1mmodule.knowledge.aws_ecr_repository.this: Refreshing state... [id=multiagent-knowledge][0m
+2026-06-20T23:24:21.3917449Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Read complete after 0s [id=2191191453][0m
+2026-06-20T23:24:21.3947304Z [0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=224193574799][0m
+2026-06-20T23:24:21.3970288Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:21.3988747Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:21.3992145Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:21.3993404Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Reading...[0m[0m
+2026-06-20T23:24:21.3994290Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:21.3995070Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:21.3999597Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:21.4003072Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:21.4006649Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:21.4009137Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Read complete after 0s [id=3656804795][0m
+2026-06-20T23:24:21.4011701Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:21.4015596Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:21.5190690Z [0m[1mdata.aws_iam_openid_connect_provider.github: Read complete after 1s [id=arn:aws:iam::224193574799:oidc-provider/token.actions.githubusercontent.com][0m
+2026-06-20T23:24:21.5263502Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Reading...[0m[0m
+2026-06-20T23:24:21.5292662Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Read complete after 0s [id=1111214936][0m
+2026-06-20T23:24:21.5928723Z [0m[32m
+2026-06-20T23:24:21.5929512Z Import successful!
+2026-06-20T23:24:21.5929878Z
+2026-06-20T23:24:21.5930249Z The resources that were imported are shown above. These resources are now in
+2026-06-20T23:24:21.5931769Z your Terraform state and will henceforth be managed by Terraform.
+2026-06-20T23:24:21.5932467Z [0m
+2026-06-20T23:24:21.6475013Z Ensuring ECR repository: multiagent-researcher (module.researcher.aws_ecr_repository.this)
+2026-06-20T23:24:24.1435713Z Importing multiagent-researcher into module.researcher.aws_ecr_repository.this
+2026-06-20T23:24:27.3027590Z [0m[1mmodule.researcher.aws_ecr_repository.this: Importing from ID "multiagent-researcher"...[0m
+2026-06-20T23:24:27.3272755Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Reading...[0m[0m
+2026-06-20T23:24:27.3318393Z [0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+2026-06-20T23:24:27.3373735Z [0m[1m[32mmodule.researcher.aws_ecr_repository.this: Import prepared![0m
+2026-06-20T23:24:27.3375375Z [0m[32m  Prepared aws_ecr_repository for import[0m
+2026-06-20T23:24:27.3379336Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Read complete after 0s [id=2191191453][0m
+2026-06-20T23:24:27.3380914Z [0m[1mdata.aws_iam_openid_connect_provider.github: Reading...[0m[0m
+2026-06-20T23:24:27.3382842Z [0m[1mmodule.researcher.aws_ecr_repository.this: Refreshing state... [id=multiagent-researcher][0m
+2026-06-20T23:24:27.3384161Z [0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=224193574799][0m
+2026-06-20T23:24:27.3394545Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:27.3395754Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:27.3396884Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:27.3398000Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:27.3399247Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:27.3400406Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Reading...[0m[0m
+2026-06-20T23:24:27.3402128Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:24:27.3419868Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:27.3449930Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:27.3451912Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Read complete after 0s [id=3656804795][0m
+2026-06-20T23:24:27.3457592Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:27.3459531Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:24:27.4320378Z [0m[1mdata.aws_iam_openid_connect_provider.github: Read complete after 0s [id=arn:aws:iam::224193574799:oidc-provider/token.actions.githubusercontent.com][0m
+2026-06-20T23:24:27.4334966Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Reading...[0m[0m
+2026-06-20T23:24:27.4348668Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Read complete after 0s [id=1111214936][0m
+2026-06-20T23:24:27.5238201Z [0m[32m
+2026-06-20T23:24:27.5238576Z Import successful!
+2026-06-20T23:24:27.5238791Z
+2026-06-20T23:24:27.5239212Z The resources that were imported are shown above. These resources are now in
+2026-06-20T23:24:27.5240060Z your Terraform state and will henceforth be managed by Terraform.
+2026-06-20T23:24:27.5240486Z [0m
+2026-06-20T23:24:27.5904443Z ##[group]Run docker buildx build \
+2026-06-20T23:24:27.5904789Z [36;1mdocker buildx build \[0m
+2026-06-20T23:24:27.5905101Z [36;1m  --platform linux/arm64 \[0m
+2026-06-20T23:24:27.5905396Z [36;1m  --push \[0m
+2026-06-20T23:24:27.5905676Z [36;1m  -f agents/supervisor/Dockerfile \[0m
+2026-06-20T23:24:27.5906050Z [36;1m  -t "$ECR_URI:1a80a88688c1a2db1206921710405645c6ce4b37" \[0m
+2026-06-20T23:24:27.5906428Z [36;1m  -t "$ECR_URI:latest" \[0m
+2026-06-20T23:24:27.5906693Z [36;1m  .[0m
+2026-06-20T23:24:27.5939952Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:24:27.5940239Z env:
+2026-06-20T23:24:27.5940469Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:24:27.5940752Z   AWS_REGION: us-east-1
+2026-06-20T23:24:27.5941351Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:24:27.5941735Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:24:27.5946314Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:24:27.5946699Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:24:27.5947267Z   ECR_URI: 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor
+2026-06-20T23:24:27.5947674Z ##[endgroup]
+2026-06-20T23:24:27.8941655Z #0 building with "builder-3e3962e8-1336-4edc-9425-11fca57e456a" instance using docker-container driver
+2026-06-20T23:24:27.8942371Z
+2026-06-20T23:24:27.8942599Z #1 [internal] load build definition from Dockerfile
+2026-06-20T23:24:27.8943130Z #1 transferring dockerfile: 2.49kB done
+2026-06-20T23:24:27.8943590Z #1 DONE 0.0s
+2026-06-20T23:24:27.8943770Z
+2026-06-20T23:24:27.8944032Z #2 [auth] docker/dockerfile:pull token for registry-1.docker.io
+2026-06-20T23:24:27.8944578Z #2 DONE 0.0s
+2026-06-20T23:24:27.8944754Z
+2026-06-20T23:24:27.8945214Z #3 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+2026-06-20T23:24:28.0283246Z #3 DONE 0.3s
+2026-06-20T23:24:28.2025777Z
+2026-06-20T23:24:28.2027413Z #4 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+2026-06-20T23:24:28.2029278Z #4 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+2026-06-20T23:24:28.2030590Z #4 sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 11.98MB / 11.98MB 0.1s done
+2026-06-20T23:24:28.2032437Z #4 extracting sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 0.1s done
+2026-06-20T23:24:28.2033252Z #4 DONE 0.2s
+2026-06-20T23:24:28.4200462Z
+2026-06-20T23:24:28.4201189Z #5 [auth] library/node:pull token for registry-1.docker.io
+2026-06-20T23:24:28.4201634Z #5 DONE 0.0s
+2026-06-20T23:24:28.4201769Z
+2026-06-20T23:24:28.4201981Z #6 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+2026-06-20T23:24:28.5290207Z #6 DONE 0.3s
+2026-06-20T23:24:28.6884642Z
+2026-06-20T23:24:28.6885248Z #7 [internal] load .dockerignore
+2026-06-20T23:24:28.6885761Z #7 transferring context: 393B done
+2026-06-20T23:24:30.6560712Z #7 DONE 0.0s
+2026-06-20T23:24:30.6561913Z
+2026-06-20T23:24:30.6562142Z #8 [internal] load build context
+2026-06-20T23:24:30.6562652Z #8 transferring context: 1.15MB 0.0s done
+2026-06-20T23:24:30.6563709Z #8 DONE 0.0s
+2026-06-20T23:24:30.6563909Z
+2026-06-20T23:24:30.6564973Z #9 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:24:30.6567013Z #9 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 done
+2026-06-20T23:24:30.6568122Z #9 sha256:ed7f19ee07f992aa9ce9fa1ca75db4ae36641464e404f6b720b4afce41cab9e4 447B / 447B 0.0s done
+2026-06-20T23:24:30.6569701Z #9 sha256:791fd1b17847094616ace4f04066a269c36bb89561d5d7f1a0dba4f615e16716 1.71MB / 1.71MB 0.0s done
+2026-06-20T23:24:30.6570625Z #9 sha256:93f1e44b7642d94207805933fd52fd7b5a5a684cf69b340ae3df415754a0a614 3.31kB / 3.31kB 0.0s done
+2026-06-20T23:24:30.6571502Z #9 sha256:b007268d7e627275df714577a74837e42ee450306295c30b987d482c667fbedf 41.39MB / 41.39MB 0.1s done
+2026-06-20T23:24:30.8660897Z #9 sha256:46ac7a0b9811e518f6b5a0d52940c913a1a560a8f78b82267804914e50244d2d 28.12MB / 28.12MB 0.2s done
+2026-06-20T23:24:30.8663167Z #9 extracting sha256:46ac7a0b9811e518f6b5a0d52940c913a1a560a8f78b82267804914e50244d2d
+2026-06-20T23:24:31.4714558Z #9 extracting sha256:46ac7a0b9811e518f6b5a0d52940c913a1a560a8f78b82267804914e50244d2d 0.8s done
+2026-06-20T23:24:31.4715203Z #9 DONE 1.0s
+2026-06-20T23:24:31.6275392Z
+2026-06-20T23:24:31.6277428Z #9 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:24:31.6279333Z #9 extracting sha256:93f1e44b7642d94207805933fd52fd7b5a5a684cf69b340ae3df415754a0a614 done
+2026-06-20T23:24:31.6280382Z #9 extracting sha256:b007268d7e627275df714577a74837e42ee450306295c30b987d482c667fbedf
+2026-06-20T23:24:32.3557048Z #9 extracting sha256:b007268d7e627275df714577a74837e42ee450306295c30b987d482c667fbedf 0.9s done
+2026-06-20T23:24:32.3557854Z #9 DONE 1.9s
+2026-06-20T23:24:32.5438204Z
+2026-06-20T23:24:32.5439247Z #9 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:24:32.5440610Z #9 extracting sha256:791fd1b17847094616ace4f04066a269c36bb89561d5d7f1a0dba4f615e16716 0.0s done
+2026-06-20T23:24:32.5441876Z #9 extracting sha256:ed7f19ee07f992aa9ce9fa1ca75db4ae36641464e404f6b720b4afce41cab9e4 done
+2026-06-20T23:24:32.5442523Z #9 DONE 1.9s
+2026-06-20T23:24:32.5442646Z
+2026-06-20T23:24:32.5442756Z #10 [runtime  2/11] WORKDIR /app
+2026-06-20T23:24:32.7447897Z #10 DONE 0.4s
+2026-06-20T23:24:32.9193994Z
+2026-06-20T23:24:32.9194692Z #11 [build 3/9] COPY package*.json .npmrc ./
+2026-06-20T23:24:32.9195128Z #11 DONE 0.0s
+2026-06-20T23:24:32.9195264Z
+2026-06-20T23:24:32.9195479Z #12 [build 4/9] COPY packages/common/package.json ./packages/common/
+2026-06-20T23:24:32.9195879Z #12 DONE 0.0s
+2026-06-20T23:24:32.9196003Z
+2026-06-20T23:24:32.9196233Z #13 [build 5/9] COPY agents/supervisor/package.json ./agents/supervisor/
+2026-06-20T23:24:32.9196622Z #13 DONE 0.0s
+2026-06-20T23:24:32.9196741Z
+2026-06-20T23:24:32.9196848Z #14 [build 6/9] RUN npm install
+2026-06-20T23:25:07.5456719Z #14 34.78 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:25:07.7410880Z #14 34.82 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:25:23.6356293Z #14 50.87
+2026-06-20T23:25:23.6358178Z #14 50.87 added 526 packages, and audited 533 packages in 49s
+2026-06-20T23:25:23.7875664Z #14 50.87
+2026-06-20T23:25:23.7876190Z #14 50.87 69 packages are looking for funding
+2026-06-20T23:25:23.7876769Z #14 50.87   run `npm fund` for details
+2026-06-20T23:25:23.8165434Z #14 51.05
+2026-06-20T23:25:23.8166166Z #14 51.05 4 vulnerabilities (2 moderate, 1 high, 1 critical)
+2026-06-20T23:25:23.8167104Z #14 51.05
+2026-06-20T23:25:23.8167871Z #14 51.05 To address all issues (including breaking changes), run:
+2026-06-20T23:25:23.8168835Z #14 51.05   npm audit fix --force
+2026-06-20T23:25:23.8169477Z #14 51.05
+2026-06-20T23:25:23.8170021Z #14 51.05 Run `npm audit` for details.
+2026-06-20T23:25:23.9847623Z #14 51.07 npm notice
+2026-06-20T23:25:23.9848255Z #14 51.07 npm notice New major version of npm available! 10.8.2 -> 11.17.0
+2026-06-20T23:25:23.9849102Z #14 51.07 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+2026-06-20T23:25:23.9849894Z #14 51.07 npm notice To update run: npm install -g npm@11.17.0
+2026-06-20T23:25:23.9850429Z #14 51.07 npm notice
+2026-06-20T23:25:24.0924993Z #14 DONE 51.3s
+2026-06-20T23:25:24.2432548Z
+2026-06-20T23:25:24.2433560Z #15 [build 7/9] COPY packages/common ./packages/common
+2026-06-20T23:25:24.2658745Z #15 DONE 0.2s
+2026-06-20T23:25:24.4266204Z
+2026-06-20T23:25:24.4267068Z #16 [build 8/9] COPY agents/supervisor ./agents/supervisor
+2026-06-20T23:25:24.4267834Z #16 DONE 0.0s
+2026-06-20T23:25:24.4268257Z
+2026-06-20T23:25:24.4268807Z #17 [build 9/9] RUN npm run build --workspace @multiagent/common   && npm run build --workspace supervisor   && npm prune --omit=dev
+2026-06-20T23:25:26.9013935Z #17 2.625
+2026-06-20T23:25:26.9014392Z #17 2.625 > @multiagent/common@0.1.0 build
+2026-06-20T23:25:26.9015138Z #17 2.625 > tsc -p tsconfig.json
+2026-06-20T23:25:26.9015586Z #17 2.625
+2026-06-20T23:25:42.7595710Z #17 18.48
+2026-06-20T23:25:42.7596273Z #17 18.48 > supervisor@0.1.0 build
+2026-06-20T23:25:42.7597050Z #17 18.48 > tsc -p tsconfig.json
+2026-06-20T23:25:42.7597691Z #17 18.48
+2026-06-20T23:26:13.7135021Z #17 49.44
+2026-06-20T23:26:13.7136010Z #17 49.44 up to date, audited 373 packages in 10s
+2026-06-20T23:26:13.9365652Z #17 49.44
+2026-06-20T23:26:13.9366105Z #17 49.44 43 packages are looking for funding
+2026-06-20T23:26:13.9366457Z #17 49.44   run `npm fund` for details
+2026-06-20T23:26:13.9366735Z #17 49.45
+2026-06-20T23:26:13.9366955Z #17 49.45 found 0 vulnerabilities
+2026-06-20T23:26:13.9367214Z #17 DONE 49.5s
+2026-06-20T23:26:14.0474409Z
+2026-06-20T23:26:14.0475189Z #18 [runtime  3/11] COPY --from=build /app/node_modules ./node_modules
+2026-06-20T23:26:14.2252785Z #18 DONE 0.0s
+2026-06-20T23:26:14.2254705Z
+2026-06-20T23:26:14.2255258Z #19 [runtime  4/11] COPY --from=build /app/package.json ./package.json
+2026-06-20T23:26:14.2255878Z #19 DONE 0.0s
+2026-06-20T23:26:14.7331727Z
+2026-06-20T23:26:14.7332796Z #20 [runtime  5/11] COPY --from=build /app/packages/common/package.json ./packages/common/package.json
+2026-06-20T23:26:14.8927777Z #20 DONE 0.0s
+2026-06-20T23:26:14.8928317Z
+2026-06-20T23:26:14.8929743Z #21 [runtime  6/11] COPY --from=build /app/packages/common/dist ./packages/common/dist
+2026-06-20T23:26:14.8931449Z #21 DONE 0.0s
+2026-06-20T23:26:14.8931643Z
+2026-06-20T23:26:14.8932153Z #22 [runtime  7/11] COPY --from=build /app/packages/common/node_modules ./packages/common/node_modules
+2026-06-20T23:26:14.8932673Z #22 DONE 0.1s
+2026-06-20T23:26:15.0691537Z
+2026-06-20T23:26:15.0692234Z #23 [runtime  8/11] COPY --from=build /app/agents/supervisor/package.json ./agents/supervisor/package.json
+2026-06-20T23:26:15.0692777Z #23 DONE 0.0s
+2026-06-20T23:26:15.0693264Z
+2026-06-20T23:26:15.0693507Z #24 [runtime  9/11] COPY --from=build /app/agents/supervisor/dist ./agents/supervisor/dist
+2026-06-20T23:26:15.0693916Z #24 DONE 0.0s
+2026-06-20T23:26:15.0694035Z
+2026-06-20T23:26:15.0694331Z #25 [runtime 10/11] COPY --from=build /app/agents/supervisor/node_modules ./agents/supervisor/node_modules
+2026-06-20T23:26:16.4775472Z #25 DONE 1.6s
+2026-06-20T23:26:16.6289984Z
+2026-06-20T23:26:16.6290664Z #26 [runtime 11/11] RUN useradd --create-home --uid 1001 agent
+2026-06-20T23:26:16.7737295Z #26 DONE 0.3s
+2026-06-20T23:26:16.9261719Z
+2026-06-20T23:26:16.9262378Z #27 exporting to image
+2026-06-20T23:26:16.9262808Z #27 exporting layers
+2026-06-20T23:26:18.5425384Z #27 exporting layers 1.8s done
+2026-06-20T23:26:18.6445450Z #27 exporting manifest sha256:c7118739778a789d2c3099fe86dbcee6d50cd0adb78f5056b09642cd97018b30 done
+2026-06-20T23:26:18.6450735Z #27 exporting config sha256:96c0d6fe7fb82c2fe38c74147f75217d3b2bdb605fbfc13a7591186884f7b49c done
+2026-06-20T23:26:18.6453244Z #27 exporting attestation manifest sha256:fb5ffd412b7d8915a13545690ae9250a12314815c7d0e9b2783d14447e15a749 done
+2026-06-20T23:26:18.6454691Z #27 exporting manifest list sha256:144356e1337f65db5e96aa218714d73b26f74606986e6e653992b3fa8e1cd944 done
+2026-06-20T23:26:18.6455295Z #27 pushing layers
+2026-06-20T23:26:18.7953683Z #27 ...
+2026-06-20T23:26:18.7953872Z
+2026-06-20T23:26:18.7954140Z #28 [auth] sharing credentials for 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:26:18.7954579Z #28 DONE 0.0s
+2026-06-20T23:26:18.9446126Z
+2026-06-20T23:26:18.9447109Z #27 exporting to image
+2026-06-20T23:26:20.1405317Z #27 pushing layers 1.6s done
+2026-06-20T23:26:20.1406807Z #27 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:144356e1337f65db5e96aa218714d73b26f74606986e6e653992b3fa8e1cd944
+2026-06-20T23:26:20.9794043Z #27 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:144356e1337f65db5e96aa218714d73b26f74606986e6e653992b3fa8e1cd944 0.8s done
+2026-06-20T23:26:21.1060749Z #27 pushing layers 0.1s done
+2026-06-20T23:26:21.1062424Z #27 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:latest@sha256:144356e1337f65db5e96aa218714d73b26f74606986e6e653992b3fa8e1cd944
+2026-06-20T23:26:21.3941422Z #27 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:latest@sha256:144356e1337f65db5e96aa218714d73b26f74606986e6e653992b3fa8e1cd944 0.3s done
+2026-06-20T23:26:21.3942376Z #27 DONE 4.6s
+2026-06-20T23:26:21.4240390Z ##[group]Run docker buildx build \
+2026-06-20T23:26:21.4240732Z [36;1mdocker buildx build \[0m
+2026-06-20T23:26:21.4241303Z [36;1m  --platform linux/arm64 \[0m
+2026-06-20T23:26:21.4241599Z [36;1m  --push \[0m
+2026-06-20T23:26:21.4241855Z [36;1m  -f agents/router/Dockerfile \[0m
+2026-06-20T23:26:21.4242208Z [36;1m  -t "$ECR_URI:1a80a88688c1a2db1206921710405645c6ce4b37" \[0m
+2026-06-20T23:26:21.4242587Z [36;1m  -t "$ECR_URI:latest" \[0m
+2026-06-20T23:26:21.4242842Z [36;1m  .[0m
+2026-06-20T23:26:21.4275301Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:26:21.4275576Z env:
+2026-06-20T23:26:21.4275800Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:26:21.4276072Z   AWS_REGION: us-east-1
+2026-06-20T23:26:21.4276422Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:26:21.4276789Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:26:21.4281578Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:26:21.4281974Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:26:21.4282539Z   ECR_URI: 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router
+2026-06-20T23:26:21.4282928Z ##[endgroup]
+2026-06-20T23:26:21.6449205Z #0 building with "builder-3e3962e8-1336-4edc-9425-11fca57e456a" instance using docker-container driver
+2026-06-20T23:26:21.6456079Z
+2026-06-20T23:26:21.6457008Z #1 [internal] load build definition from Dockerfile
+2026-06-20T23:26:21.6457774Z #1 transferring dockerfile: 2.44kB done
+2026-06-20T23:26:21.6458162Z #1 DONE 0.0s
+2026-06-20T23:26:21.6458296Z
+2026-06-20T23:26:21.6458581Z #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+2026-06-20T23:26:21.6459163Z #2 DONE 0.1s
+2026-06-20T23:26:21.7721235Z
+2026-06-20T23:26:21.7722140Z #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+2026-06-20T23:26:21.7723481Z #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+2026-06-20T23:26:21.7724317Z #3 CACHED
+2026-06-20T23:26:21.7724441Z
+2026-06-20T23:26:21.7724765Z #4 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+2026-06-20T23:26:21.7725182Z #4 DONE 0.1s
+2026-06-20T23:26:21.9592886Z
+2026-06-20T23:26:21.9593434Z #5 [internal] load .dockerignore
+2026-06-20T23:26:21.9593956Z #5 transferring context: 393B done
+2026-06-20T23:26:21.9594345Z #5 DONE 0.0s
+2026-06-20T23:26:21.9594509Z
+2026-06-20T23:26:21.9594956Z #6 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:26:21.9595836Z #6 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 done
+2026-06-20T23:26:21.9596385Z #6 DONE 0.0s
+2026-06-20T23:26:21.9596509Z
+2026-06-20T23:26:21.9596612Z #7 [internal] load build context
+2026-06-20T23:26:21.9596894Z #7 transferring context: 23.98kB done
+2026-06-20T23:26:21.9597156Z #7 DONE 0.0s
+2026-06-20T23:26:21.9597273Z
+2026-06-20T23:26:21.9597387Z #8 [runtime  2/11] WORKDIR /app
+2026-06-20T23:26:21.9597631Z #8 CACHED
+2026-06-20T23:26:21.9597744Z
+2026-06-20T23:26:21.9597870Z #9 [build 3/9] COPY package*.json .npmrc ./
+2026-06-20T23:26:21.9598157Z #9 CACHED
+2026-06-20T23:26:21.9598276Z
+2026-06-20T23:26:21.9598477Z #10 [build 4/9] COPY packages/common/package.json ./packages/common/
+2026-06-20T23:26:21.9598844Z #10 CACHED
+2026-06-20T23:26:21.9598966Z
+2026-06-20T23:26:21.9599125Z #11 [build 5/9] COPY agents/router/package.json ./agents/router/
+2026-06-20T23:26:21.9599460Z #11 DONE 0.0s
+2026-06-20T23:26:21.9599584Z
+2026-06-20T23:26:21.9599680Z #12 [build 6/9] RUN npm install
+2026-06-20T23:26:56.8967109Z #12 35.09 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:26:57.0641239Z #12 35.10 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:27:12.7503726Z #12 50.94
+2026-06-20T23:27:12.7507601Z #12 50.94 added 527 packages, and audited 534 packages in 49s
+2026-06-20T23:27:12.9020908Z #12 50.94
+2026-06-20T23:27:12.9021565Z #12 50.94 69 packages are looking for funding
+2026-06-20T23:27:12.9021924Z #12 50.94   run `npm fund` for details
+2026-06-20T23:27:12.9374830Z #12 51.13
+2026-06-20T23:27:12.9392112Z #12 51.13 4 vulnerabilities (2 moderate, 1 high, 1 critical)
+2026-06-20T23:27:12.9392738Z #12 51.13
+2026-06-20T23:27:12.9393189Z #12 51.13 To address all issues (including breaking changes), run:
+2026-06-20T23:27:12.9393810Z #12 51.13   npm audit fix --force
+2026-06-20T23:27:12.9394220Z #12 51.13
+2026-06-20T23:27:12.9394555Z #12 51.13 Run `npm audit` for details.
+2026-06-20T23:27:13.1122524Z #12 51.15 npm notice
+2026-06-20T23:27:13.1123056Z #12 51.15 npm notice New major version of npm available! 10.8.2 -> 11.17.0
+2026-06-20T23:27:13.1123689Z #12 51.15 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+2026-06-20T23:27:13.1124457Z #12 51.15 npm notice To update run: npm install -g npm@11.17.0
+2026-06-20T23:27:13.1124986Z #12 51.15 npm notice
+2026-06-20T23:27:13.3002085Z #12 DONE 51.5s
+2026-06-20T23:27:13.4510893Z
+2026-06-20T23:27:13.4511679Z #13 [build 7/9] COPY packages/common ./packages/common
+2026-06-20T23:27:13.4686924Z #13 DONE 0.2s
+2026-06-20T23:27:13.6291700Z
+2026-06-20T23:27:13.6292329Z #14 [build 8/9] COPY agents/router ./agents/router
+2026-06-20T23:27:13.6292921Z #14 DONE 0.0s
+2026-06-20T23:27:13.6293113Z
+2026-06-20T23:27:13.6293770Z #15 [build 9/9] RUN npm run build --workspace @multiagent/common   && npm run build --workspace router   && npm prune --omit=dev
+2026-06-20T23:27:16.1095906Z #15 2.631
+2026-06-20T23:27:16.1096667Z #15 2.631 > @multiagent/common@0.1.0 build
+2026-06-20T23:27:16.1097655Z #15 2.631 > tsc -p tsconfig.json
+2026-06-20T23:27:16.1098370Z #15 2.631
+2026-06-20T23:27:31.8683554Z #15 18.39
+2026-06-20T23:27:31.8684547Z #15 18.39 > router@0.1.0 build
+2026-06-20T23:27:31.8685767Z #15 18.39 > tsc -p tsconfig.json
+2026-06-20T23:27:31.8686168Z #15 18.39
+2026-06-20T23:28:03.3572805Z #15 49.88
+2026-06-20T23:28:03.3573679Z #15 49.88 up to date, audited 374 packages in 10s
+2026-06-20T23:28:03.5771992Z #15 49.88
+2026-06-20T23:28:03.5772450Z #15 49.88 43 packages are looking for funding
+2026-06-20T23:28:03.5772812Z #15 49.88   run `npm fund` for details
+2026-06-20T23:28:03.5773089Z #15 49.89
+2026-06-20T23:28:03.5773301Z #15 49.89 found 0 vulnerabilities
+2026-06-20T23:28:03.5773701Z #15 DONE 49.9s
+2026-06-20T23:28:04.4197876Z
+2026-06-20T23:28:04.4203505Z #8 [runtime  2/11] WORKDIR /app
+2026-06-20T23:28:04.4203959Z #8 CACHED
+2026-06-20T23:28:04.5270406Z
+2026-06-20T23:28:04.5271369Z #16 [runtime  3/11] COPY --from=build /app/node_modules ./node_modules
+2026-06-20T23:28:04.5272104Z #16 DONE 0.0s
+2026-06-20T23:28:04.5272391Z
+2026-06-20T23:28:04.5273177Z #17 [runtime  4/11] COPY --from=build /app/package.json ./package.json
+2026-06-20T23:28:04.5274019Z #17 DONE 0.0s
+2026-06-20T23:28:04.5274332Z
+2026-06-20T23:28:04.5274844Z #18 [runtime  5/11] COPY --from=build /app/packages/common/package.json ./packages/common/package.json
+2026-06-20T23:28:04.5275661Z #18 DONE 0.0s
+2026-06-20T23:28:04.5275852Z
+2026-06-20T23:28:04.5276207Z #19 [runtime  6/11] COPY --from=build /app/packages/common/dist ./packages/common/dist
+2026-06-20T23:28:04.5276859Z #19 DONE 0.0s
+2026-06-20T23:28:04.6729031Z
+2026-06-20T23:28:04.6730210Z #20 [runtime  7/11] COPY --from=build /app/packages/common/node_modules ./packages/common/node_modules
+2026-06-20T23:28:04.6730773Z #20 DONE 0.1s
+2026-06-20T23:28:04.8505837Z
+2026-06-20T23:28:04.8506741Z #21 [runtime  8/11] COPY --from=build /app/agents/router/package.json ./agents/router/package.json
+2026-06-20T23:28:04.8507449Z #21 DONE 0.0s
+2026-06-20T23:28:04.8508006Z
+2026-06-20T23:28:04.8508367Z #22 [runtime  9/11] COPY --from=build /app/agents/router/dist ./agents/router/dist
+2026-06-20T23:28:04.8508950Z #22 DONE 0.0s
+2026-06-20T23:28:04.8509126Z
+2026-06-20T23:28:04.8509533Z #23 [runtime 10/11] COPY --from=build /app/agents/router/node_modules ./agents/router/node_modules
+2026-06-20T23:28:06.2789746Z #23 DONE 1.6s
+2026-06-20T23:28:06.4301388Z
+2026-06-20T23:28:06.4302048Z #24 [runtime 11/11] RUN useradd --create-home --uid 1001 agent
+2026-06-20T23:28:06.5749420Z #24 DONE 0.3s
+2026-06-20T23:28:06.7269513Z
+2026-06-20T23:28:06.7270205Z #25 exporting to image
+2026-06-20T23:28:06.7271507Z #25 exporting layers
+2026-06-20T23:28:08.3329315Z #25 exporting layers 1.8s done
+2026-06-20T23:28:08.5008635Z #25 ...
+2026-06-20T23:28:08.5009090Z
+2026-06-20T23:28:08.5009432Z #26 [auth] sharing credentials for 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:28:08.5010262Z #26 DONE 0.0s
+2026-06-20T23:28:08.5010432Z
+2026-06-20T23:28:08.5010656Z #25 exporting to image
+2026-06-20T23:28:08.5011915Z #25 exporting manifest sha256:f401f12e55c887fe7a1bebee4c6c296bc8c4933bce71bf0dce3818811ba0fde9 done
+2026-06-20T23:28:08.5013017Z #25 exporting config sha256:84c69db41c2075c34e3bbc486a73bb6ae97ecf34c51d3d2b4a4f698baf31cf2e done
+2026-06-20T23:28:08.5013972Z #25 exporting attestation manifest sha256:2e11e6528144463d74e96e7db77e4922d6809caf67d46e57338ef708e6569759 done
+2026-06-20T23:28:08.5015217Z #25 exporting manifest list sha256:b4470e00966c7f3a72c7aa1a16b3885748ab0076c19a75b89a33a8d42049d502 done
+2026-06-20T23:28:08.5015957Z #25 pushing layers
+2026-06-20T23:28:09.7176337Z #25 pushing layers 1.4s done
+2026-06-20T23:28:09.7178992Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:b4470e00966c7f3a72c7aa1a16b3885748ab0076c19a75b89a33a8d42049d502
+2026-06-20T23:28:10.5310520Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:b4470e00966c7f3a72c7aa1a16b3885748ab0076c19a75b89a33a8d42049d502 0.8s done
+2026-06-20T23:28:10.6399809Z #25 pushing layers 0.1s done
+2026-06-20T23:28:10.6401393Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:latest@sha256:b4470e00966c7f3a72c7aa1a16b3885748ab0076c19a75b89a33a8d42049d502
+2026-06-20T23:28:10.9139151Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:latest@sha256:b4470e00966c7f3a72c7aa1a16b3885748ab0076c19a75b89a33a8d42049d502 0.3s done
+2026-06-20T23:28:10.9141413Z #25 DONE 4.3s
+2026-06-20T23:28:10.9406546Z ##[group]Run docker buildx build \
+2026-06-20T23:28:10.9407010Z [36;1mdocker buildx build \[0m
+2026-06-20T23:28:10.9407569Z [36;1m  --platform linux/arm64 \[0m
+2026-06-20T23:28:10.9407998Z [36;1m  --push \[0m
+2026-06-20T23:28:10.9408478Z [36;1m  -f agents/critic/Dockerfile \[0m
+2026-06-20T23:28:10.9408968Z [36;1m  -t "$ECR_URI:1a80a88688c1a2db1206921710405645c6ce4b37" \[0m
+2026-06-20T23:28:10.9409694Z [36;1m  -t "$ECR_URI:latest" \[0m
+2026-06-20T23:28:10.9410115Z [36;1m  .[0m
+2026-06-20T23:28:10.9443289Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:28:10.9443684Z env:
+2026-06-20T23:28:10.9444194Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:28:10.9444601Z   AWS_REGION: us-east-1
+2026-06-20T23:28:10.9445171Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:28:10.9445729Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:28:10.9450575Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:28:10.9451378Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:28:10.9452206Z   ECR_URI: 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic
+2026-06-20T23:28:10.9452726Z ##[endgroup]
+2026-06-20T23:28:11.1887959Z #0 building with "builder-3e3962e8-1336-4edc-9425-11fca57e456a" instance using docker-container driver
+2026-06-20T23:28:11.1889058Z
+2026-06-20T23:28:11.1889570Z #1 [internal] load build definition from Dockerfile
+2026-06-20T23:28:11.1890444Z #1 transferring dockerfile: 2.44kB done
+2026-06-20T23:28:11.1891479Z #1 DONE 0.0s
+2026-06-20T23:28:11.1891792Z
+2026-06-20T23:28:11.1892221Z #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+2026-06-20T23:28:11.1893119Z #2 DONE 0.1s
+2026-06-20T23:28:11.1893387Z
+2026-06-20T23:28:11.1894006Z #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+2026-06-20T23:28:11.1895618Z #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+2026-06-20T23:28:11.1896738Z #3 CACHED
+2026-06-20T23:28:11.1897032Z
+2026-06-20T23:28:11.1897409Z #4 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+2026-06-20T23:28:11.2893889Z #4 DONE 0.1s
+2026-06-20T23:28:11.2894504Z
+2026-06-20T23:28:11.2895257Z #5 [internal] load .dockerignore
+2026-06-20T23:28:11.2896332Z #5 transferring context: 393B done
+2026-06-20T23:28:11.2897228Z #5 DONE 0.0s
+2026-06-20T23:28:11.2897671Z
+2026-06-20T23:28:11.2898637Z #6 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:28:11.2900680Z #6 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 done
+2026-06-20T23:28:11.2901984Z #6 DONE 0.0s
+2026-06-20T23:28:11.2902378Z
+2026-06-20T23:28:11.2902864Z #7 [internal] load build context
+2026-06-20T23:28:11.2903291Z #7 transferring context: 27.19kB done
+2026-06-20T23:28:11.2903583Z #7 DONE 0.0s
+2026-06-20T23:28:11.4475724Z
+2026-06-20T23:28:11.4476390Z #8 [build 3/9] COPY package*.json .npmrc ./
+2026-06-20T23:28:11.4476776Z #8 CACHED
+2026-06-20T23:28:11.4476902Z
+2026-06-20T23:28:11.4477011Z #9 [runtime  2/11] WORKDIR /app
+2026-06-20T23:28:11.4477264Z #9 CACHED
+2026-06-20T23:28:11.4477381Z
+2026-06-20T23:28:11.4477581Z #10 [build 4/9] COPY packages/common/package.json ./packages/common/
+2026-06-20T23:28:11.4477945Z #10 CACHED
+2026-06-20T23:28:11.4478059Z
+2026-06-20T23:28:11.4478232Z #11 [build 5/9] COPY agents/critic/package.json ./agents/critic/
+2026-06-20T23:28:11.4478582Z #11 DONE 0.0s
+2026-06-20T23:28:11.4478711Z
+2026-06-20T23:28:11.4478817Z #12 [build 6/9] RUN npm install
+2026-06-20T23:28:46.4702378Z #12 35.17 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:28:46.6887786Z #12 35.24 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:29:02.4328360Z #12 51.14
+2026-06-20T23:29:02.4329516Z #12 51.14 added 527 packages, and audited 534 packages in 49s
+2026-06-20T23:29:02.5844491Z #12 51.14
+2026-06-20T23:29:02.5844813Z #12 51.14 69 packages are looking for funding
+2026-06-20T23:29:02.5845169Z #12 51.14   run `npm fund` for details
+2026-06-20T23:29:02.6116980Z #12 51.31
+2026-06-20T23:29:02.6117786Z #12 51.31 4 vulnerabilities (2 moderate, 1 high, 1 critical)
+2026-06-20T23:29:02.6119000Z #12 51.31
+2026-06-20T23:29:02.6119544Z #12 51.31 To address all issues (including breaking changes), run:
+2026-06-20T23:29:02.6120435Z #12 51.31   npm audit fix --force
+2026-06-20T23:29:02.6120929Z #12 51.31
+2026-06-20T23:29:02.6121480Z #12 51.31 Run `npm audit` for details.
+2026-06-20T23:29:02.7793946Z #12 51.33 npm notice
+2026-06-20T23:29:02.7794551Z #12 51.33 npm notice New major version of npm available! 10.8.2 -> 11.17.0
+2026-06-20T23:29:02.7795385Z #12 51.33 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+2026-06-20T23:29:02.7796129Z #12 51.33 npm notice To update run: npm install -g npm@11.17.0
+2026-06-20T23:29:02.7796650Z #12 51.33 npm notice
+2026-06-20T23:29:02.8558054Z #12 DONE 51.6s
+2026-06-20T23:29:03.0066341Z
+2026-06-20T23:29:03.0066896Z #13 [build 7/9] COPY packages/common ./packages/common
+2026-06-20T23:29:03.0231905Z #13 DONE 0.2s
+2026-06-20T23:29:03.1832054Z
+2026-06-20T23:29:03.1832900Z #14 [build 8/9] COPY agents/critic ./agents/critic
+2026-06-20T23:29:03.1833605Z #14 DONE 0.0s
+2026-06-20T23:29:03.1833918Z
+2026-06-20T23:29:03.1834816Z #15 [build 9/9] RUN npm run build --workspace @multiagent/common   && npm run build --workspace critic   && npm prune --omit=dev
+2026-06-20T23:29:05.6719587Z #15 2.640
+2026-06-20T23:29:05.6720203Z #15 2.640 > @multiagent/common@0.1.0 build
+2026-06-20T23:29:05.6720827Z #15 2.640 > tsc -p tsconfig.json
+2026-06-20T23:29:05.6721538Z #15 2.640
+2026-06-20T23:29:21.2969276Z #15 18.26
+2026-06-20T23:29:21.2970478Z #15 18.26 > critic@0.1.0 build
+2026-06-20T23:29:21.2972085Z #15 18.26 > tsc -p tsconfig.json
+2026-06-20T23:29:21.2972556Z #15 18.26
+2026-06-20T23:29:52.4096273Z #15 49.38
+2026-06-20T23:29:52.4097152Z #15 49.38 up to date, audited 374 packages in 10s
+2026-06-20T23:29:52.6299316Z #15 49.38
+2026-06-20T23:29:52.6299842Z #15 49.38 43 packages are looking for funding
+2026-06-20T23:29:52.6300427Z #15 49.38   run `npm fund` for details
+2026-06-20T23:29:52.6300902Z #15 49.39
+2026-06-20T23:29:52.6301471Z #15 49.39 found 0 vulnerabilities
+2026-06-20T23:29:52.6301768Z #15 DONE 49.4s
+2026-06-20T23:29:52.9565469Z
+2026-06-20T23:29:52.9566372Z #9 [runtime  2/11] WORKDIR /app
+2026-06-20T23:29:52.9566826Z #9 CACHED
+2026-06-20T23:29:53.1267919Z
+2026-06-20T23:29:53.1268851Z #16 [runtime  3/11] COPY --from=build /app/node_modules ./node_modules
+2026-06-20T23:29:53.1269499Z #16 DONE 0.0s
+2026-06-20T23:29:53.6168597Z
+2026-06-20T23:29:53.6170340Z #17 [runtime  4/11] COPY --from=build /app/package.json ./package.json
+2026-06-20T23:29:53.8018924Z #17 DONE 0.0s
+2026-06-20T23:29:53.8025101Z
+2026-06-20T23:29:53.8025871Z #18 [runtime  5/11] COPY --from=build /app/packages/common/package.json ./packages/common/package.json
+2026-06-20T23:29:53.8026688Z #18 DONE 0.0s
+2026-06-20T23:29:53.8026877Z
+2026-06-20T23:29:53.8027266Z #19 [runtime  6/11] COPY --from=build /app/packages/common/dist ./packages/common/dist
+2026-06-20T23:29:53.9827553Z #19 DONE 0.0s
+2026-06-20T23:29:53.9827838Z
+2026-06-20T23:29:53.9828366Z #20 [runtime  7/11] COPY --from=build /app/packages/common/node_modules ./packages/common/node_modules
+2026-06-20T23:29:53.9829126Z #20 DONE 0.1s
+2026-06-20T23:29:53.9829354Z
+2026-06-20T23:29:53.9829813Z #21 [runtime  8/11] COPY --from=build /app/agents/critic/package.json ./agents/critic/package.json
+2026-06-20T23:29:53.9830523Z #21 DONE 0.0s
+2026-06-20T23:29:53.9831287Z
+2026-06-20T23:29:53.9831650Z #22 [runtime  9/11] COPY --from=build /app/agents/critic/dist ./agents/critic/dist
+2026-06-20T23:29:53.9832271Z #22 DONE 0.0s
+2026-06-20T23:29:53.9832461Z
+2026-06-20T23:29:53.9832885Z #23 [runtime 10/11] COPY --from=build /app/agents/critic/node_modules ./agents/critic/node_modules
+2026-06-20T23:29:55.4038797Z #23 DONE 1.6s
+2026-06-20T23:29:55.5552053Z
+2026-06-20T23:29:55.5553048Z #24 [runtime 11/11] RUN useradd --create-home --uid 1001 agent
+2026-06-20T23:29:55.6979733Z #24 DONE 0.3s
+2026-06-20T23:29:55.8498702Z
+2026-06-20T23:29:55.8499218Z #25 exporting to image
+2026-06-20T23:29:55.8499749Z #25 exporting layers
+2026-06-20T23:29:57.4665296Z #25 exporting layers 1.8s done
+2026-06-20T23:29:57.6351294Z #25 ...
+2026-06-20T23:29:57.6351544Z
+2026-06-20T23:29:57.6351959Z #26 [auth] sharing credentials for 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:29:57.6352529Z #26 DONE 0.0s
+2026-06-20T23:29:57.6352670Z
+2026-06-20T23:29:57.6352876Z #25 exporting to image
+2026-06-20T23:29:57.6353589Z #25 exporting manifest sha256:b18ecde84a07a73472162899eb660a3e077721fd5117566f32f367d1569c533f done
+2026-06-20T23:29:57.6354571Z #25 exporting config sha256:b7a4f5e2a0d081cb5b3c12b3ec1de54ce06b77e859f7c8faa460bc56a962ae4d done
+2026-06-20T23:29:57.6355289Z #25 exporting attestation manifest sha256:6dfad0b2cf3e50ac42f9e381c94b0a0e4e10c50b3fd80fa187b2f5595d4a42ca done
+2026-06-20T23:29:57.6356011Z #25 exporting manifest list sha256:2f869d0d3d67ee2c483b5107c3c8765c05bf7002d9c1fcd9139f5a6728ff9394 done
+2026-06-20T23:29:57.6356483Z #25 pushing layers
+2026-06-20T23:29:58.8755597Z #25 pushing layers 1.4s done
+2026-06-20T23:29:58.8757096Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:2f869d0d3d67ee2c483b5107c3c8765c05bf7002d9c1fcd9139f5a6728ff9394
+2026-06-20T23:29:59.6854104Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:2f869d0d3d67ee2c483b5107c3c8765c05bf7002d9c1fcd9139f5a6728ff9394 0.8s done
+2026-06-20T23:29:59.7858360Z #25 pushing layers 0.1s done
+2026-06-20T23:29:59.7859643Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:latest@sha256:2f869d0d3d67ee2c483b5107c3c8765c05bf7002d9c1fcd9139f5a6728ff9394
+2026-06-20T23:30:00.0868749Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:latest@sha256:2f869d0d3d67ee2c483b5107c3c8765c05bf7002d9c1fcd9139f5a6728ff9394 0.3s done
+2026-06-20T23:30:00.0870039Z #25 DONE 4.4s
+2026-06-20T23:30:00.1133709Z ##[group]Run docker buildx build \
+2026-06-20T23:30:00.1134065Z [36;1mdocker buildx build \[0m
+2026-06-20T23:30:00.1134348Z [36;1m  --platform linux/arm64 \[0m
+2026-06-20T23:30:00.1134835Z [36;1m  --push \[0m
+2026-06-20T23:30:00.1135095Z [36;1m  -f agents/knowledge/Dockerfile \[0m
+2026-06-20T23:30:00.1135460Z [36;1m  -t "$ECR_URI:1a80a88688c1a2db1206921710405645c6ce4b37" \[0m
+2026-06-20T23:30:00.1135819Z [36;1m  -t "$ECR_URI:latest" \[0m
+2026-06-20T23:30:00.1136075Z [36;1m  .[0m
+2026-06-20T23:30:00.1169715Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:30:00.1169995Z env:
+2026-06-20T23:30:00.1170218Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:30:00.1170489Z   AWS_REGION: us-east-1
+2026-06-20T23:30:00.1170828Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:30:00.1171483Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:30:00.1176120Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:30:00.1176508Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:30:00.1177074Z   ECR_URI: 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge
+2026-06-20T23:30:00.1177466Z ##[endgroup]
+2026-06-20T23:30:00.3402869Z #0 building with "builder-3e3962e8-1336-4edc-9425-11fca57e456a" instance using docker-container driver
+2026-06-20T23:30:00.3403799Z
+2026-06-20T23:30:00.3409623Z #1 [internal] load build definition from Dockerfile
+2026-06-20T23:30:00.3412602Z #1 transferring dockerfile: 2.11kB done
+2026-06-20T23:30:00.3413760Z #1 DONE 0.0s
+2026-06-20T23:30:00.3414283Z
+2026-06-20T23:30:00.3414903Z #2 [auth] docker/dockerfile:pull token for registry-1.docker.io
+2026-06-20T23:30:00.3415648Z #2 DONE 0.0s
+2026-06-20T23:30:00.3415845Z
+2026-06-20T23:30:00.3416204Z #3 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+2026-06-20T23:30:00.3416847Z #3 DONE 0.1s
+2026-06-20T23:30:00.5016521Z
+2026-06-20T23:30:00.5022176Z #4 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+2026-06-20T23:30:00.5023956Z #4 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+2026-06-20T23:30:00.5025123Z #4 CACHED
+2026-06-20T23:30:00.5025492Z
+2026-06-20T23:30:00.5025881Z #5 [auth] library/node:pull token for registry-1.docker.io
+2026-06-20T23:30:00.5026476Z #5 DONE 0.0s
+2026-06-20T23:30:00.5026666Z
+2026-06-20T23:30:00.5026992Z #6 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+2026-06-20T23:30:00.5027581Z #6 DONE 0.1s
+2026-06-20T23:30:00.6944167Z
+2026-06-20T23:30:00.6945046Z #7 [internal] load .dockerignore
+2026-06-20T23:30:00.6945989Z #7 transferring context: 393B done
+2026-06-20T23:30:00.6946749Z #7 DONE 0.0s
+2026-06-20T23:30:00.6946942Z
+2026-06-20T23:30:00.6947437Z #8 [build 1/8] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:30:00.6948528Z #8 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 done
+2026-06-20T23:30:00.6949111Z #8 DONE 0.0s
+2026-06-20T23:30:00.6949240Z
+2026-06-20T23:30:00.6949349Z #9 [internal] load build context
+2026-06-20T23:30:00.6949622Z #9 transferring context: 11.30kB done
+2026-06-20T23:30:00.6966267Z #9 DONE 0.0s
+2026-06-20T23:30:00.6966421Z
+2026-06-20T23:30:00.6966534Z #10 [build 2/8] WORKDIR /app
+2026-06-20T23:30:00.6966891Z #10 CACHED
+2026-06-20T23:30:00.6967079Z
+2026-06-20T23:30:00.6967236Z #11 [build 3/8] COPY package*.json .npmrc ./
+2026-06-20T23:30:00.6967628Z #11 CACHED
+2026-06-20T23:30:00.6967784Z
+2026-06-20T23:30:00.6968042Z #12 [build 4/8] COPY packages/common/package.json ./packages/common/
+2026-06-20T23:30:00.6968570Z #12 CACHED
+2026-06-20T23:30:00.6968735Z
+2026-06-20T23:30:00.6969000Z #13 [build 5/8] COPY agents/knowledge/package.json ./agents/knowledge/
+2026-06-20T23:30:00.6969495Z #13 DONE 0.0s
+2026-06-20T23:30:00.6969662Z
+2026-06-20T23:30:00.6969804Z #14 [build 6/8] RUN npm install
+2026-06-20T23:30:32.2198943Z #14 31.68 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:30:32.4590671Z #14 31.76 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:30:43.3400766Z #14 42.80
+2026-06-20T23:30:43.3401684Z #14 42.80 added 458 packages, and audited 465 packages in 41s
+2026-06-20T23:30:43.4910096Z #14 42.80
+2026-06-20T23:30:43.4910546Z #14 42.80 59 packages are looking for funding
+2026-06-20T23:30:43.4910912Z #14 42.80   run `npm fund` for details
+2026-06-20T23:30:43.5331888Z #14 42.99
+2026-06-20T23:30:43.5332468Z #14 42.99 4 vulnerabilities (2 moderate, 1 high, 1 critical)
+2026-06-20T23:30:43.5333034Z #14 42.99
+2026-06-20T23:30:43.5333509Z #14 42.99 To address all issues (including breaking changes), run:
+2026-06-20T23:30:43.5334116Z #14 42.99   npm audit fix --force
+2026-06-20T23:30:43.5334560Z #14 42.99
+2026-06-20T23:30:43.5334899Z #14 42.99 Run `npm audit` for details.
+2026-06-20T23:30:43.6991931Z #14 43.00 npm notice
+2026-06-20T23:30:43.6994407Z #14 43.00 npm notice New major version of npm available! 10.8.2 -> 11.17.0
+2026-06-20T23:30:43.6995260Z #14 43.00 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+2026-06-20T23:30:43.6995826Z #14 43.00 npm notice To update run: npm install -g npm@11.17.0
+2026-06-20T23:30:43.6996164Z #14 43.00 npm notice
+2026-06-20T23:30:43.7801308Z #14 DONE 43.2s
+2026-06-20T23:30:43.8825468Z
+2026-06-20T23:30:43.8826436Z #15 [build 7/8] COPY agents/knowledge ./agents/knowledge
+2026-06-20T23:30:43.8827197Z #15 DONE 0.1s
+2026-06-20T23:30:44.0342885Z
+2026-06-20T23:30:44.0343716Z #16 [build 8/8] RUN npm run build --workspace knowledge   && npm prune --omit=dev
+2026-06-20T23:30:46.5089287Z #16 2.625
+2026-06-20T23:30:46.5089929Z #16 2.625 > knowledge@0.1.0 build
+2026-06-20T23:30:46.5090360Z #16 2.625 > tsc -p tsconfig.json
+2026-06-20T23:30:46.5090825Z #16 2.625
+2026-06-20T23:31:16.1291509Z #16 32.24
+2026-06-20T23:31:16.1292340Z #16 32.24 up to date, audited 305 packages in 9s
+2026-06-20T23:31:16.3478899Z #16 32.25
+2026-06-20T23:31:16.3479240Z #16 32.25 33 packages are looking for funding
+2026-06-20T23:31:16.3479596Z #16 32.25   run `npm fund` for details
+2026-06-20T23:31:16.3479879Z #16 32.26
+2026-06-20T23:31:16.3480090Z #16 32.26 found 0 vulnerabilities
+2026-06-20T23:31:16.3480353Z #16 DONE 32.3s
+2026-06-20T23:31:16.5867990Z
+2026-06-20T23:31:16.5868520Z #10 [build 2/8] WORKDIR /app
+2026-06-20T23:31:16.5868845Z #10 CACHED
+2026-06-20T23:31:16.7684863Z
+2026-06-20T23:31:16.7685816Z #17 [runtime 3/8] COPY --from=build /app/node_modules ./node_modules
+2026-06-20T23:31:16.7686375Z #17 DONE 0.0s
+2026-06-20T23:31:16.7686516Z
+2026-06-20T23:31:16.7686761Z #18 [runtime 4/8] COPY --from=build /app/package.json ./package.json
+2026-06-20T23:31:16.7687268Z #18 DONE 0.0s
+2026-06-20T23:31:16.7687399Z
+2026-06-20T23:31:16.7687763Z #19 [runtime 5/8] COPY --from=build /app/agents/knowledge/package.json ./agents/knowledge/package.json
+2026-06-20T23:31:16.7688306Z #19 DONE 0.0s
+2026-06-20T23:31:16.7688430Z
+2026-06-20T23:31:16.7688787Z #20 [runtime 6/8] COPY --from=build /app/agents/knowledge/dist ./agents/knowledge/dist
+2026-06-20T23:31:16.7689191Z #20 DONE 0.0s
+2026-06-20T23:31:16.7689353Z
+2026-06-20T23:31:16.7689723Z #21 [runtime 7/8] COPY --from=build /app/agents/knowledge/node_modules ./agents/knowledge/node_modules
+2026-06-20T23:31:17.2751760Z #21 DONE 0.7s
+2026-06-20T23:31:17.4265580Z
+2026-06-20T23:31:17.4266211Z #22 [runtime 8/8] RUN useradd --create-home --uid 1001 agent
+2026-06-20T23:31:17.5149189Z #22 DONE 0.2s
+2026-06-20T23:31:17.6669952Z
+2026-06-20T23:31:17.6670469Z #23 exporting to image
+2026-06-20T23:31:17.6671360Z #23 exporting layers
+2026-06-20T23:31:18.3380194Z #23 exporting layers 0.8s done
+2026-06-20T23:31:18.5097108Z #23 ...
+2026-06-20T23:31:18.5097298Z
+2026-06-20T23:31:18.5097567Z #24 [auth] sharing credentials for 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:31:18.5098378Z #24 DONE 0.0s
+2026-06-20T23:31:18.5098509Z
+2026-06-20T23:31:18.5098606Z #23 exporting to image
+2026-06-20T23:31:18.5099062Z #23 exporting manifest sha256:a6c0f4c779244d0ebe7dbac7a52844b746a309ef07dd1048900b3906475a65d3 done
+2026-06-20T23:31:18.5099720Z #23 exporting config sha256:22362ba5953b242aada792a6cd25da13997e6aca42b72f2104231f51b341ea63 done
+2026-06-20T23:31:18.5100451Z #23 exporting attestation manifest sha256:d3eae1dced4329f5a567db1e3b0dfdbc6dd8ebcc3cc2fe6e176e7089611506a3 done
+2026-06-20T23:31:18.5101466Z #23 exporting manifest list sha256:b2aa70c20c33e263b30cda0cf56e9bf0598c11b97f1317410f26721aac3f3c5d done
+2026-06-20T23:31:18.5101979Z #23 pushing layers
+2026-06-20T23:31:20.4333993Z #23 pushing layers 2.1s done
+2026-06-20T23:31:20.4335970Z #23 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:b2aa70c20c33e263b30cda0cf56e9bf0598c11b97f1317410f26721aac3f3c5d
+2026-06-20T23:31:21.2705320Z #23 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:b2aa70c20c33e263b30cda0cf56e9bf0598c11b97f1317410f26721aac3f3c5d 0.8s done
+2026-06-20T23:31:21.5162441Z #23 pushing layers 0.1s done
+2026-06-20T23:31:21.5163261Z #23 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge:latest@sha256:b2aa70c20c33e263b30cda0cf56e9bf0598c11b97f1317410f26721aac3f3c5d
+2026-06-20T23:31:21.6445669Z #23 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge:latest@sha256:b2aa70c20c33e263b30cda0cf56e9bf0598c11b97f1317410f26721aac3f3c5d 0.3s done
+2026-06-20T23:31:21.6447061Z #23 DONE 4.1s
+2026-06-20T23:31:21.6746915Z ##[group]Run docker buildx build \
+2026-06-20T23:31:21.6747257Z [36;1mdocker buildx build \[0m
+2026-06-20T23:31:21.6747538Z [36;1m  --platform linux/arm64 \[0m
+2026-06-20T23:31:21.6747836Z [36;1m  --push \[0m
+2026-06-20T23:31:21.6748125Z [36;1m  -f agents/researcher/Dockerfile \[0m
+2026-06-20T23:31:21.6748506Z [36;1m  -t "$ECR_URI:1a80a88688c1a2db1206921710405645c6ce4b37" \[0m
+2026-06-20T23:31:21.6748889Z [36;1m  -t "$ECR_URI:latest" \[0m
+2026-06-20T23:31:21.6749153Z [36;1m  .[0m
+2026-06-20T23:31:21.6782699Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:31:21.6782977Z env:
+2026-06-20T23:31:21.6783200Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:31:21.6783475Z   AWS_REGION: us-east-1
+2026-06-20T23:31:21.6783809Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:31:21.6784195Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:31:21.6788797Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:31:21.6789178Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:31:21.6789755Z   ECR_URI: 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher
+2026-06-20T23:31:21.6790153Z ##[endgroup]
+2026-06-20T23:31:21.7826596Z #0 building with "builder-3e3962e8-1336-4edc-9425-11fca57e456a" instance using docker-container driver
+2026-06-20T23:31:21.7827415Z
+2026-06-20T23:31:21.7827995Z #1 [internal] load build definition from Dockerfile
+2026-06-20T23:31:21.9224374Z #1 transferring dockerfile: 2.43kB done
+2026-06-20T23:31:21.9224812Z #1 DONE 0.0s
+2026-06-20T23:31:21.9224951Z
+2026-06-20T23:31:21.9225207Z #2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+2026-06-20T23:31:21.9225615Z #2 DONE 0.1s
+2026-06-20T23:31:21.9225742Z
+2026-06-20T23:31:21.9226128Z #3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+2026-06-20T23:31:21.9226929Z #3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e done
+2026-06-20T23:31:21.9227493Z #3 CACHED
+2026-06-20T23:31:21.9227605Z
+2026-06-20T23:31:21.9227805Z #4 [internal] load metadata for docker.io/library/node:20-bookworm-slim
+2026-06-20T23:31:22.1713683Z #4 DONE 0.1s
+2026-06-20T23:31:22.1713940Z
+2026-06-20T23:31:22.1714114Z #5 [internal] load .dockerignore
+2026-06-20T23:31:22.1714907Z #5 transferring context: 393B done
+2026-06-20T23:31:22.1715188Z #5 DONE 0.0s
+2026-06-20T23:31:22.1715313Z
+2026-06-20T23:31:22.1715745Z #6 [runtime  1/11] FROM docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+2026-06-20T23:31:22.1716631Z #6 resolve docker.io/library/node:20-bookworm-slim@sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0 done
+2026-06-20T23:31:22.1717177Z #6 DONE 0.0s
+2026-06-20T23:31:22.1717300Z
+2026-06-20T23:31:22.1717407Z #7 [internal] load build context
+2026-06-20T23:31:22.1717679Z #7 transferring context: 24.65kB done
+2026-06-20T23:31:22.1717948Z #7 DONE 0.0s
+2026-06-20T23:31:22.1718057Z
+2026-06-20T23:31:22.1718177Z #8 [runtime  2/11] WORKDIR /app
+2026-06-20T23:31:22.1718426Z #8 CACHED
+2026-06-20T23:31:22.1718534Z
+2026-06-20T23:31:22.1718659Z #9 [build 3/9] COPY package*.json .npmrc ./
+2026-06-20T23:31:22.1718956Z #9 CACHED
+2026-06-20T23:31:22.1719062Z
+2026-06-20T23:31:22.1719268Z #10 [build 4/9] COPY packages/common/package.json ./packages/common/
+2026-06-20T23:31:22.1719644Z #10 CACHED
+2026-06-20T23:31:22.1719752Z
+2026-06-20T23:31:22.1719949Z #11 [build 5/9] COPY agents/researcher/package.json ./agents/researcher/
+2026-06-20T23:31:22.1720318Z #11 DONE 0.0s
+2026-06-20T23:31:22.1720437Z
+2026-06-20T23:31:22.1720538Z #12 [build 6/9] RUN npm install
+2026-06-20T23:31:57.2292457Z #12 35.21 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:31:57.4345863Z #12 35.26 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-06-20T23:32:13.4525180Z #12 51.43
+2026-06-20T23:32:13.4525975Z #12 51.43 added 528 packages, and audited 535 packages in 50s
+2026-06-20T23:32:13.6043052Z #12 51.43
+2026-06-20T23:32:13.6043374Z #12 51.43 69 packages are looking for funding
+2026-06-20T23:32:13.6043728Z #12 51.43   run `npm fund` for details
+2026-06-20T23:32:13.6393916Z #12 51.62
+2026-06-20T23:32:13.6412349Z #12 51.62 4 vulnerabilities (2 moderate, 1 high, 1 critical)
+2026-06-20T23:32:13.6413386Z #12 51.62
+2026-06-20T23:32:13.6414299Z #12 51.62 To address all issues (including breaking changes), run:
+2026-06-20T23:32:13.6415298Z #12 51.62   npm audit fix --force
+2026-06-20T23:32:13.6416064Z #12 51.62
+2026-06-20T23:32:13.6416781Z #12 51.62 Run `npm audit` for details.
+2026-06-20T23:32:13.8006064Z #12 51.64 npm notice
+2026-06-20T23:32:13.8007763Z #12 51.64 npm notice New major version of npm available! 10.8.2 -> 11.17.0
+2026-06-20T23:32:13.8008956Z #12 51.64 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.17.0
+2026-06-20T23:32:13.8009675Z #12 51.64 npm notice To update run: npm install -g npm@11.17.0
+2026-06-20T23:32:13.8010121Z #12 51.64 npm notice
+2026-06-20T23:32:13.8010470Z #12 DONE 51.8s
+2026-06-20T23:32:13.9518543Z
+2026-06-20T23:32:13.9519235Z #13 [build 7/9] COPY packages/common ./packages/common
+2026-06-20T23:32:13.9713267Z #13 DONE 0.2s
+2026-06-20T23:32:14.1313247Z
+2026-06-20T23:32:14.1313883Z #14 [build 8/9] COPY agents/researcher ./agents/researcher
+2026-06-20T23:32:14.1314472Z #14 DONE 0.0s
+2026-06-20T23:32:14.1314656Z
+2026-06-20T23:32:14.1315301Z #15 [build 9/9] RUN npm run build --workspace @multiagent/common   && npm run build --workspace researcher   && npm prune --omit=dev
+2026-06-20T23:32:16.6331980Z #15 2.652
+2026-06-20T23:32:16.6332805Z #15 2.652 > @multiagent/common@0.1.0 build
+2026-06-20T23:32:16.6333300Z #15 2.652 > tsc -p tsconfig.json
+2026-06-20T23:32:16.6333572Z #15 2.652
+2026-06-20T23:32:32.3738702Z #15 18.39
+2026-06-20T23:32:32.3738986Z #15 18.39 > researcher@0.1.0 build
+2026-06-20T23:32:32.3739760Z #15 18.39 > tsc -p tsconfig.json
+2026-06-20T23:33:04.4376131Z #15 18.39
+2026-06-20T23:33:04.4376532Z #15 50.46
+2026-06-20T23:33:04.4376945Z #15 50.46 up to date, audited 375 packages in 10s
+2026-06-20T23:33:04.6589036Z #15 50.46
+2026-06-20T23:33:04.6589503Z #15 50.46 43 packages are looking for funding
+2026-06-20T23:33:04.6589862Z #15 50.46   run `npm fund` for details
+2026-06-20T23:33:04.6590215Z #15 50.47
+2026-06-20T23:33:04.6590501Z #15 50.47 found 0 vulnerabilities
+2026-06-20T23:33:04.6590891Z #15 DONE 50.5s
+2026-06-20T23:33:04.7788113Z
+2026-06-20T23:33:04.7788639Z #8 [runtime  2/11] WORKDIR /app
+2026-06-20T23:33:04.7789086Z #8 CACHED
+2026-06-20T23:33:04.7789260Z
+2026-06-20T23:33:04.7789581Z #16 [runtime  3/11] COPY --from=build /app/node_modules ./node_modules
+2026-06-20T23:33:04.9544814Z #16 DONE 0.0s
+2026-06-20T23:33:04.9545075Z
+2026-06-20T23:33:04.9545413Z #17 [runtime  4/11] COPY --from=build /app/package.json ./package.json
+2026-06-20T23:33:04.9546023Z #17 DONE 0.0s
+2026-06-20T23:33:05.4764971Z
+2026-06-20T23:33:05.4766080Z #18 [runtime  5/11] COPY --from=build /app/packages/common/package.json ./packages/common/package.json
+2026-06-20T23:33:05.6372480Z #18 DONE 0.0s
+2026-06-20T23:33:05.6372838Z
+2026-06-20T23:33:05.6373406Z #19 [runtime  6/11] COPY --from=build /app/packages/common/dist ./packages/common/dist
+2026-06-20T23:33:05.6374087Z #19 DONE 0.0s
+2026-06-20T23:33:05.6374277Z
+2026-06-20T23:33:05.6374739Z #20 [runtime  7/11] COPY --from=build /app/packages/common/node_modules ./packages/common/node_modules
+2026-06-20T23:33:05.6375498Z #20 DONE 0.1s
+2026-06-20T23:33:05.8150774Z
+2026-06-20T23:33:05.8151891Z #21 [runtime  8/11] COPY --from=build /app/agents/researcher/package.json ./agents/researcher/package.json
+2026-06-20T23:33:05.8152888Z #21 DONE 0.0s
+2026-06-20T23:33:05.8153022Z
+2026-06-20T23:33:05.8153275Z #22 [runtime  9/11] COPY --from=build /app/agents/researcher/dist ./agents/researcher/dist
+2026-06-20T23:33:05.8153719Z #22 DONE 0.0s
+2026-06-20T23:33:05.8153836Z
+2026-06-20T23:33:05.8154152Z #23 [runtime 10/11] COPY --from=build /app/agents/researcher/node_modules ./agents/researcher/node_modules
+2026-06-20T23:33:07.2365288Z #23 DONE 1.6s
+2026-06-20T23:33:07.3881197Z
+2026-06-20T23:33:07.3881874Z #24 [runtime 11/11] RUN useradd --create-home --uid 1001 agent
+2026-06-20T23:33:07.5366963Z #24 DONE 0.3s
+2026-06-20T23:33:07.6891627Z
+2026-06-20T23:33:07.6892194Z #25 exporting to image
+2026-06-20T23:33:07.6892642Z #25 exporting layers
+2026-06-20T23:33:09.2789182Z #25 exporting layers 1.7s done
+2026-06-20T23:33:09.4476357Z #25 ...
+2026-06-20T23:33:09.4476598Z
+2026-06-20T23:33:09.4476988Z #26 [auth] sharing credentials for 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:33:09.4477698Z #26 DONE 0.0s
+2026-06-20T23:33:09.4477948Z
+2026-06-20T23:33:09.4478093Z #25 exporting to image
+2026-06-20T23:33:09.4478826Z #25 exporting manifest sha256:57c3bd8713dfcecac8252340528bef9bf0921867e18008862b050277f325aed8 done
+2026-06-20T23:33:09.4479996Z #25 exporting config sha256:8adbe2f07aba3adef226b31e972acdd4e877ec2c28c4223a05af9b0348507ec4 done
+2026-06-20T23:33:09.4481239Z #25 exporting attestation manifest sha256:5883eaeec8f28b97a98ad3ef8cd6e71dba4d8efe524c9ab4360b526ae99e1096 done
+2026-06-20T23:33:09.4482224Z #25 exporting manifest list sha256:17aba1b9963ccd13a0bc73f8da63351a88b0f1739caaba1460220c12da2f6868 done
+2026-06-20T23:33:09.4482877Z #25 pushing layers
+2026-06-20T23:33:11.3435237Z #25 pushing layers 2.0s done
+2026-06-20T23:33:11.3436465Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:17aba1b9963ccd13a0bc73f8da63351a88b0f1739caaba1460220c12da2f6868
+2026-06-20T23:33:12.1115491Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:1a80a88688c1a2db1206921710405645c6ce4b37@sha256:17aba1b9963ccd13a0bc73f8da63351a88b0f1739caaba1460220c12da2f6868 0.8s done
+2026-06-20T23:33:12.2269656Z #25 pushing layers 0.1s done
+2026-06-20T23:33:12.2271337Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:latest@sha256:17aba1b9963ccd13a0bc73f8da63351a88b0f1739caaba1460220c12da2f6868
+2026-06-20T23:33:12.5093287Z #25 pushing manifest for 224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:latest@sha256:17aba1b9963ccd13a0bc73f8da63351a88b0f1739caaba1460220c12da2f6868 0.3s done
+2026-06-20T23:33:12.5095191Z #25 DONE 5.0s
+2026-06-20T23:33:12.5399313Z ##[group]Run terraform apply -auto-approve -var="image_tag=1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:12.5400457Z [36;1mterraform apply -auto-approve -var="image_tag=1a80a88688c1a2db1206921710405645c6ce4b37"[0m
+2026-06-20T23:33:12.5467598Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:33:12.5468031Z env:
+2026-06-20T23:33:12.5468381Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:33:12.5468812Z   AWS_REGION: us-east-1
+2026-06-20T23:33:12.5469295Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:33:12.5469855Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:33:12.5478435Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:33:12.5479110Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:33:12.5479785Z ##[endgroup]
+2026-06-20T23:33:15.9893569Z [0m[1mrandom_password.router_a2a_tester: Refreshing state... [id=none][0m
+2026-06-20T23:33:15.9894946Z [0m[1mrandom_password.a2a_tester: Refreshing state... [id=none][0m
+2026-06-20T23:33:15.9903641Z [0m[1mrandom_password.critic_a2a_tester: Refreshing state... [id=none][0m
+2026-06-20T23:33:16.1458545Z [0m[1mdata.aws_iam_openid_connect_provider.github: Reading...[0m[0m
+2026-06-20T23:33:16.1459844Z [0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+2026-06-20T23:33:16.1461222Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Reading...[0m[0m
+2026-06-20T23:33:16.1462592Z [0m[1mmodule.researcher.aws_ecr_repository.this: Refreshing state... [id=multiagent-researcher][0m
+2026-06-20T23:33:16.1467360Z [0m[1mmodule.critic.aws_ecr_repository.this: Refreshing state... [id=multiagent-critic][0m
+2026-06-20T23:33:16.1468296Z [0m[1maws_cognito_user_pool.router_a2a: Refreshing state... [id=us-east-1_MkcdRrFgg][0m
+2026-06-20T23:33:16.1469176Z [0m[1maws_cognito_user_pool.critic_a2a: Refreshing state... [id=us-east-1_V1fVT2N37][0m
+2026-06-20T23:33:16.1486108Z [0m[1maws_cognito_user_pool.a2a: Refreshing state... [id=us-east-1_SVXiVb3nX][0m
+2026-06-20T23:33:16.1503342Z [0m[1mdata.aws_iam_policy_document.github_deploy_tfstate: Read complete after 0s [id=2191191453][0m
+2026-06-20T23:33:16.1524803Z [0m[1mmodule.supervisor.aws_ecr_repository.this: Refreshing state... [id=multiagent-supervisor][0m
+2026-06-20T23:33:16.1558943Z [0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=224193574799][0m
+2026-06-20T23:33:16.1561331Z [0m[1mmodule.router.aws_ecr_repository.this: Refreshing state... [id=multiagent-router][0m
+2026-06-20T23:33:16.1586350Z [0m[1mmodule.knowledge.aws_ecr_repository.this: Refreshing state... [id=multiagent-knowledge][0m
+2026-06-20T23:33:16.1599029Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Reading...[0m[0m
+2026-06-20T23:33:16.1614626Z [0m[1mdata.aws_iam_policy_document.github_deploy_iam: Read complete after 0s [id=3656804795][0m
+2026-06-20T23:33:16.1969654Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:33:16.1980522Z [0m[1mmodule.knowledge.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:33:16.1993750Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:33:16.2005662Z [0m[1mmodule.router.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:33:16.2018484Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:33:16.2029808Z [0m[1mmodule.researcher.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:33:16.2043045Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:33:16.2053888Z [0m[1mmodule.critic.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:33:16.2066173Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Reading...[0m[0m
+2026-06-20T23:33:16.2076682Z [0m[1mmodule.supervisor.data.aws_iam_policy_document.agentcore_trust: Read complete after 0s [id=3615603898][0m
+2026-06-20T23:33:16.2138797Z [0m[1mmodule.router.aws_iam_role.runtime: Refreshing state... [id=multiagent-router-runtime-role][0m
+2026-06-20T23:33:16.2768967Z [0m[1mdata.aws_iam_openid_connect_provider.github: Read complete after 0s [id=arn:aws:iam::224193574799:oidc-provider/token.actions.githubusercontent.com][0m
+2026-06-20T23:33:16.2814541Z [0m[1mmodule.critic.aws_iam_role.runtime: Refreshing state... [id=multiagent-critic-runtime-role][0m
+2026-06-20T23:33:16.2950745Z [0m[1mmodule.supervisor.aws_iam_role.runtime: Refreshing state... [id=multiagent-supervisor-runtime-role][0m
+2026-06-20T23:33:16.3016019Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Reading...[0m[0m
+2026-06-20T23:33:16.3032681Z [0m[1mdata.aws_iam_policy_document.github_deploy_trust: Read complete after 0s [id=1111214936][0m
+2026-06-20T23:33:16.3047185Z [0m[1mmodule.supervisor.aws_ecr_lifecycle_policy.this: Refreshing state... [id=multiagent-supervisor][0m
+2026-06-20T23:33:16.3070927Z [0m[1mmodule.router.aws_ecr_lifecycle_policy.this: Refreshing state... [id=multiagent-router][0m
+2026-06-20T23:33:16.3270053Z [0m[1maws_iam_role.github_deploy: Refreshing state... [id=multiagent-supervisor-github-deploy][0m
+2026-06-20T23:33:16.3322062Z [0m[1mmodule.critic.aws_ecr_lifecycle_policy.this: Refreshing state... [id=multiagent-critic][0m
+2026-06-20T23:33:16.4393002Z [0m[1mmodule.router.aws_iam_role_policy.logs: Refreshing state... [id=multiagent-router-runtime-role:terraform-20260615161126559400000006][0m
+2026-06-20T23:33:16.4397367Z [0m[1mmodule.router.aws_iam_role_policy.bedrock_invoke: Refreshing state... [id=multiagent-router-runtime-role:terraform-20260615161126559200000005][0m
+2026-06-20T23:33:16.4400011Z [0m[1mmodule.router.aws_iam_role_policy.ecr_pull: Refreshing state... [id=multiagent-router-runtime-role:terraform-20260615161126559100000004][0m
+2026-06-20T23:33:16.4533989Z [0m[1mmodule.critic.aws_iam_role_policy.logs: Refreshing state... [id=multiagent-critic-runtime-role:terraform-20260616043708905700000006][0m
+2026-06-20T23:33:16.4537850Z [0m[1mmodule.critic.aws_iam_role_policy.bedrock_invoke: Refreshing state... [id=multiagent-critic-runtime-role:terraform-20260616043708906900000007][0m
+2026-06-20T23:33:16.4612204Z [0m[1mmodule.critic.aws_iam_role_policy.ecr_pull: Refreshing state... [id=multiagent-critic-runtime-role:terraform-20260616043708907100000008][0m
+2026-06-20T23:33:16.4668134Z [0m[1mmodule.supervisor.aws_iam_role_policy.logs: Refreshing state... [id=multiagent-supervisor-runtime-role:terraform-20260609161153258600000002][0m
+2026-06-20T23:33:16.4691858Z [0m[1mmodule.supervisor.aws_iam_role_policy.bedrock_invoke: Refreshing state... [id=multiagent-supervisor-runtime-role:terraform-20260609161153258700000003][0m
+2026-06-20T23:33:16.4745735Z [0m[1mmodule.supervisor.aws_iam_role_policy.ecr_pull: Refreshing state... [id=multiagent-supervisor-runtime-role:terraform-20260609161153258300000001][0m
+2026-06-20T23:33:16.4912489Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a_sigv4: Refreshing state...[0m
+2026-06-20T23:33:16.4925954Z [0m[1mmodule.router.aws_bedrockagentcore_agent_runtime.this: Refreshing state...[0m
+2026-06-20T23:33:16.4944667Z [0m[1maws_iam_role_policy.github_deploy_tfstate: Refreshing state... [id=multiagent-supervisor-github-deploy:tfstate-backend-access][0m
+2026-06-20T23:33:16.4955286Z [0m[1maws_iam_role_policy.github_deploy_iam: Refreshing state... [id=multiagent-supervisor-github-deploy:manage-project-iam][0m
+2026-06-20T23:33:16.4972351Z [0m[1maws_iam_role_policy_attachment.github_deploy_poweruser: Refreshing state... [id=multiagent-supervisor-github-deploy/arn:aws:iam::aws:policy/PowerUserAccess][0m
+2026-06-20T23:33:16.5217191Z [0m[1mmodule.critic.aws_bedrockagentcore_agent_runtime.this: Refreshing state...[0m
+2026-06-20T23:33:16.5242491Z [0m[1mmodule.supervisor.aws_bedrockagentcore_agent_runtime.this: Refreshing state...[0m
+2026-06-20T23:33:16.6424887Z [0m[1maws_cognito_user.a2a_tester: Refreshing state... [id=us-east-1_SVXiVb3nX/a2a-tester][0m
+2026-06-20T23:33:16.6435944Z [0m[1maws_cognito_user_pool_client.a2a: Refreshing state... [id=5g63cr5ut6dkuuprk5o0r39o][0m
+2026-06-20T23:33:16.6542202Z [0m[1maws_cognito_user.router_a2a_tester: Refreshing state... [id=us-east-1_MkcdRrFgg/router-a2a-tester][0m
+2026-06-20T23:33:16.6563893Z [0m[1maws_cognito_user_pool_client.router_a2a: Refreshing state... [id=7a8b2nfppgjuc3t85slor8ec1k][0m
+2026-06-20T23:33:16.6614505Z [0m[1maws_cognito_user_pool_client.critic_a2a: Refreshing state... [id=69p8s9877qrnmcb57t22mnjohe][0m
+2026-06-20T23:33:16.6616100Z [0m[1maws_cognito_user.critic_a2a_tester: Refreshing state... [id=us-east-1_V1fVT2N37/critic-a2a-tester][0m
+2026-06-20T23:33:16.7649726Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a: Refreshing state...[0m
+2026-06-20T23:33:16.7664647Z [0m[1maws_bedrockagentcore_agent_runtime.router_a2a: Refreshing state...[0m
+2026-06-20T23:33:16.7718642Z [0m[1maws_bedrockagentcore_agent_runtime.critic_a2a: Refreshing state...[0m
+2026-06-20T23:33:17.2065811Z
+2026-06-20T23:33:17.2066744Z Terraform used the selected providers to generate the following execution
+2026-06-20T23:33:17.2067725Z plan. Resource actions are indicated with the following symbols:
+2026-06-20T23:33:17.2070173Z   [32m+[0m create[0m
+2026-06-20T23:33:17.2070710Z   [33m~[0m update in-place[0m
+2026-06-20T23:33:17.2071205Z
+2026-06-20T23:33:17.2071426Z Terraform will perform the following actions:
+2026-06-20T23:33:17.2072937Z
+2026-06-20T23:33:17.2073513Z [1m  # aws_bedrockagentcore_agent_runtime.critic_a2a[0m will be updated in-place
+2026-06-20T23:33:17.2075656Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "critic_a2a" {
+2026-06-20T23:33:17.2077618Z       [33m~[0m[0m agent_runtime_version     = "2" -> (known after apply)
+2026-06-20T23:33:17.2082380Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2082784Z
+2026-06-20T23:33:17.2083103Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2085059Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2087185Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2089045Z             }
+2026-06-20T23:33:17.2089359Z         }
+2026-06-20T23:33:17.2089534Z
+2026-06-20T23:33:17.2089965Z         [90m# (3 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2090442Z     }
+2026-06-20T23:33:17.2090619Z
+2026-06-20T23:33:17.2091266Z [1m  # aws_bedrockagentcore_agent_runtime.researcher_a2a[0m will be created
+2026-06-20T23:33:17.2092324Z [0m  [32m+[0m[0m resource "aws_bedrockagentcore_agent_runtime" "researcher_a2a" {
+2026-06-20T23:33:17.2093358Z       [32m+[0m[0m agent_runtime_arn         = (known after apply)
+2026-06-20T23:33:17.2094097Z       [32m+[0m[0m agent_runtime_id          = (known after apply)
+2026-06-20T23:33:17.2094893Z       [32m+[0m[0m agent_runtime_name        = "multiagent_researcher_a2a"
+2026-06-20T23:33:17.2095694Z       [32m+[0m[0m agent_runtime_version     = (known after apply)
+2026-06-20T23:33:17.2096714Z       [32m+[0m[0m description               = "Researcher over A2A protocol (public door — JWT inbound auth)"
+2026-06-20T23:33:17.2097648Z       [32m+[0m[0m environment_variables     = {
+2026-06-20T23:33:17.2098252Z           [32m+[0m[0m "A2A_ENABLED"      = "true"
+2026-06-20T23:33:17.2098901Z           [32m+[0m[0m "KB_MCP_CLIENT_ID" = (known after apply)
+2026-06-20T23:33:17.2100059Z           [32m+[0m[0m "KB_MCP_PASSWORD"  = (sensitive value)
+2026-06-20T23:33:17.2100767Z           [32m+[0m[0m "KB_MCP_URL"       = (known after apply)
+2026-06-20T23:33:17.2101574Z           [32m+[0m[0m "KB_MCP_USERNAME"  = "researcher-kb-bot"
+2026-06-20T23:33:17.2102587Z           [32m+[0m[0m "LOG_DELEGATION"   = "true"
+2026-06-20T23:33:17.2103108Z           [32m+[0m[0m "LOG_LEVEL"        = "info"
+2026-06-20T23:33:17.2103831Z           [32m+[0m[0m "MODEL_ID"         = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+2026-06-20T23:33:17.2104460Z         }
+2026-06-20T23:33:17.2104968Z       [32m+[0m[0m lifecycle_configuration   = (known after apply)
+2026-06-20T23:33:17.2105654Z       [32m+[0m[0m region                    = "us-east-1"
+2026-06-20T23:33:17.2106332Z       [32m+[0m[0m role_arn                  = (known after apply)
+2026-06-20T23:33:17.2106974Z       [32m+[0m[0m tags_all                  = {
+2026-06-20T23:33:17.2107533Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2108158Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2108652Z         }
+2026-06-20T23:33:17.2109175Z       [32m+[0m[0m workload_identity_details = (known after apply)
+2026-06-20T23:33:17.2109582Z
+2026-06-20T23:33:17.2109829Z       [32m+[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2110394Z           [32m+[0m[0m container_configuration {
+2026-06-20T23:33:17.2111866Z               [32m+[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2112892Z             }
+2026-06-20T23:33:17.2113195Z         }
+2026-06-20T23:33:17.2113368Z
+2026-06-20T23:33:17.2113635Z       [32m+[0m[0m authorizer_configuration {
+2026-06-20T23:33:17.2114219Z           [32m+[0m[0m custom_jwt_authorizer {
+2026-06-20T23:33:17.2114770Z               [32m+[0m[0m allowed_clients = [
+2026-06-20T23:33:17.2115360Z                   [32m+[0m[0m (known after apply),
+2026-06-20T23:33:17.2137140Z                 ]
+2026-06-20T23:33:17.2137796Z               [32m+[0m[0m discovery_url   = (known after apply)
+2026-06-20T23:33:17.2138330Z             }
+2026-06-20T23:33:17.2138639Z         }
+2026-06-20T23:33:17.2138817Z
+2026-06-20T23:33:17.2139080Z       [32m+[0m[0m network_configuration {
+2026-06-20T23:33:17.2139666Z           [32m+[0m[0m network_mode = "PUBLIC"
+2026-06-20T23:33:17.2140139Z         }
+2026-06-20T23:33:17.2140318Z
+2026-06-20T23:33:17.2140559Z       [32m+[0m[0m protocol_configuration {
+2026-06-20T23:33:17.2141308Z           [32m+[0m[0m server_protocol = "A2A"
+2026-06-20T23:33:17.2141747Z         }
+2026-06-20T23:33:17.2142049Z     }
+2026-06-20T23:33:17.2142212Z
+2026-06-20T23:33:17.2142713Z [1m  # aws_bedrockagentcore_agent_runtime.router_a2a[0m will be updated in-place
+2026-06-20T23:33:17.2143713Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "router_a2a" {
+2026-06-20T23:33:17.2144595Z       [33m~[0m[0m agent_runtime_version     = "7" -> (known after apply)
+2026-06-20T23:33:17.2145338Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2145689Z
+2026-06-20T23:33:17.2145937Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2146517Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2148559Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2150255Z             }
+2026-06-20T23:33:17.2150561Z         }
+2026-06-20T23:33:17.2150738Z
+2026-06-20T23:33:17.2151157Z         [90m# (3 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2151604Z     }
+2026-06-20T23:33:17.2151773Z
+2026-06-20T23:33:17.2152288Z [1m  # aws_bedrockagentcore_agent_runtime.supervisor_a2a[0m will be updated in-place
+2026-06-20T23:33:17.2153558Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "supervisor_a2a" {
+2026-06-20T23:33:17.2154444Z       [33m~[0m[0m agent_runtime_version     = "13" -> (known after apply)
+2026-06-20T23:33:17.2155175Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2155524Z
+2026-06-20T23:33:17.2155930Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2156505Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2158656Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2160440Z             }
+2026-06-20T23:33:17.2160743Z         }
+2026-06-20T23:33:17.2160919Z
+2026-06-20T23:33:17.2161379Z         [90m# (3 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2161843Z     }
+2026-06-20T23:33:17.2162008Z
+2026-06-20T23:33:17.2162572Z [1m  # aws_bedrockagentcore_agent_runtime.supervisor_a2a_sigv4[0m will be updated in-place
+2026-06-20T23:33:17.2163648Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "supervisor_a2a_sigv4" {
+2026-06-20T23:33:17.2164590Z       [33m~[0m[0m agent_runtime_version     = "10" -> (known after apply)
+2026-06-20T23:33:17.2165317Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2165677Z
+2026-06-20T23:33:17.2165915Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2166482Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2168613Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2170324Z             }
+2026-06-20T23:33:17.2170627Z         }
+2026-06-20T23:33:17.2170793Z
+2026-06-20T23:33:17.2171230Z         [90m# (2 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2171686Z     }
+2026-06-20T23:33:17.2171845Z
+2026-06-20T23:33:17.2172187Z [1m  # aws_cognito_user.knowledge_mcp_bot[0m will be created
+2026-06-20T23:33:17.2172949Z [0m  [32m+[0m[0m resource "aws_cognito_user" "knowledge_mcp_bot" {
+2026-06-20T23:33:17.2173691Z       [32m+[0m[0m creation_date         = (known after apply)
+2026-06-20T23:33:17.2174310Z       [32m+[0m[0m enabled               = true
+2026-06-20T23:33:17.2174925Z       [32m+[0m[0m id                    = (known after apply)
+2026-06-20T23:33:17.2175588Z       [32m+[0m[0m last_modified_date    = (known after apply)
+2026-06-20T23:33:17.2176231Z       [32m+[0m[0m message_action        = "SUPPRESS"
+2026-06-20T23:33:17.2176875Z       [32m+[0m[0m mfa_setting_list      = (known after apply)
+2026-06-20T23:33:17.2177554Z       [32m+[0m[0m password              = (sensitive value)
+2026-06-20T23:33:17.2178243Z       [32m+[0m[0m preferred_mfa_setting = (known after apply)
+2026-06-20T23:33:17.2178900Z       [32m+[0m[0m region                = "us-east-1"
+2026-06-20T23:33:17.2179539Z       [32m+[0m[0m status                = (known after apply)
+2026-06-20T23:33:17.2180187Z       [32m+[0m[0m sub                   = (known after apply)
+2026-06-20T23:33:17.2180851Z       [32m+[0m[0m user_pool_id          = (known after apply)
+2026-06-20T23:33:17.2181688Z       [32m+[0m[0m username              = "researcher-kb-bot"
+2026-06-20T23:33:17.2182167Z     }
+2026-06-20T23:33:17.2182325Z
+2026-06-20T23:33:17.2182676Z [1m  # aws_cognito_user.researcher_a2a_tester[0m will be created
+2026-06-20T23:33:17.2183418Z [0m  [32m+[0m[0m resource "aws_cognito_user" "researcher_a2a_tester" {
+2026-06-20T23:33:17.2184132Z       [32m+[0m[0m creation_date         = (known after apply)
+2026-06-20T23:33:17.2184706Z       [32m+[0m[0m enabled               = true
+2026-06-20T23:33:17.2185486Z       [32m+[0m[0m id                    = (known after apply)
+2026-06-20T23:33:17.2186120Z       [32m+[0m[0m last_modified_date    = (known after apply)
+2026-06-20T23:33:17.2186713Z       [32m+[0m[0m message_action        = "SUPPRESS"
+2026-06-20T23:33:17.2187320Z       [32m+[0m[0m mfa_setting_list      = (known after apply)
+2026-06-20T23:33:17.2188107Z       [32m+[0m[0m password              = (sensitive value)
+2026-06-20T23:33:17.2188779Z       [32m+[0m[0m preferred_mfa_setting = (known after apply)
+2026-06-20T23:33:17.2189387Z       [32m+[0m[0m region                = "us-east-1"
+2026-06-20T23:33:17.2190003Z       [32m+[0m[0m status                = (known after apply)
+2026-06-20T23:33:17.2190629Z       [32m+[0m[0m sub                   = (known after apply)
+2026-06-20T23:33:17.2191430Z       [32m+[0m[0m user_pool_id          = (known after apply)
+2026-06-20T23:33:17.2192117Z       [32m+[0m[0m username              = "researcher-a2a-tester"
+2026-06-20T23:33:17.2192696Z     }
+2026-06-20T23:33:17.2192853Z
+2026-06-20T23:33:17.2193190Z [1m  # aws_cognito_user_pool.knowledge_mcp[0m will be created
+2026-06-20T23:33:17.2193948Z [0m  [32m+[0m[0m resource "aws_cognito_user_pool" "knowledge_mcp" {
+2026-06-20T23:33:17.2194693Z       [32m+[0m[0m arn                        = (known after apply)
+2026-06-20T23:33:17.2195473Z       [32m+[0m[0m creation_date              = (known after apply)
+2026-06-20T23:33:17.2196215Z       [32m+[0m[0m custom_domain              = (known after apply)
+2026-06-20T23:33:17.2196932Z       [32m+[0m[0m deletion_protection        = "INACTIVE"
+2026-06-20T23:33:17.2197625Z       [32m+[0m[0m domain                     = (known after apply)
+2026-06-20T23:33:17.2198337Z       [32m+[0m[0m email_verification_message = (known after apply)
+2026-06-20T23:33:17.2199070Z       [32m+[0m[0m email_verification_subject = (known after apply)
+2026-06-20T23:33:17.2199763Z       [32m+[0m[0m endpoint                   = (known after apply)
+2026-06-20T23:33:17.2200454Z       [32m+[0m[0m estimated_number_of_users  = (known after apply)
+2026-06-20T23:33:17.2201350Z       [32m+[0m[0m id                         = (known after apply)
+2026-06-20T23:33:17.2202038Z       [32m+[0m[0m last_modified_date         = (known after apply)
+2026-06-20T23:33:17.2202692Z       [32m+[0m[0m mfa_configuration          = "OFF"
+2026-06-20T23:33:17.2203388Z       [32m+[0m[0m name                       = "multiagent-knowledge-mcp"
+2026-06-20T23:33:17.2204096Z       [32m+[0m[0m region                     = "us-east-1"
+2026-06-20T23:33:17.2204770Z       [32m+[0m[0m sms_verification_message   = (known after apply)
+2026-06-20T23:33:17.2205419Z       [32m+[0m[0m tags_all                   = {
+2026-06-20T23:33:17.2206114Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2206721Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2207207Z         }
+2026-06-20T23:33:17.2207695Z       [32m+[0m[0m user_pool_tier             = (known after apply)
+2026-06-20T23:33:17.2208090Z
+2026-06-20T23:33:17.2208411Z       [32m+[0m[0m admin_create_user_config (known after apply)
+2026-06-20T23:33:17.2208802Z
+2026-06-20T23:33:17.2209020Z       [32m+[0m[0m password_policy {
+2026-06-20T23:33:17.2209572Z           [32m+[0m[0m minimum_length                   = 12
+2026-06-20T23:33:17.2210224Z           [32m+[0m[0m require_lowercase                = true
+2026-06-20T23:33:17.2210860Z           [32m+[0m[0m require_numbers                  = true
+2026-06-20T23:33:17.2211698Z           [32m+[0m[0m require_symbols                  = false
+2026-06-20T23:33:17.2212351Z           [32m+[0m[0m require_uppercase                = true
+2026-06-20T23:33:17.2213112Z           [32m+[0m[0m temporary_password_validity_days = (known after apply)
+2026-06-20T23:33:17.2213694Z         }
+2026-06-20T23:33:17.2213870Z
+2026-06-20T23:33:17.2214146Z       [32m+[0m[0m sign_in_policy (known after apply)
+2026-06-20T23:33:17.2214751Z
+2026-06-20T23:33:17.2215045Z       [32m+[0m[0m sms_configuration (known after apply)
+2026-06-20T23:33:17.2215415Z
+2026-06-20T23:33:17.2215730Z       [32m+[0m[0m username_configuration (known after apply)
+2026-06-20T23:33:17.2216114Z
+2026-06-20T23:33:17.2216464Z       [32m+[0m[0m verification_message_template (known after apply)
+2026-06-20T23:33:17.2217006Z     }
+2026-06-20T23:33:17.2217490Z
+2026-06-20T23:33:17.2217839Z [1m  # aws_cognito_user_pool.researcher_a2a[0m will be created
+2026-06-20T23:33:17.2218604Z [0m  [32m+[0m[0m resource "aws_cognito_user_pool" "researcher_a2a" {
+2026-06-20T23:33:17.2219333Z       [32m+[0m[0m arn                        = (known after apply)
+2026-06-20T23:33:17.2220024Z       [32m+[0m[0m creation_date              = (known after apply)
+2026-06-20T23:33:17.2220739Z       [32m+[0m[0m custom_domain              = (known after apply)
+2026-06-20T23:33:17.2221588Z       [32m+[0m[0m deletion_protection        = "INACTIVE"
+2026-06-20T23:33:17.2222256Z       [32m+[0m[0m domain                     = (known after apply)
+2026-06-20T23:33:17.2222965Z       [32m+[0m[0m email_verification_message = (known after apply)
+2026-06-20T23:33:17.2223700Z       [32m+[0m[0m email_verification_subject = (known after apply)
+2026-06-20T23:33:17.2224406Z       [32m+[0m[0m endpoint                   = (known after apply)
+2026-06-20T23:33:17.2225138Z       [32m+[0m[0m estimated_number_of_users  = (known after apply)
+2026-06-20T23:33:17.2225832Z       [32m+[0m[0m id                         = (known after apply)
+2026-06-20T23:33:17.2226522Z       [32m+[0m[0m last_modified_date         = (known after apply)
+2026-06-20T23:33:17.2227180Z       [32m+[0m[0m mfa_configuration          = "OFF"
+2026-06-20T23:33:17.2227890Z       [32m+[0m[0m name                       = "multiagent-researcher-a2a"
+2026-06-20T23:33:17.2228604Z       [32m+[0m[0m region                     = "us-east-1"
+2026-06-20T23:33:17.2229288Z       [32m+[0m[0m sms_verification_message   = (known after apply)
+2026-06-20T23:33:17.2229931Z       [32m+[0m[0m tags_all                   = {
+2026-06-20T23:33:17.2230501Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2231270Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2231772Z         }
+2026-06-20T23:33:17.2232267Z       [32m+[0m[0m user_pool_tier             = (known after apply)
+2026-06-20T23:33:17.2232665Z
+2026-06-20T23:33:17.2232987Z       [32m+[0m[0m admin_create_user_config (known after apply)
+2026-06-20T23:33:17.2233365Z
+2026-06-20T23:33:17.2233592Z       [32m+[0m[0m password_policy {
+2026-06-20T23:33:17.2234161Z           [32m+[0m[0m minimum_length                   = 12
+2026-06-20T23:33:17.2234805Z           [32m+[0m[0m require_lowercase                = true
+2026-06-20T23:33:17.2235467Z           [32m+[0m[0m require_numbers                  = true
+2026-06-20T23:33:17.2236118Z           [32m+[0m[0m require_symbols                  = false
+2026-06-20T23:33:17.2236782Z           [32m+[0m[0m require_uppercase                = true
+2026-06-20T23:33:17.2237539Z           [32m+[0m[0m temporary_password_validity_days = (known after apply)
+2026-06-20T23:33:17.2238131Z         }
+2026-06-20T23:33:17.2238301Z
+2026-06-20T23:33:17.2238581Z       [32m+[0m[0m sign_in_policy (known after apply)
+2026-06-20T23:33:17.2238936Z
+2026-06-20T23:33:17.2239239Z       [32m+[0m[0m sms_configuration (known after apply)
+2026-06-20T23:33:17.2239605Z
+2026-06-20T23:33:17.2239925Z       [32m+[0m[0m username_configuration (known after apply)
+2026-06-20T23:33:17.2240316Z
+2026-06-20T23:33:17.2240668Z       [32m+[0m[0m verification_message_template (known after apply)
+2026-06-20T23:33:17.2241410Z     }
+2026-06-20T23:33:17.2241582Z
+2026-06-20T23:33:17.2241966Z [1m  # aws_cognito_user_pool_client.knowledge_mcp[0m will be created
+2026-06-20T23:33:17.2242821Z [0m  [32m+[0m[0m resource "aws_cognito_user_pool_client" "knowledge_mcp" {
+2026-06-20T23:33:17.2243866Z       [32m+[0m[0m access_token_validity                         = 1
+2026-06-20T23:33:17.2244684Z       [32m+[0m[0m allowed_oauth_flows                           = (known after apply)
+2026-06-20T23:33:17.2245637Z       [32m+[0m[0m allowed_oauth_flows_user_pool_client          = (known after apply)
+2026-06-20T23:33:17.2246710Z       [32m+[0m[0m allowed_oauth_scopes                          = (known after apply)
+2026-06-20T23:33:17.2247632Z       [32m+[0m[0m auth_session_validity                         = (known after apply)
+2026-06-20T23:33:17.2248517Z       [32m+[0m[0m callback_urls                                 = (known after apply)
+2026-06-20T23:33:17.2249384Z       [32m+[0m[0m client_secret                                 = (sensitive value)
+2026-06-20T23:33:17.2250288Z       [32m+[0m[0m default_redirect_uri                          = (known after apply)
+2026-06-20T23:33:17.2251763Z       [32m+[0m[0m enable_propagate_additional_user_context_data = (known after apply)
+2026-06-20T23:33:17.2252533Z       [32m+[0m[0m enable_token_revocation                       = (known after apply)
+2026-06-20T23:33:17.2253068Z       [32m+[0m[0m explicit_auth_flows                           = [
+2026-06-20T23:33:17.2253484Z           [32m+[0m[0m "ALLOW_REFRESH_TOKEN_AUTH",
+2026-06-20T23:33:17.2253849Z           [32m+[0m[0m "ALLOW_USER_PASSWORD_AUTH",
+2026-06-20T23:33:17.2254161Z         ]
+2026-06-20T23:33:17.2254502Z       [32m+[0m[0m id                                            = (known after apply)
+2026-06-20T23:33:17.2255007Z       [32m+[0m[0m id_token_validity                             = (known after apply)
+2026-06-20T23:33:17.2255506Z       [32m+[0m[0m logout_urls                                   = (known after apply)
+2026-06-20T23:33:17.2256073Z       [32m+[0m[0m name                                          = "multiagent-knowledge-mcp-client"
+2026-06-20T23:33:17.2256639Z       [32m+[0m[0m prevent_user_existence_errors                 = (known after apply)
+2026-06-20T23:33:17.2257206Z       [32m+[0m[0m read_attributes                               = (known after apply)
+2026-06-20T23:33:17.2257740Z       [32m+[0m[0m refresh_token_validity                        = (known after apply)
+2026-06-20T23:33:17.2258250Z       [32m+[0m[0m region                                        = "us-east-1"
+2026-06-20T23:33:17.2258768Z       [32m+[0m[0m supported_identity_providers                  = (known after apply)
+2026-06-20T23:33:17.2259289Z       [32m+[0m[0m user_pool_id                                  = (known after apply)
+2026-06-20T23:33:17.2259799Z       [32m+[0m[0m write_attributes                              = (known after apply)
+2026-06-20T23:33:17.2260073Z
+2026-06-20T23:33:17.2260223Z       [32m+[0m[0m token_validity_units {
+2026-06-20T23:33:17.2260561Z           [32m+[0m[0m access_token  = "hours"
+2026-06-20T23:33:17.2260896Z           [32m+[0m[0m id_token      = "hours"
+2026-06-20T23:33:17.2261358Z           [32m+[0m[0m refresh_token = "days"
+2026-06-20T23:33:17.2261642Z         }
+2026-06-20T23:33:17.2261831Z     }
+2026-06-20T23:33:17.2261947Z
+2026-06-20T23:33:17.2262199Z [1m  # aws_cognito_user_pool_client.researcher_a2a[0m will be created
+2026-06-20T23:33:17.2262719Z [0m  [32m+[0m[0m resource "aws_cognito_user_pool_client" "researcher_a2a" {
+2026-06-20T23:33:17.2263212Z       [32m+[0m[0m access_token_validity                         = 1
+2026-06-20T23:33:17.2263696Z       [32m+[0m[0m allowed_oauth_flows                           = (known after apply)
+2026-06-20T23:33:17.2264234Z       [32m+[0m[0m allowed_oauth_flows_user_pool_client          = (known after apply)
+2026-06-20T23:33:17.2264752Z       [32m+[0m[0m allowed_oauth_scopes                          = (known after apply)
+2026-06-20T23:33:17.2265264Z       [32m+[0m[0m auth_session_validity                         = (known after apply)
+2026-06-20T23:33:17.2265761Z       [32m+[0m[0m callback_urls                                 = (known after apply)
+2026-06-20T23:33:17.2266517Z       [32m+[0m[0m client_secret                                 = (sensitive value)
+2026-06-20T23:33:17.2267026Z       [32m+[0m[0m default_redirect_uri                          = (known after apply)
+2026-06-20T23:33:17.2267558Z       [32m+[0m[0m enable_propagate_additional_user_context_data = (known after apply)
+2026-06-20T23:33:17.2268220Z       [32m+[0m[0m enable_token_revocation                       = (known after apply)
+2026-06-20T23:33:17.2268718Z       [32m+[0m[0m explicit_auth_flows                           = [
+2026-06-20T23:33:17.2269120Z           [32m+[0m[0m "ALLOW_REFRESH_TOKEN_AUTH",
+2026-06-20T23:33:17.2269477Z           [32m+[0m[0m "ALLOW_USER_PASSWORD_AUTH",
+2026-06-20T23:33:17.2269754Z         ]
+2026-06-20T23:33:17.2270079Z       [32m+[0m[0m id                                            = (known after apply)
+2026-06-20T23:33:17.2270562Z       [32m+[0m[0m id_token_validity                             = (known after apply)
+2026-06-20T23:33:17.2271196Z       [32m+[0m[0m logout_urls                                   = (known after apply)
+2026-06-20T23:33:17.2271737Z       [32m+[0m[0m name                                          = "multiagent-researcher-a2a-client"
+2026-06-20T23:33:17.2272282Z       [32m+[0m[0m prevent_user_existence_errors                 = (known after apply)
+2026-06-20T23:33:17.2272813Z       [32m+[0m[0m read_attributes                               = (known after apply)
+2026-06-20T23:33:17.2273320Z       [32m+[0m[0m refresh_token_validity                        = (known after apply)
+2026-06-20T23:33:17.2273810Z       [32m+[0m[0m region                                        = "us-east-1"
+2026-06-20T23:33:17.2274314Z       [32m+[0m[0m supported_identity_providers                  = (known after apply)
+2026-06-20T23:33:17.2274829Z       [32m+[0m[0m user_pool_id                                  = (known after apply)
+2026-06-20T23:33:17.2275318Z       [32m+[0m[0m write_attributes                              = (known after apply)
+2026-06-20T23:33:17.2275595Z
+2026-06-20T23:33:17.2275741Z       [32m+[0m[0m token_validity_units {
+2026-06-20T23:33:17.2276075Z           [32m+[0m[0m access_token  = "hours"
+2026-06-20T23:33:17.2276402Z           [32m+[0m[0m id_token      = "hours"
+2026-06-20T23:33:17.2276724Z           [32m+[0m[0m refresh_token = "days"
+2026-06-20T23:33:17.2276994Z         }
+2026-06-20T23:33:17.2277190Z     }
+2026-06-20T23:33:17.2277301Z
+2026-06-20T23:33:17.2277514Z [1m  # random_password.knowledge_mcp_bot[0m will be created
+2026-06-20T23:33:17.2277966Z [0m  [32m+[0m[0m resource "random_password" "knowledge_mcp_bot" {
+2026-06-20T23:33:17.2278375Z       [32m+[0m[0m bcrypt_hash = (sensitive value)
+2026-06-20T23:33:17.2278741Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2279072Z       [32m+[0m[0m length      = 20
+2026-06-20T23:33:17.2279376Z       [32m+[0m[0m lower       = true
+2026-06-20T23:33:17.2279676Z       [32m+[0m[0m min_lower   = 2
+2026-06-20T23:33:17.2279975Z       [32m+[0m[0m min_numeric = 2
+2026-06-20T23:33:17.2280267Z       [32m+[0m[0m min_special = 0
+2026-06-20T23:33:17.2280579Z       [32m+[0m[0m min_upper   = 2
+2026-06-20T23:33:17.2280877Z       [32m+[0m[0m number      = true
+2026-06-20T23:33:17.2281310Z       [32m+[0m[0m numeric     = true
+2026-06-20T23:33:17.2281654Z       [32m+[0m[0m result      = (sensitive value)
+2026-06-20T23:33:17.2281998Z       [32m+[0m[0m special     = false
+2026-06-20T23:33:17.2282299Z       [32m+[0m[0m upper       = true
+2026-06-20T23:33:17.2282545Z     }
+2026-06-20T23:33:17.2282654Z
+2026-06-20T23:33:17.2282875Z [1m  # random_password.researcher_a2a_tester[0m will be created
+2026-06-20T23:33:17.2283347Z [0m  [32m+[0m[0m resource "random_password" "researcher_a2a_tester" {
+2026-06-20T23:33:17.2283768Z       [32m+[0m[0m bcrypt_hash = (sensitive value)
+2026-06-20T23:33:17.2284131Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2284458Z       [32m+[0m[0m length      = 20
+2026-06-20T23:33:17.2284906Z       [32m+[0m[0m lower       = true
+2026-06-20T23:33:17.2285206Z       [32m+[0m[0m min_lower   = 2
+2026-06-20T23:33:17.2285492Z       [32m+[0m[0m min_numeric = 2
+2026-06-20T23:33:17.2285780Z       [32m+[0m[0m min_special = 0
+2026-06-20T23:33:17.2286060Z       [32m+[0m[0m min_upper   = 2
+2026-06-20T23:33:17.2286479Z       [32m+[0m[0m number      = true
+2026-06-20T23:33:17.2286778Z       [32m+[0m[0m numeric     = true
+2026-06-20T23:33:17.2287105Z       [32m+[0m[0m result      = (sensitive value)
+2026-06-20T23:33:17.2287433Z       [32m+[0m[0m special     = false
+2026-06-20T23:33:17.2287732Z       [32m+[0m[0m upper       = true
+2026-06-20T23:33:17.2287980Z     }
+2026-06-20T23:33:17.2288085Z
+2026-06-20T23:33:17.2288408Z [1m  # module.critic.aws_bedrockagentcore_agent_runtime.this[0m will be updated in-place
+2026-06-20T23:33:17.2288991Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "this" {
+2026-06-20T23:33:17.2289483Z       [33m~[0m[0m agent_runtime_version     = "2" -> (known after apply)
+2026-06-20T23:33:17.2289916Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2290132Z
+2026-06-20T23:33:17.2290287Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2290639Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2291985Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2292962Z             }
+2026-06-20T23:33:17.2293163Z         }
+2026-06-20T23:33:17.2293278Z
+2026-06-20T23:33:17.2293457Z         [90m# (2 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2293793Z     }
+2026-06-20T23:33:17.2293964Z
+2026-06-20T23:33:17.2294310Z [1m  # module.knowledge.aws_bedrockagentcore_agent_runtime.this[0m will be created
+2026-06-20T23:33:17.2294875Z [0m  [32m+[0m[0m resource "aws_bedrockagentcore_agent_runtime" "this" {
+2026-06-20T23:33:17.2295341Z       [32m+[0m[0m agent_runtime_arn         = (known after apply)
+2026-06-20T23:33:17.2295777Z       [32m+[0m[0m agent_runtime_id          = (known after apply)
+2026-06-20T23:33:17.2296218Z       [32m+[0m[0m agent_runtime_name        = "multiagent_knowledge"
+2026-06-20T23:33:17.2296649Z       [32m+[0m[0m agent_runtime_version     = (known after apply)
+2026-06-20T23:33:17.2297462Z       [32m+[0m[0m description               = "Multi-agent knowledge specialist — MCP server exposing a deterministic kb_lookup tool (internal, called over MCP)"
+2026-06-20T23:33:17.2298548Z       [32m+[0m[0m environment_variables     = {
+2026-06-20T23:33:17.2299088Z           [32m+[0m[0m "LOG_LEVEL" = "info"
+2026-06-20T23:33:17.2299824Z           [32m+[0m[0m "MODEL_ID"  = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+2026-06-20T23:33:17.2300489Z         }
+2026-06-20T23:33:17.2301180Z       [32m+[0m[0m lifecycle_configuration   = (known after apply)
+2026-06-20T23:33:17.2301843Z       [32m+[0m[0m region                    = "us-east-1"
+2026-06-20T23:33:17.2302322Z       [32m+[0m[0m role_arn                  = (known after apply)
+2026-06-20T23:33:17.2302701Z       [32m+[0m[0m tags_all                  = {
+2026-06-20T23:33:17.2303050Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2303433Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2303737Z         }
+2026-06-20T23:33:17.2304046Z       [32m+[0m[0m workload_identity_details = (known after apply)
+2026-06-20T23:33:17.2304276Z
+2026-06-20T23:33:17.2304428Z       [32m+[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2304773Z           [32m+[0m[0m container_configuration {
+2026-06-20T23:33:17.2305492Z               [32m+[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2306340Z             }
+2026-06-20T23:33:17.2306533Z         }
+2026-06-20T23:33:17.2306644Z
+2026-06-20T23:33:17.2306809Z       [32m+[0m[0m authorizer_configuration {
+2026-06-20T23:33:17.2307162Z           [32m+[0m[0m custom_jwt_authorizer {
+2026-06-20T23:33:17.2307499Z               [32m+[0m[0m allowed_clients = [
+2026-06-20T23:33:17.2307978Z                   [32m+[0m[0m (known after apply),
+2026-06-20T23:33:17.2308270Z                 ]
+2026-06-20T23:33:17.2308592Z               [32m+[0m[0m discovery_url   = (known after apply)
+2026-06-20T23:33:17.2308899Z             }
+2026-06-20T23:33:17.2309094Z         }
+2026-06-20T23:33:17.2309200Z
+2026-06-20T23:33:17.2309351Z       [32m+[0m[0m network_configuration {
+2026-06-20T23:33:17.2309690Z           [32m+[0m[0m network_mode = "PUBLIC"
+2026-06-20T23:33:17.2309958Z         }
+2026-06-20T23:33:17.2310066Z
+2026-06-20T23:33:17.2310215Z       [32m+[0m[0m protocol_configuration {
+2026-06-20T23:33:17.2310542Z           [32m+[0m[0m server_protocol = "MCP"
+2026-06-20T23:33:17.2310812Z         }
+2026-06-20T23:33:17.2311134Z     }
+2026-06-20T23:33:17.2311248Z
+2026-06-20T23:33:17.2311502Z [1m  # module.knowledge.aws_ecr_lifecycle_policy.this[0m will be created
+2026-06-20T23:33:17.2312039Z [0m  [32m+[0m[0m resource "aws_ecr_lifecycle_policy" "this" {
+2026-06-20T23:33:17.2312453Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2312808Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2313087Z             {
+2026-06-20T23:33:17.2313340Z               [32m+[0m[0m rules = [
+2026-06-20T23:33:17.2313637Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2313955Z                       [32m+[0m[0m action       = {
+2026-06-20T23:33:17.2314311Z                           [32m+[0m[0m type = "expire"
+2026-06-20T23:33:17.2314599Z                         }
+2026-06-20T23:33:17.2314969Z                       [32m+[0m[0m description  = "Keep only 10 most recent images"
+2026-06-20T23:33:17.2315397Z                       [32m+[0m[0m rulePriority = 1
+2026-06-20T23:33:17.2315729Z                       [32m+[0m[0m selection    = {
+2026-06-20T23:33:17.2316068Z                           [32m+[0m[0m countNumber = 10
+2026-06-20T23:33:17.2316471Z                           [32m+[0m[0m countType   = "imageCountMoreThan"
+2026-06-20T23:33:17.2316878Z                           [32m+[0m[0m tagStatus   = "any"
+2026-06-20T23:33:17.2317177Z                         }
+2026-06-20T23:33:17.2317412Z                     },
+2026-06-20T23:33:17.2317629Z                 ]
+2026-06-20T23:33:17.2317831Z             }
+2026-06-20T23:33:17.2318027Z         )
+2026-06-20T23:33:17.2318281Z       [32m+[0m[0m region      = "us-east-1"
+2026-06-20T23:33:17.2318634Z       [32m+[0m[0m registry_id = (known after apply)
+2026-06-20T23:33:17.2319006Z       [32m+[0m[0m repository  = "multiagent-knowledge"
+2026-06-20T23:33:17.2319296Z     }
+2026-06-20T23:33:17.2319407Z
+2026-06-20T23:33:17.2319678Z [1m  # module.knowledge.aws_ecr_repository.this[0m will be updated in-place
+2026-06-20T23:33:17.2320158Z [0m  [33m~[0m[0m resource "aws_ecr_repository" "this" {
+2026-06-20T23:33:17.2320499Z         id                   = "multiagent-knowledge"
+2026-06-20T23:33:17.2320807Z         name                 = "multiagent-knowledge"
+2026-06-20T23:33:17.2321216Z         tags                 = {}
+2026-06-20T23:33:17.2321521Z       [33m~[0m[0m tags_all             = {
+2026-06-20T23:33:17.2321855Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2322230Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2322533Z         }
+2026-06-20T23:33:17.2322804Z         [90m# (5 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2323010Z
+2026-06-20T23:33:17.2323177Z       [33m~[0m[0m image_scanning_configuration {
+2026-06-20T23:33:17.2323570Z           [33m~[0m[0m scan_on_push = false [33m->[0m[0m true
+2026-06-20T23:33:17.2323875Z         }
+2026-06-20T23:33:17.2324135Z
+2026-06-20T23:33:17.2324309Z         [90m# (1 unchanged block hidden)[0m[0m
+2026-06-20T23:33:17.2324615Z     }
+2026-06-20T23:33:17.2324721Z
+2026-06-20T23:33:17.2324937Z [1m  # module.knowledge.aws_iam_role.runtime[0m will be created
+2026-06-20T23:33:17.2325363Z [0m  [32m+[0m[0m resource "aws_iam_role" "runtime" {
+2026-06-20T23:33:17.2325874Z       [32m+[0m[0m arn                   = (known after apply)
+2026-06-20T23:33:17.2326277Z       [32m+[0m[0m assume_role_policy    = jsonencode(
+2026-06-20T23:33:17.2326563Z             {
+2026-06-20T23:33:17.2326817Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2327127Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2327460Z                       [32m+[0m[0m Action    = "sts:AssumeRole"
+2026-06-20T23:33:17.2327822Z                       [32m+[0m[0m Condition = {
+2026-06-20T23:33:17.2328170Z                           [32m+[0m[0m StringEquals = {
+2026-06-20T23:33:17.2328582Z                               [32m+[0m[0m "aws:SourceAccount" = "224193574799"
+2026-06-20T23:33:17.2328921Z                             }
+2026-06-20T23:33:17.2329167Z                         }
+2026-06-20T23:33:17.2329461Z                       [32m+[0m[0m Effect    = "Allow"
+2026-06-20T23:33:17.2329807Z                       [32m+[0m[0m Principal = {
+2026-06-20T23:33:17.2330228Z                           [32m+[0m[0m Service = "bedrock-agentcore.amazonaws.com"
+2026-06-20T23:33:17.2330574Z                         }
+2026-06-20T23:33:17.2330798Z                     },
+2026-06-20T23:33:17.2331125Z                 ]
+2026-06-20T23:33:17.2331408Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2331677Z             }
+2026-06-20T23:33:17.2331874Z         )
+2026-06-20T23:33:17.2332172Z       [32m+[0m[0m create_date           = (known after apply)
+2026-06-20T23:33:17.2332552Z       [32m+[0m[0m force_detach_policies = false
+2026-06-20T23:33:17.2332920Z       [32m+[0m[0m id                    = (known after apply)
+2026-06-20T23:33:17.2333319Z       [32m+[0m[0m managed_policy_arns   = (known after apply)
+2026-06-20T23:33:17.2333817Z       [32m+[0m[0m max_session_duration  = 3600
+2026-06-20T23:33:17.2334288Z       [32m+[0m[0m name                  = "multiagent-knowledge-runtime-role"
+2026-06-20T23:33:17.2334733Z       [32m+[0m[0m name_prefix           = (known after apply)
+2026-06-20T23:33:17.2335101Z       [32m+[0m[0m path                  = "/"
+2026-06-20T23:33:17.2335432Z       [32m+[0m[0m tags_all              = {
+2026-06-20T23:33:17.2335951Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2336525Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2336989Z         }
+2026-06-20T23:33:17.2337345Z       [32m+[0m[0m unique_id             = (known after apply)
+2026-06-20T23:33:17.2337712Z
+2026-06-20T23:33:17.2337980Z       [32m+[0m[0m inline_policy (known after apply)
+2026-06-20T23:33:17.2338424Z     }
+2026-06-20T23:33:17.2338582Z
+2026-06-20T23:33:17.2339003Z [1m  # module.knowledge.aws_iam_role_policy.bedrock_invoke[0m will be created
+2026-06-20T23:33:17.2339836Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "bedrock_invoke" {
+2026-06-20T23:33:17.2340453Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2341157Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2341724Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2342321Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2342778Z             {
+2026-06-20T23:33:17.2343191Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2343708Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2344216Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2344840Z                           [32m+[0m[0m "bedrock:InvokeModel",
+2026-06-20T23:33:17.2345572Z                           [32m+[0m[0m "bedrock:InvokeModelWithResponseStream",
+2026-06-20T23:33:17.2346411Z                         ]
+2026-06-20T23:33:17.2346905Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2347479Z                       [32m+[0m[0m Resource = [
+2026-06-20T23:33:17.2348471Z                           [32m+[0m[0m "arn:aws:bedrock:*::foundation-model/anthropic.*",
+2026-06-20T23:33:17.2349566Z                           [32m+[0m[0m "arn:aws:bedrock:*:224193574799:inference-profile/*",
+2026-06-20T23:33:17.2350479Z                           [32m+[0m[0m "arn:aws:bedrock:*:224193574799:application-inference-profile/*",
+2026-06-20T23:33:17.2351279Z                         ]
+2026-06-20T23:33:17.2351649Z                     },
+2026-06-20T23:33:17.2352018Z                 ]
+2026-06-20T23:33:17.2352498Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2352985Z             }
+2026-06-20T23:33:17.2353309Z         )
+2026-06-20T23:33:17.2353760Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2354256Z     }
+2026-06-20T23:33:17.2354454Z
+2026-06-20T23:33:17.2354890Z [1m  # module.knowledge.aws_iam_role_policy.ecr_pull[0m will be created
+2026-06-20T23:33:17.2355752Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "ecr_pull" {
+2026-06-20T23:33:17.2356433Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2357060Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2357683Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2358267Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2358717Z             {
+2026-06-20T23:33:17.2359121Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2359633Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2360136Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2360766Z                           [32m+[0m[0m "ecr:GetAuthorizationToken",
+2026-06-20T23:33:17.2361580Z                           [32m+[0m[0m "ecr:BatchCheckLayerAvailability",
+2026-06-20T23:33:17.2362356Z                           [32m+[0m[0m "ecr:GetDownloadUrlForLayer",
+2026-06-20T23:33:17.2363054Z                           [32m+[0m[0m "ecr:BatchGetImage",
+2026-06-20T23:33:17.2363545Z                         ]
+2026-06-20T23:33:17.2364040Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2364636Z                       [32m+[0m[0m Resource = "*"
+2026-06-20T23:33:17.2365111Z                     },
+2026-06-20T23:33:17.2365468Z                 ]
+2026-06-20T23:33:17.2365920Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2366388Z             }
+2026-06-20T23:33:17.2366700Z         )
+2026-06-20T23:33:17.2367144Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2367633Z     }
+2026-06-20T23:33:17.2367816Z
+2026-06-20T23:33:17.2368225Z [1m  # module.knowledge.aws_iam_role_policy.logs[0m will be created
+2026-06-20T23:33:17.2369036Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "logs" {
+2026-06-20T23:33:17.2369699Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2370333Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2371157Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2371783Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2372259Z             {
+2026-06-20T23:33:17.2372691Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2373218Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2373748Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2374385Z                           [32m+[0m[0m "logs:CreateLogGroup",
+2026-06-20T23:33:17.2375073Z                           [32m+[0m[0m "logs:CreateLogStream",
+2026-06-20T23:33:17.2375737Z                           [32m+[0m[0m "logs:PutLogEvents",
+2026-06-20T23:33:17.2376249Z                         ]
+2026-06-20T23:33:17.2376746Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2377596Z                       [32m+[0m[0m Resource = "arn:aws:logs:*:*:log-group:/aws/bedrock-agentcore/*"
+2026-06-20T23:33:17.2378527Z                     },
+2026-06-20T23:33:17.2378884Z                 ]
+2026-06-20T23:33:17.2379359Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2379832Z             }
+2026-06-20T23:33:17.2380156Z         )
+2026-06-20T23:33:17.2380761Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2381406Z     }
+2026-06-20T23:33:17.2381585Z
+2026-06-20T23:33:17.2382115Z [1m  # module.researcher.aws_bedrockagentcore_agent_runtime.this[0m will be created
+2026-06-20T23:33:17.2383130Z [0m  [32m+[0m[0m resource "aws_bedrockagentcore_agent_runtime" "this" {
+2026-06-20T23:33:17.2383963Z       [32m+[0m[0m agent_runtime_arn         = (known after apply)
+2026-06-20T23:33:17.2384736Z       [32m+[0m[0m agent_runtime_id          = (known after apply)
+2026-06-20T23:33:17.2385531Z       [32m+[0m[0m agent_runtime_name        = "multiagent_researcher"
+2026-06-20T23:33:17.2386346Z       [32m+[0m[0m agent_runtime_version     = (known after apply)
+2026-06-20T23:33:17.2387662Z       [32m+[0m[0m description               = "Multi-agent researcher — answers project-topic questions by calling the knowledge agent over MCP"
+2026-06-20T23:33:17.2388823Z       [32m+[0m[0m environment_variables     = {
+2026-06-20T23:33:17.2389527Z           [32m+[0m[0m "KB_MCP_CLIENT_ID" = (known after apply)
+2026-06-20T23:33:17.2390248Z           [32m+[0m[0m "KB_MCP_PASSWORD"  = (sensitive value)
+2026-06-20T23:33:17.2390957Z           [32m+[0m[0m "KB_MCP_URL"       = (known after apply)
+2026-06-20T23:33:17.2391843Z           [32m+[0m[0m "KB_MCP_USERNAME"  = "researcher-kb-bot"
+2026-06-20T23:33:17.2392525Z           [32m+[0m[0m "LOG_DELEGATION"   = "true"
+2026-06-20T23:33:17.2393133Z           [32m+[0m[0m "LOG_LEVEL"        = "info"
+2026-06-20T23:33:17.2393979Z           [32m+[0m[0m "MODEL_ID"         = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+2026-06-20T23:33:17.2394690Z         }
+2026-06-20T23:33:17.2395238Z       [32m+[0m[0m lifecycle_configuration   = (known after apply)
+2026-06-20T23:33:17.2395970Z       [32m+[0m[0m region                    = "us-east-1"
+2026-06-20T23:33:17.2396686Z       [32m+[0m[0m role_arn                  = (known after apply)
+2026-06-20T23:33:17.2397348Z       [32m+[0m[0m tags_all                  = {
+2026-06-20T23:33:17.2397958Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2398609Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2399134Z         }
+2026-06-20T23:33:17.2399657Z       [32m+[0m[0m workload_identity_details = (known after apply)
+2026-06-20T23:33:17.2400087Z
+2026-06-20T23:33:17.2400343Z       [32m+[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2400893Z           [32m+[0m[0m container_configuration {
+2026-06-20T23:33:17.2402251Z               [32m+[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2403345Z             }
+2026-06-20T23:33:17.2403675Z         }
+2026-06-20T23:33:17.2403860Z
+2026-06-20T23:33:17.2404122Z       [32m+[0m[0m network_configuration {
+2026-06-20T23:33:17.2404710Z           [32m+[0m[0m network_mode = "PUBLIC"
+2026-06-20T23:33:17.2405196Z         }
+2026-06-20T23:33:17.2405383Z
+2026-06-20T23:33:17.2405644Z       [32m+[0m[0m protocol_configuration {
+2026-06-20T23:33:17.2406255Z           [32m+[0m[0m server_protocol = "HTTP"
+2026-06-20T23:33:17.2406738Z         }
+2026-06-20T23:33:17.2407057Z     }
+2026-06-20T23:33:17.2407233Z
+2026-06-20T23:33:17.2407696Z [1m  # module.researcher.aws_ecr_lifecycle_policy.this[0m will be created
+2026-06-20T23:33:17.2408584Z [0m  [32m+[0m[0m resource "aws_ecr_lifecycle_policy" "this" {
+2026-06-20T23:33:17.2409251Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2409797Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2410401Z             {
+2026-06-20T23:33:17.2410777Z               [32m+[0m[0m rules = [
+2026-06-20T23:33:17.2411432Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2411774Z                       [32m+[0m[0m action       = {
+2026-06-20T23:33:17.2412175Z                           [32m+[0m[0m type = "expire"
+2026-06-20T23:33:17.2412463Z                         }
+2026-06-20T23:33:17.2413134Z                       [32m+[0m[0m description  = "Keep only 10 most recent images"
+2026-06-20T23:33:17.2413755Z                       [32m+[0m[0m rulePriority = 1
+2026-06-20T23:33:17.2414102Z                       [32m+[0m[0m selection    = {
+2026-06-20T23:33:17.2414445Z                           [32m+[0m[0m countNumber = 10
+2026-06-20T23:33:17.2414859Z                           [32m+[0m[0m countType   = "imageCountMoreThan"
+2026-06-20T23:33:17.2415265Z                           [32m+[0m[0m tagStatus   = "any"
+2026-06-20T23:33:17.2415560Z                         }
+2026-06-20T23:33:17.2415777Z                     },
+2026-06-20T23:33:17.2416008Z                 ]
+2026-06-20T23:33:17.2416214Z             }
+2026-06-20T23:33:17.2416410Z         )
+2026-06-20T23:33:17.2416681Z       [32m+[0m[0m region      = "us-east-1"
+2026-06-20T23:33:17.2417034Z       [32m+[0m[0m registry_id = (known after apply)
+2026-06-20T23:33:17.2417433Z       [32m+[0m[0m repository  = "multiagent-researcher"
+2026-06-20T23:33:17.2417740Z     }
+2026-06-20T23:33:17.2417857Z
+2026-06-20T23:33:17.2418131Z [1m  # module.researcher.aws_ecr_repository.this[0m will be updated in-place
+2026-06-20T23:33:17.2418618Z [0m  [33m~[0m[0m resource "aws_ecr_repository" "this" {
+2026-06-20T23:33:17.2418967Z         id                   = "multiagent-researcher"
+2026-06-20T23:33:17.2419280Z         name                 = "multiagent-researcher"
+2026-06-20T23:33:17.2419575Z         tags                 = {}
+2026-06-20T23:33:17.2419881Z       [33m~[0m[0m tags_all             = {
+2026-06-20T23:33:17.2420226Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2420610Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2420914Z         }
+2026-06-20T23:33:17.2421427Z         [90m# (5 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2421636Z
+2026-06-20T23:33:17.2421803Z       [33m~[0m[0m image_scanning_configuration {
+2026-06-20T23:33:17.2422215Z           [33m~[0m[0m scan_on_push = false [33m->[0m[0m true
+2026-06-20T23:33:17.2422520Z         }
+2026-06-20T23:33:17.2422630Z
+2026-06-20T23:33:17.2422793Z         [90m# (1 unchanged block hidden)[0m[0m
+2026-06-20T23:33:17.2423076Z     }
+2026-06-20T23:33:17.2423189Z
+2026-06-20T23:33:17.2423422Z [1m  # module.researcher.aws_iam_role.runtime[0m will be created
+2026-06-20T23:33:17.2423846Z [0m  [32m+[0m[0m resource "aws_iam_role" "runtime" {
+2026-06-20T23:33:17.2424389Z       [32m+[0m[0m arn                   = (known after apply)
+2026-06-20T23:33:17.2424789Z       [32m+[0m[0m assume_role_policy    = jsonencode(
+2026-06-20T23:33:17.2425081Z             {
+2026-06-20T23:33:17.2425335Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2425649Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2425985Z                       [32m+[0m[0m Action    = "sts:AssumeRole"
+2026-06-20T23:33:17.2426347Z                       [32m+[0m[0m Condition = {
+2026-06-20T23:33:17.2426711Z                           [32m+[0m[0m StringEquals = {
+2026-06-20T23:33:17.2427115Z                               [32m+[0m[0m "aws:SourceAccount" = "224193574799"
+2026-06-20T23:33:17.2427469Z                             }
+2026-06-20T23:33:17.2427713Z                         }
+2026-06-20T23:33:17.2428014Z                       [32m+[0m[0m Effect    = "Allow"
+2026-06-20T23:33:17.2428362Z                       [32m+[0m[0m Principal = {
+2026-06-20T23:33:17.2428792Z                           [32m+[0m[0m Service = "bedrock-agentcore.amazonaws.com"
+2026-06-20T23:33:17.2429142Z                         }
+2026-06-20T23:33:17.2429365Z                     },
+2026-06-20T23:33:17.2429771Z                 ]
+2026-06-20T23:33:17.2430071Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2430350Z             }
+2026-06-20T23:33:17.2430545Z         )
+2026-06-20T23:33:17.2430848Z       [32m+[0m[0m create_date           = (known after apply)
+2026-06-20T23:33:17.2431401Z       [32m+[0m[0m force_detach_policies = false
+2026-06-20T23:33:17.2431906Z       [32m+[0m[0m id                    = (known after apply)
+2026-06-20T23:33:17.2432307Z       [32m+[0m[0m managed_policy_arns   = (known after apply)
+2026-06-20T23:33:17.2432682Z       [32m+[0m[0m max_session_duration  = 3600
+2026-06-20T23:33:17.2433103Z       [32m+[0m[0m name                  = "multiagent-researcher-runtime-role"
+2026-06-20T23:33:17.2433545Z       [32m+[0m[0m name_prefix           = (known after apply)
+2026-06-20T23:33:17.2433909Z       [32m+[0m[0m path                  = "/"
+2026-06-20T23:33:17.2434247Z       [32m+[0m[0m tags_all              = {
+2026-06-20T23:33:17.2434591Z           [32m+[0m[0m "ManagedBy" = "terraform"
+2026-06-20T23:33:17.2434989Z           [32m+[0m[0m "Project"   = "agentcore-multiagent"
+2026-06-20T23:33:17.2435289Z         }
+2026-06-20T23:33:17.2435586Z       [32m+[0m[0m unique_id             = (known after apply)
+2026-06-20T23:33:17.2435800Z
+2026-06-20T23:33:17.2435976Z       [32m+[0m[0m inline_policy (known after apply)
+2026-06-20T23:33:17.2436257Z     }
+2026-06-20T23:33:17.2436369Z
+2026-06-20T23:33:17.2436643Z [1m  # module.researcher.aws_iam_role_policy.bedrock_invoke[0m will be created
+2026-06-20T23:33:17.2437156Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "bedrock_invoke" {
+2026-06-20T23:33:17.2437567Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2437911Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2438267Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2438605Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2438883Z             {
+2026-06-20T23:33:17.2439136Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2439446Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2439751Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2440114Z                           [32m+[0m[0m "bedrock:InvokeModel",
+2026-06-20T23:33:17.2440544Z                           [32m+[0m[0m "bedrock:InvokeModelWithResponseStream",
+2026-06-20T23:33:17.2440888Z                         ]
+2026-06-20T23:33:17.2441353Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2441694Z                       [32m+[0m[0m Resource = [
+2026-06-20T23:33:17.2442231Z                           [32m+[0m[0m "arn:aws:bedrock:*::foundation-model/anthropic.*",
+2026-06-20T23:33:17.2442766Z                           [32m+[0m[0m "arn:aws:bedrock:*:224193574799:inference-profile/*",
+2026-06-20T23:33:17.2443354Z                           [32m+[0m[0m "arn:aws:bedrock:*:224193574799:application-inference-profile/*",
+2026-06-20T23:33:17.2443764Z                         ]
+2026-06-20T23:33:17.2443993Z                     },
+2026-06-20T23:33:17.2444205Z                 ]
+2026-06-20T23:33:17.2444482Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2444767Z             }
+2026-06-20T23:33:17.2444965Z         )
+2026-06-20T23:33:17.2445235Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2445516Z     }
+2026-06-20T23:33:17.2445622Z
+2026-06-20T23:33:17.2446017Z [1m  # module.researcher.aws_iam_role_policy.ecr_pull[0m will be created
+2026-06-20T23:33:17.2461618Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "ecr_pull" {
+2026-06-20T23:33:17.2462198Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2462590Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2462956Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2463311Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2463823Z             {
+2026-06-20T23:33:17.2464094Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2464412Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2464736Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2465129Z                           [32m+[0m[0m "ecr:GetAuthorizationToken",
+2026-06-20T23:33:17.2465702Z                           [32m+[0m[0m "ecr:BatchCheckLayerAvailability",
+2026-06-20T23:33:17.2466148Z                           [32m+[0m[0m "ecr:GetDownloadUrlForLayer",
+2026-06-20T23:33:17.2466552Z                           [32m+[0m[0m "ecr:BatchGetImage",
+2026-06-20T23:33:17.2466853Z                         ]
+2026-06-20T23:33:17.2467163Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2467512Z                       [32m+[0m[0m Resource = "*"
+2026-06-20T23:33:17.2467796Z                     },
+2026-06-20T23:33:17.2468013Z                 ]
+2026-06-20T23:33:17.2468301Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2468587Z             }
+2026-06-20T23:33:17.2468788Z         )
+2026-06-20T23:33:17.2469072Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2469353Z     }
+2026-06-20T23:33:17.2469466Z
+2026-06-20T23:33:17.2469718Z [1m  # module.researcher.aws_iam_role_policy.logs[0m will be created
+2026-06-20T23:33:17.2470210Z [0m  [32m+[0m[0m resource "aws_iam_role_policy" "logs" {
+2026-06-20T23:33:17.2470597Z       [32m+[0m[0m id          = (known after apply)
+2026-06-20T23:33:17.2471088Z       [32m+[0m[0m name        = (known after apply)
+2026-06-20T23:33:17.2471444Z       [32m+[0m[0m name_prefix = (known after apply)
+2026-06-20T23:33:17.2471793Z       [32m+[0m[0m policy      = jsonencode(
+2026-06-20T23:33:17.2472076Z             {
+2026-06-20T23:33:17.2472341Z               [32m+[0m[0m Statement = [
+2026-06-20T23:33:17.2472647Z                   [32m+[0m[0m {
+2026-06-20T23:33:17.2472958Z                       [32m+[0m[0m Action   = [
+2026-06-20T23:33:17.2473335Z                           [32m+[0m[0m "logs:CreateLogGroup",
+2026-06-20T23:33:17.2473730Z                           [32m+[0m[0m "logs:CreateLogStream",
+2026-06-20T23:33:17.2474110Z                           [32m+[0m[0m "logs:PutLogEvents",
+2026-06-20T23:33:17.2474407Z                         ]
+2026-06-20T23:33:17.2474708Z                       [32m+[0m[0m Effect   = "Allow"
+2026-06-20T23:33:17.2475192Z                       [32m+[0m[0m Resource = "arn:aws:logs:*:*:log-group:/aws/bedrock-agentcore/*"
+2026-06-20T23:33:17.2475604Z                     },
+2026-06-20T23:33:17.2475824Z                 ]
+2026-06-20T23:33:17.2476110Z               [32m+[0m[0m Version   = "2012-10-17"
+2026-06-20T23:33:17.2476387Z             }
+2026-06-20T23:33:17.2476594Z         )
+2026-06-20T23:33:17.2476877Z       [32m+[0m[0m role        = (known after apply)
+2026-06-20T23:33:17.2477168Z     }
+2026-06-20T23:33:17.2477276Z
+2026-06-20T23:33:17.2477605Z [1m  # module.router.aws_bedrockagentcore_agent_runtime.this[0m will be updated in-place
+2026-06-20T23:33:17.2478220Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "this" {
+2026-06-20T23:33:17.2478721Z       [33m~[0m[0m agent_runtime_version     = "7" -> (known after apply)
+2026-06-20T23:33:17.2479155Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2479367Z
+2026-06-20T23:33:17.2479530Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2479888Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2481256Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2482277Z             }
+2026-06-20T23:33:17.2482477Z         }
+2026-06-20T23:33:17.2482590Z
+2026-06-20T23:33:17.2482775Z         [90m# (2 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2483205Z     }
+2026-06-20T23:33:17.2483315Z
+2026-06-20T23:33:17.2483658Z [1m  # module.supervisor.aws_bedrockagentcore_agent_runtime.this[0m will be updated in-place
+2026-06-20T23:33:17.2484275Z [0m  [33m~[0m[0m resource "aws_bedrockagentcore_agent_runtime" "this" {
+2026-06-20T23:33:17.2484896Z       [33m~[0m[0m agent_runtime_version     = "18" -> (known after apply)
+2026-06-20T23:33:17.2485356Z         [90m# (10 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2485571Z
+2026-06-20T23:33:17.2485718Z       [33m~[0m[0m agent_runtime_artifact {
+2026-06-20T23:33:17.2486068Z           [33m~[0m[0m container_configuration {
+2026-06-20T23:33:17.2487279Z               [33m~[0m[0m container_uri = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:debd874b220e11eec46a3f2a5176ae4b712df3cb" [33m->[0m[0m "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor:1a80a88688c1a2db1206921710405645c6ce4b37"
+2026-06-20T23:33:17.2488258Z             }
+2026-06-20T23:33:17.2488452Z         }
+2026-06-20T23:33:17.2488566Z
+2026-06-20T23:33:17.2488735Z         [90m# (2 unchanged blocks hidden)[0m[0m
+2026-06-20T23:33:17.2489007Z     }
+2026-06-20T23:33:17.2489118Z
+2026-06-20T23:33:17.2489304Z [1mPlan:[0m [0m21 to add, 9 to change, 0 to destroy.
+2026-06-20T23:33:17.2489519Z
+2026-06-20T23:33:17.2489618Z Changes to Outputs:
+2026-06-20T23:33:17.2489976Z   [32m+[0m[0m knowledge_mcp_bot_password       = (sensitive value)
+2026-06-20T23:33:17.2490452Z   [32m+[0m[0m knowledge_mcp_bot_username       = "researcher-kb-bot"
+2026-06-20T23:33:17.2490920Z   [32m+[0m[0m knowledge_mcp_cognito_client_id  = (known after apply)
+2026-06-20T23:33:17.2491482Z   [32m+[0m[0m knowledge_mcp_url                = (known after apply)
+2026-06-20T23:33:17.2491931Z   [32m+[0m[0m knowledge_runtime_arn            = (known after apply)
+2026-06-20T23:33:17.2492379Z   [32m+[0m[0m researcher_a2a_cognito_client_id = (known after apply)
+2026-06-20T23:33:17.2492834Z   [32m+[0m[0m researcher_a2a_endpoint_url      = (known after apply)
+2026-06-20T23:33:17.2493277Z   [32m+[0m[0m researcher_a2a_runtime_arn       = (known after apply)
+2026-06-20T23:33:17.2493726Z   [32m+[0m[0m researcher_a2a_tester_password   = (sensitive value)
+2026-06-20T23:33:17.2494229Z   [32m+[0m[0m researcher_a2a_tester_username   = "researcher-a2a-tester"
+2026-06-20T23:33:17.2494733Z   [32m+[0m[0m researcher_runtime_arn           = (known after apply)
+2026-06-20T23:33:17.2495155Z   [33m~[0m[0m runtime_arns                     = {
+2026-06-20T23:33:17.2495532Z       [32m+[0m[0m knowledge  = (known after apply)
+2026-06-20T23:33:17.2495885Z       [32m+[0m[0m researcher = (known after apply)
+2026-06-20T23:33:17.2496250Z         [90m# (3 unchanged attributes hidden)[0m[0m
+2026-06-20T23:33:17.2496547Z     }
+2026-06-20T23:33:17.4276882Z [0m[1mrandom_password.researcher_a2a_tester: Creating...[0m[0m
+2026-06-20T23:33:17.4289298Z [0m[1mrandom_password.knowledge_mcp_bot: Creating...[0m[0m
+2026-06-20T23:33:17.5121517Z [0m[1mrandom_password.knowledge_mcp_bot: Creation complete after 1s [id=none][0m
+2026-06-20T23:33:17.5133172Z [0m[1mrandom_password.researcher_a2a_tester: Creation complete after 1s [id=none][0m
+2026-06-20T23:33:17.6414632Z [0m[1mmodule.knowledge.aws_iam_role.runtime: Creating...[0m[0m
+2026-06-20T23:33:17.6415792Z [0m[1maws_cognito_user_pool.researcher_a2a: Creating...[0m[0m
+2026-06-20T23:33:17.6438117Z [0m[1mmodule.researcher.aws_iam_role.runtime: Creating...[0m[0m
+2026-06-20T23:33:17.6439545Z [0m[1maws_cognito_user_pool.knowledge_mcp: Creating...[0m[0m
+2026-06-20T23:33:17.6441297Z [0m[1mmodule.researcher.aws_ecr_repository.this: Modifying... [id=multiagent-researcher][0m[0m
+2026-06-20T23:33:17.6443154Z [0m[1mmodule.knowledge.aws_ecr_repository.this: Modifying... [id=multiagent-knowledge][0m[0m
+2026-06-20T23:33:17.6793046Z [0m[1mmodule.critic.aws_bedrockagentcore_agent_runtime.this: Modifying...[0m[0m
+2026-06-20T23:33:17.6825982Z [0m[1mmodule.supervisor.aws_bedrockagentcore_agent_runtime.this: Modifying...[0m[0m
+2026-06-20T23:33:17.6850754Z [0m[1maws_bedrockagentcore_agent_runtime.router_a2a: Modifying...[0m[0m
+2026-06-20T23:33:17.6872273Z [0m[1mmodule.router.aws_bedrockagentcore_agent_runtime.this: Modifying...[0m[0m
+2026-06-20T23:33:17.8433454Z [0m[1mmodule.researcher.aws_iam_role.runtime: Creation complete after 0s [id=multiagent-researcher-runtime-role][0m
+2026-06-20T23:33:17.8449045Z [0m[1mmodule.researcher.aws_ecr_repository.this: Modifications complete after 0s [id=multiagent-researcher][0m
+2026-06-20T23:33:17.8451178Z [0m[1mmodule.knowledge.aws_ecr_repository.this: Modifications complete after 0s [id=multiagent-knowledge][0m
+2026-06-20T23:33:17.8461126Z [0m[1mmodule.researcher.aws_iam_role_policy.ecr_pull: Creating...[0m[0m
+2026-06-20T23:33:17.8476997Z [0m[1mmodule.researcher.aws_iam_role_policy.bedrock_invoke: Creating...[0m[0m
+2026-06-20T23:33:17.8477996Z [0m[1mmodule.researcher.aws_iam_role_policy.logs: Creating...[0m[0m
+2026-06-20T23:33:17.8631259Z [0m[1mmodule.knowledge.aws_iam_role.runtime: Creation complete after 0s [id=multiagent-knowledge-runtime-role][0m
+2026-06-20T23:33:17.8811905Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a: Modifying...[0m[0m
+2026-06-20T23:33:17.9757159Z [0m[1mmodule.researcher.aws_iam_role_policy.ecr_pull: Creation complete after 0s [id=multiagent-researcher-runtime-role:terraform-20260620233317846700000005][0m
+2026-06-20T23:33:17.9968454Z [0m[1maws_bedrockagentcore_agent_runtime.critic_a2a: Modifying...[0m[0m
+2026-06-20T23:33:18.0039564Z [0m[1mmodule.researcher.aws_iam_role_policy.bedrock_invoke: Creation complete after 0s [id=multiagent-researcher-runtime-role:terraform-20260620233317848100000007][0m
+2026-06-20T23:33:18.0058985Z [0m[1mmodule.researcher.aws_iam_role_policy.logs: Creation complete after 0s [id=multiagent-researcher-runtime-role:terraform-20260620233317848100000006][0m
+2026-06-20T23:33:18.0104515Z [0m[1mmodule.researcher.aws_ecr_lifecycle_policy.this: Creating...[0m[0m
+2026-06-20T23:33:18.0200945Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a_sigv4: Modifying...[0m[0m
+2026-06-20T23:33:18.1087963Z [0m[1mmodule.researcher.aws_ecr_lifecycle_policy.this: Creation complete after 0s [id=multiagent-researcher][0m
+2026-06-20T23:33:18.1109084Z [0m[1mmodule.knowledge.aws_ecr_lifecycle_policy.this: Creating...[0m[0m
+2026-06-20T23:33:18.2092384Z [0m[1mmodule.knowledge.aws_ecr_lifecycle_policy.this: Creation complete after 0s [id=multiagent-knowledge][0m
+2026-06-20T23:33:18.2109650Z [0m[1mmodule.knowledge.aws_iam_role_policy.logs: Creating...[0m[0m
+2026-06-20T23:33:18.3418622Z [0m[1mmodule.knowledge.aws_iam_role_policy.logs: Creation complete after 0s [id=multiagent-knowledge-runtime-role:terraform-2026062023331821160000000b][0m
+2026-06-20T23:33:18.3438163Z [0m[1mmodule.knowledge.aws_iam_role_policy.ecr_pull: Creating...[0m[0m
+2026-06-20T23:33:18.4592925Z [0m[1mmodule.knowledge.aws_iam_role_policy.ecr_pull: Creation complete after 0s [id=multiagent-knowledge-runtime-role:terraform-2026062023331834440000000c][0m
+2026-06-20T23:33:18.4615733Z [0m[1mmodule.knowledge.aws_iam_role_policy.bedrock_invoke: Creating...[0m[0m
+2026-06-20T23:33:18.5695690Z [0m[1mmodule.knowledge.aws_iam_role_policy.bedrock_invoke: Creation complete after 1s [id=multiagent-knowledge-runtime-role:terraform-2026062023331846220000000d][0m
+2026-06-20T23:33:18.9714626Z [0m[1maws_cognito_user_pool.knowledge_mcp: Creation complete after 1s [id=us-east-1_1MHNCJrwz][0m
+2026-06-20T23:33:18.9748161Z [0m[1maws_cognito_user.knowledge_mcp_bot: Creating...[0m[0m
+2026-06-20T23:33:18.9835045Z [0m[1maws_cognito_user_pool_client.knowledge_mcp: Creating...[0m[0m
+2026-06-20T23:33:19.1334304Z [0m[1maws_cognito_user_pool.researcher_a2a: Creation complete after 1s [id=us-east-1_S8Ok9uKjI][0m
+2026-06-20T23:33:19.1361657Z [0m[1maws_cognito_user.researcher_a2a_tester: Creating...[0m[0m
+2026-06-20T23:33:19.2133936Z [0m[1maws_cognito_user_pool_client.knowledge_mcp: Creation complete after 0s [id=3kn1esljkq5kcahkl96j9asr6e][0m
+2026-06-20T23:33:19.2237712Z [0m[1maws_cognito_user_pool_client.researcher_a2a: Creating...[0m[0m
+2026-06-20T23:33:19.4864865Z [0m[1maws_cognito_user_pool_client.researcher_a2a: Creation complete after 0s [id=18hou4f5holov8rcnf76kabhis][0m
+2026-06-20T23:33:19.5069115Z [0m[1mmodule.knowledge.aws_bedrockagentcore_agent_runtime.this: Creating...[0m[0m
+2026-06-20T23:33:20.1802436Z [0m[1maws_cognito_user.knowledge_mcp_bot: Creation complete after 1s [id=us-east-1_1MHNCJrwz/researcher-kb-bot][0m
+2026-06-20T23:33:20.3182036Z [0m[1maws_cognito_user.researcher_a2a_tester: Creation complete after 1s [id=us-east-1_S8Ok9uKjI/researcher-a2a-tester][0m
+2026-06-20T23:33:20.8674827Z [0m[1mmodule.router.aws_bedrockagentcore_agent_runtime.this: Modifications complete after 3s[0m
+2026-06-20T23:33:20.9090492Z [0m[1mmodule.supervisor.aws_bedrockagentcore_agent_runtime.this: Modifications complete after 3s[0m
+2026-06-20T23:33:21.0109396Z [0m[1maws_bedrockagentcore_agent_runtime.router_a2a: Modifications complete after 3s[0m
+2026-06-20T23:33:21.1006829Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a_sigv4: Modifications complete after 3s[0m
+2026-06-20T23:33:21.1413758Z [0m[1mmodule.critic.aws_bedrockagentcore_agent_runtime.this: Modifications complete after 3s[0m
+2026-06-20T23:33:21.2426048Z [0m[1maws_bedrockagentcore_agent_runtime.supervisor_a2a: Modifications complete after 3s[0m
+2026-06-20T23:33:21.4784758Z [0m[1maws_bedrockagentcore_agent_runtime.critic_a2a: Modifications complete after 3s[0m
+2026-06-20T23:33:29.5080263Z [0m[1mmodule.knowledge.aws_bedrockagentcore_agent_runtime.this: Still creating... [00m10s elapsed][0m[0m
+2026-06-20T23:33:31.5529408Z [0m[1mmodule.knowledge.aws_bedrockagentcore_agent_runtime.this: Creation complete after 12s[0m
+2026-06-20T23:33:31.5747755Z [0m[1mmodule.researcher.aws_bedrockagentcore_agent_runtime.this: Creating...[0m[0m
+2026-06-20T23:33:31.5757321Z [0m[1maws_bedrockagentcore_agent_runtime.researcher_a2a: Creating...[0m[0m
+2026-06-20T23:33:35.0715082Z [0m[1mmodule.researcher.aws_bedrockagentcore_agent_runtime.this: Creation complete after 3s[0m
+2026-06-20T23:33:35.2264752Z [0m[1maws_bedrockagentcore_agent_runtime.researcher_a2a: Creation complete after 3s[0m
+2026-06-20T23:33:35.4172625Z [0m[1m[32m
+2026-06-20T23:33:35.4173776Z Apply complete! Resources: 21 added, 9 changed, 0 destroyed.[0m
+2026-06-20T23:33:35.4174448Z [0m[1m[32m
+2026-06-20T23:33:35.4174764Z Outputs:
+2026-06-20T23:33:35.4174941Z
+2026-06-20T23:33:35.4175273Z [0ma2a_cognito_client_id = "5g63cr5ut6dkuuprk5o0r39o"
+2026-06-20T23:33:35.4176781Z a2a_endpoint_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_supervisor_a2a-8OvFnkHKQx/invocations/"
+2026-06-20T23:33:35.4178469Z a2a_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_supervisor_a2a-8OvFnkHKQx"
+2026-06-20T23:33:35.4180233Z a2a_sigv4_endpoint_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_supervisor_a2a_sigv4-ZEb4MdDBW2/invocations/"
+2026-06-20T23:33:35.4182287Z a2a_sigv4_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_supervisor_a2a_sigv4-ZEb4MdDBW2"
+2026-06-20T23:33:35.4183184Z a2a_tester_password = <sensitive>
+2026-06-20T23:33:35.4183590Z a2a_tester_username = "a2a-tester"
+2026-06-20T23:33:35.4184346Z agent_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_supervisor-vlCRzx7D5I"
+2026-06-20T23:33:35.4185182Z agent_runtime_id = "multiagent_supervisor-vlCRzx7D5I"
+2026-06-20T23:33:35.4186058Z agent_runtime_role_arn = "arn:aws:iam::224193574799:role/multiagent-supervisor-runtime-role"
+2026-06-20T23:33:35.4186828Z critic_a2a_cognito_client_id = "69p8s9877qrnmcb57t22mnjohe"
+2026-06-20T23:33:35.4188248Z critic_a2a_endpoint_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_critic_a2a-F2QQ3XH0kR/invocations/"
+2026-06-20T23:33:35.4190438Z critic_a2a_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_critic_a2a-F2QQ3XH0kR"
+2026-06-20T23:33:35.4191471Z critic_a2a_tester_password = <sensitive>
+2026-06-20T23:33:35.4192332Z critic_a2a_tester_username = "critic-a2a-tester"
+2026-06-20T23:33:35.4193137Z critic_ecr_repository_url = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-critic"
+2026-06-20T23:33:35.4194250Z critic_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_critic-w7qb2OHcPd"
+2026-06-20T23:33:35.4195359Z ecr_repository_url = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-supervisor"
+2026-06-20T23:33:35.4196400Z github_deploy_role_arn = "arn:aws:iam::224193574799:role/multiagent-supervisor-github-deploy"
+2026-06-20T23:33:35.4197482Z knowledge_ecr_repository_url = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-knowledge"
+2026-06-20T23:33:35.4198309Z knowledge_mcp_bot_password = <sensitive>
+2026-06-20T23:33:35.4198823Z knowledge_mcp_bot_username = "researcher-kb-bot"
+2026-06-20T23:33:35.4199456Z knowledge_mcp_cognito_client_id = "3kn1esljkq5kcahkl96j9asr6e"
+2026-06-20T23:33:35.4200938Z knowledge_mcp_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_knowledge-vJ3zgVHvDW/invocations/mcp"
+2026-06-20T23:33:35.4202849Z knowledge_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_knowledge-vJ3zgVHvDW"
+2026-06-20T23:33:35.4203858Z researcher_a2a_cognito_client_id = "18hou4f5holov8rcnf76kabhis"
+2026-06-20T23:33:35.4205468Z researcher_a2a_endpoint_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_researcher_a2a-wuthRB5xmw/invocations/"
+2026-06-20T23:33:35.4207416Z researcher_a2a_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_researcher_a2a-wuthRB5xmw"
+2026-06-20T23:33:35.4208374Z researcher_a2a_tester_password = <sensitive>
+2026-06-20T23:33:35.4208953Z researcher_a2a_tester_username = "researcher-a2a-tester"
+2026-06-20T23:33:35.4209815Z researcher_ecr_repository_url = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-researcher"
+2026-06-20T23:33:35.4211175Z researcher_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_researcher-vu8evXGmcU"
+2026-06-20T23:33:35.4212143Z router_a2a_cognito_client_id = "7a8b2nfppgjuc3t85slor8ec1k"
+2026-06-20T23:33:35.4213673Z router_a2a_endpoint_url = "https://bedrock-agentcore.us-east-1.amazonaws.com/runtimes/arn%3Aaws%3Abedrock-agentcore%3Aus-east-1%3A224193574799%3Aruntime%2Fmultiagent_router_a2a-MRuwMK3Csm/invocations/"
+2026-06-20T23:33:35.4215371Z router_a2a_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_router_a2a-MRuwMK3Csm"
+2026-06-20T23:33:35.4216216Z router_a2a_tester_password = <sensitive>
+2026-06-20T23:33:35.4216693Z router_a2a_tester_username = "router-a2a-tester"
+2026-06-20T23:33:35.4217416Z router_ecr_repository_url = "224193574799.dkr.ecr.us-east-1.amazonaws.com/multiagent-router"
+2026-06-20T23:33:35.4218457Z router_runtime_arn = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_router-8Q1JhR5SWm"
+2026-06-20T23:33:35.4219224Z runtime_arns = {
+2026-06-20T23:33:35.4219841Z   "critic" = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_critic-w7qb2OHcPd"
+2026-06-20T23:33:35.4220888Z   "knowledge" = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_knowledge-vJ3zgVHvDW"
+2026-06-20T23:33:35.4222111Z   "researcher" = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_researcher-vu8evXGmcU"
+2026-06-20T23:33:35.4223148Z   "router" = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_router-8Q1JhR5SWm"
+2026-06-20T23:33:35.4224362Z   "supervisor" = "arn:aws:bedrock-agentcore:us-east-1:224193574799:runtime/multiagent_supervisor-vlCRzx7D5I"
+2026-06-20T23:33:35.4225090Z }
+2026-06-20T23:33:35.4373560Z ##[group]Run ARN=$(terraform output -json runtime_arns | jq -r '.supervisor')
+2026-06-20T23:33:35.4374485Z [36;1mARN=$(terraform output -json runtime_arns | jq -r '.supervisor')[0m
+2026-06-20T23:33:35.4375230Z [36;1maws bedrock-agentcore invoke-agent-runtime \[0m
+2026-06-20T23:33:35.4375809Z [36;1m  --agent-runtime-arn "$ARN" \[0m
+2026-06-20T23:33:35.4376447Z [36;1m  --payload "$(printf '%s' '{"prompt":"add 2 and 3"}' | base64)" \[0m
+2026-06-20T23:33:35.4377074Z [36;1m  --region "us-east-1" \[0m
+2026-06-20T23:33:35.4377498Z [36;1m  smoke.json[0m
+2026-06-20T23:33:35.4377765Z [36;1mcat smoke.json[0m
+2026-06-20T23:33:35.4378024Z [36;1mgrep -q result smoke.json[0m
+2026-06-20T23:33:35.4410725Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:33:35.4411179Z env:
+2026-06-20T23:33:35.4411407Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:33:35.4411692Z   AWS_REGION: us-east-1
+2026-06-20T23:33:35.4412020Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:33:35.4412414Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:33:35.4417019Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:33:35.4417409Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:33:35.4417819Z ##[endgroup]
+2026-06-20T23:33:47.6993719Z {
+2026-06-20T23:33:47.6994253Z     "runtimeSessionId": "5d605f52-ac5a-46d4-a195-85cd7d25c681",
+2026-06-20T23:33:47.6994869Z     "contentType": "application/json; charset=utf-8",
+2026-06-20T23:33:47.6995336Z     "statusCode": 200
+2026-06-20T23:33:47.6995632Z }
+2026-06-20T23:33:47.7732804Z {"result":"The answer is **5**."}
+2026-06-20T23:33:47.7760551Z ##[group]Run ARN=$(terraform output -json runtime_arns | jq -r '.router')
+2026-06-20T23:33:47.7761354Z [36;1mARN=$(terraform output -json runtime_arns | jq -r '.router')[0m
+2026-06-20T23:33:47.7761793Z [36;1maws bedrock-agentcore invoke-agent-runtime \[0m
+2026-06-20T23:33:47.7762162Z [36;1m  --agent-runtime-arn "$ARN" \[0m
+2026-06-20T23:33:47.7762688Z [36;1m  --payload "$(printf '%s' '{"prompt":"I was double charged on my invoice, can I get a refund?"}' | base64)" \[0m
+2026-06-20T23:33:47.7763202Z [36;1m  --region "us-east-1" \[0m
+2026-06-20T23:33:47.7763497Z [36;1m  smoke-router.json[0m
+2026-06-20T23:33:47.7763760Z [36;1mcat smoke-router.json[0m
+2026-06-20T23:33:47.7764048Z [36;1mgrep -q result smoke-router.json[0m
+2026-06-20T23:33:47.7796997Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:33:47.7797269Z env:
+2026-06-20T23:33:47.7797491Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:33:47.7797768Z   AWS_REGION: us-east-1
+2026-06-20T23:33:47.7798123Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:33:47.7798478Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:33:47.7803268Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:33:47.7803658Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:33:47.7804062Z ##[endgroup]
+2026-06-20T23:33:59.6244846Z {
+2026-06-20T23:33:59.6245379Z     "runtimeSessionId": "91f8e6bf-30ec-4092-8c4e-d0b75420f413",
+2026-06-20T23:33:59.6246048Z     "contentType": "application/json; charset=utf-8",
+2026-06-20T23:33:59.6246552Z     "statusCode": 200
+2026-06-20T23:33:59.6246879Z }
+2026-06-20T23:33:59.7047015Z {"result":"I'd be happy to help you with the double charge issue. To process this efficiently, I'll need a few details:\n\n1. **Invoice number(s)** - Which invoice(s) show the duplicate charge?\n2. **Amount charged** - How much were you charged twice?\n3. **Date of charges** - When did these charges appear?\n4. **Payment method** - How did you pay (credit card, bank transfer, etc.)?\n\n**Next steps:**\nOnce you provide these details, I can:\n- Verify the duplicate charge in our system\n- Process a refund for the overcharge\n- Ensure it doesn't happen again\n\nPlease share this information, and I'll get this resolved for you right away."}
+2026-06-20T23:33:59.7078037Z ##[group]Run ARN=$(terraform output -json runtime_arns | jq -r '.critic')
+2026-06-20T23:33:59.7078774Z [36;1mARN=$(terraform output -json runtime_arns | jq -r '.critic')[0m
+2026-06-20T23:33:59.7079202Z [36;1maws bedrock-agentcore invoke-agent-runtime \[0m
+2026-06-20T23:33:59.7079549Z [36;1m  --agent-runtime-arn "$ARN" \[0m
+2026-06-20T23:33:59.7080050Z [36;1m  --payload "$(printf '%s' '{"prompt":"Write a one-sentence tagline for a coffee shop."}' | base64)" \[0m
+2026-06-20T23:33:59.7080554Z [36;1m  --region "us-east-1" \[0m
+2026-06-20T23:33:59.7080841Z [36;1m  smoke-critic.json[0m
+2026-06-20T23:33:59.7081361Z [36;1mcat smoke-critic.json[0m
+2026-06-20T23:33:59.7081654Z [36;1mgrep -q result smoke-critic.json[0m
+2026-06-20T23:33:59.7114495Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:33:59.7114770Z env:
+2026-06-20T23:33:59.7114994Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:33:59.7115268Z   AWS_REGION: us-east-1
+2026-06-20T23:33:59.7115592Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:33:59.7115981Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:33:59.7120600Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:33:59.7121170Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:33:59.7121740Z ##[endgroup]
+2026-06-20T23:34:03.3011666Z {
+2026-06-20T23:34:03.3012209Z     "runtimeSessionId": "b005e6c8-5286-44f2-94d3-8b52fa4844ef",
+2026-06-20T23:34:03.3012797Z     "contentType": "application/json; charset=utf-8",
+2026-06-20T23:34:03.3013259Z     "statusCode": 200
+2026-06-20T23:34:03.3013556Z }
+2026-06-20T23:34:03.3837542Z {"result":"Wake up to something extraordinary."}
+2026-06-20T23:34:03.3875442Z ##[group]Run MCP_URL=$(terraform output -raw knowledge_mcp_url)
+2026-06-20T23:34:03.3876230Z [36;1mMCP_URL=$(terraform output -raw knowledge_mcp_url)[0m
+2026-06-20T23:34:03.3876996Z [36;1mCLIENT_ID=$(terraform output -raw knowledge_mcp_cognito_client_id)[0m
+2026-06-20T23:34:03.3899147Z [36;1mUSERNAME=$(terraform output -raw knowledge_mcp_bot_username)[0m
+2026-06-20T23:34:03.3900031Z [36;1mPASSWORD=$(terraform output -raw knowledge_mcp_bot_password)[0m
+2026-06-20T23:34:03.3900755Z [36;1mTOKEN=$(aws cognito-idp initiate-auth \[0m
+2026-06-20T23:34:03.3901516Z [36;1m  --auth-flow USER_PASSWORD_AUTH \[0m
+2026-06-20T23:34:03.3901847Z [36;1m  --client-id "$CLIENT_ID" \[0m
+2026-06-20T23:34:03.3902434Z [36;1m  --auth-parameters USERNAME="$USERNAME",*** \[0m
+2026-06-20T23:34:03.3902795Z [36;1m  --region "us-east-1" \[0m
+2026-06-20T23:34:03.3903171Z [36;1m  --query 'AuthenticationResult.AccessToken' --output text)[0m
+2026-06-20T23:34:03.3903582Z [36;1mcurl -sf "$MCP_URL" \[0m
+2026-06-20T23:34:03.3903850Z [36;1m  -X POST \[0m
+2026-06-20T23:34:03.3904145Z [36;1m  -H "Authorization: ***" \[0m
+2026-06-20T23:34:03.3904457Z [36;1m  -H "Content-Type: application/json" \[0m
+2026-06-20T23:34:03.3904830Z [36;1m  -H "Accept: application/json, text/event-stream" \[0m
+2026-06-20T23:34:03.3905283Z [36;1m  -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \[0m
+2026-06-20T23:34:03.3905760Z [36;1m  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \[0m
+2026-06-20T23:34:03.3906130Z [36;1m  -o kb-tools.txt[0m
+2026-06-20T23:34:03.3906385Z [36;1mcat kb-tools.txt[0m
+2026-06-20T23:34:03.3906649Z [36;1mgrep -q 'kb_lookup' kb-tools.txt[0m
+2026-06-20T23:34:03.3939623Z shell: /usr/bin/bash -e {0}
+2026-06-20T23:34:03.3939885Z env:
+2026-06-20T23:34:03.3940113Z   AWS_DEFAULT_REGION: us-east-1
+2026-06-20T23:34:03.3940385Z   AWS_REGION: us-east-1
+2026-06-20T23:34:03.3940717Z   AWS_ACCESS_KEY_ID: ***
+2026-06-20T23:34:03.3941272Z   AWS_SECRET_ACCESS_KEY: ***
+2026-06-20T23:34:03.3945850Z   AWS_SESSION_TOKEN: ***
+2026-06-20T23:34:03.3946233Z   TERRAFORM_CLI_PATH: /home/runner/work/_temp/15820165-bf05-45d8-959c-45e613469952
+2026-06-20T23:34:03.3946633Z ##[endgroup]
+2026-06-20T23:34:08.4576162Z ##[error]Process completed with exit code 22.
+2026-06-20T23:34:08.4695552Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:34:08.4696958Z Post job cleanup.
+2026-06-20T23:34:08.7151348Z ##[group]Removing builder
+2026-06-20T23:34:08.7157530Z (node:5343) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-06-20T23:34:08.7160198Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-06-20T23:34:08.8092525Z [command]/usr/bin/docker buildx rm builder-3e3962e8-1336-4edc-9425-11fca57e456a
+2026-06-20T23:34:13.2143245Z builder-3e3962e8-1336-4edc-9425-11fca57e456a removed
+2026-06-20T23:34:13.2180717Z ##[endgroup]
+2026-06-20T23:34:13.2181498Z ##[group]Cleaning up certificates
+2026-06-20T23:34:13.2183351Z ##[endgroup]
+2026-06-20T23:34:13.2183989Z ##[group]Post cache
+2026-06-20T23:34:13.2186136Z State not set
+2026-06-20T23:34:13.2186747Z ##[endgroup]
+2026-06-20T23:34:13.2337127Z Post job cleanup.
+2026-06-20T23:34:13.2978989Z Logging out of registry 224193574799.dkr.ecr.us-east-1.amazonaws.com
+2026-06-20T23:34:13.3288842Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:34:13.3290021Z Post job cleanup.
+2026-06-20T23:34:13.4382136Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-06-20T23:34:13.4383383Z Post job cleanup.
+2026-06-20T23:34:13.5242101Z [command]/usr/bin/git version
+2026-06-20T23:34:13.5281677Z git version 2.54.0
+2026-06-20T23:34:13.5317351Z Temporarily overriding HOME='/home/runner/work/_temp/40d6b8cf-7a80-410d-a3f9-cea5b34569ad' before making global git config changes
+2026-06-20T23:34:13.5318597Z Adding repository directory to the temporary git global config as a safe directory
+2026-06-20T23:34:13.5323579Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agentcore-multiagent/agentcore-multiagent
+2026-06-20T23:34:13.5359822Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-06-20T23:34:13.5393522Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-06-20T23:34:13.5627646Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-06-20T23:34:13.5653045Z http.https://github.com/.extraheader
+2026-06-20T23:34:13.5663817Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-06-20T23:34:13.5696882Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-06-20T23:34:13.5960277Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-06-20T23:34:13.5993295Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-06-20T23:34:13.6358212Z Cleaning up orphan processes
+2026-06-20T23:34:13.6705447Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, aws-actions/configure-aws-credentials@v4, docker/setup-buildx-action@v3, hashicorp/setup-terraform@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

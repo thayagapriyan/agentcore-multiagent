@@ -26,7 +26,10 @@ FROM --platform=linux/arm64 node:20-bookworm-slim AS runtime
 
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=8080
+# AgentCore routes MCP-protocol traffic to port 8000 in the container (distinct from
+# the HTTP agent contract's 8080). See AWS "MCP protocol contract — Container
+# requirements". The LLM agents stay on 8080; only this MCP runtime uses 8000.
+ENV PORT=8000
 
 # install-strategy=nested keeps each workspace's deps under its own node_modules, so
 # copy the root node_modules (shared tooling) plus the agent's nested node_modules
@@ -41,9 +44,10 @@ COPY --from=build /app/agents/knowledge/node_modules ./agents/knowledge/node_mod
 RUN useradd --create-home --uid 1001 agent
 USER agent
 
-# 8080 = MCP server (GET /ping, POST /mcp). No A2A door — knowledge is internal.
-EXPOSE 8080
+# 8000 = MCP server (GET /ping, POST /mcp), the port AgentCore routes MCP traffic to.
+# No A2A door — knowledge is internal.
+EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:8080/ping').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD node -e "fetch('http://127.0.0.1:8000/ping').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 CMD ["node", "agents/knowledge/dist/app.js"]

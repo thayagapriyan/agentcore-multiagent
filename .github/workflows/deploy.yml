@@ -230,15 +230,23 @@ jobs:
             --auth-parameters USERNAME="$USERNAME",PASSWORD="$PASSWORD" \
             --region "${{ vars.AWS_REGION }}" \
             --query 'AuthenticationResult.AccessToken' --output text)
-          curl -sf "$MCP_URL" \
+          # Capture status + body separately (do NOT use -f, which hides the body on
+          # an HTTP error and leaves only a bare curl exit 22). Print both, then assert.
+          STATUS=$(curl -s -o kb-tools.txt -w '%{http_code}' "$MCP_URL" \
             -X POST \
             -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: application/json" \
             -H "Accept: application/json, text/event-stream" \
             -H "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id: $(uuidgen)" \
-            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
-            -o kb-tools.txt
-          cat kb-tools.txt
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}')
+          echo "MCP URL: $MCP_URL"
+          echo "HTTP status: $STATUS"
+          echo "Response body:"
+          cat kb-tools.txt; echo
+          if [ "$STATUS" -ge 400 ]; then
+            echo "::error::knowledge MCP tools/list returned HTTP $STATUS"
+            exit 1
+          fi
           grep -q 'kb_lookup' kb-tools.txt
 
       # Deployed-state check (researcher → knowledge over MCP): invoke the researcher's
