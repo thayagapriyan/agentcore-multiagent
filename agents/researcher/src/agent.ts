@@ -58,6 +58,19 @@ let mcpClientPromise: Promise<McpClient | null> | null = null;
 const TOKEN_REFRESH_MS = 50 * 60 * 1000; // refresh before the 60-min Cognito expiry
 let refreshTimer: NodeJS.Timeout | null = null;
 
+// Cold-start resilience (verified against live CloudWatch): on a freshly-scaled
+// AgentCore instance, the FIRST outbound MCP connect occasionally fails with a bare
+// `TypeError: fetch failed` even though the knowledge endpoint is healthy (probed 6/6
+// HTTP 200). With continueOnError the SDK swallows that into a permanent 'failed'
+// state, so a one-shot memoized client would freeze that instance at 0 tools for life
+// and the model, finding no kb_lookup tool, fabricates tool-call XML. We defend on two
+// fronts: bounded retry here, and re-arming the memo in getKbClient so a still-stuck
+// instance retries on its next invocation instead of degrading forever.
+const CONNECT_RETRIES = 3;
+const CONNECT_BACKOFF_MS = 250;
+
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
 async function buildKbClient(): Promise<McpClient | null> {
   const url = resolveKbMcpUrl();
   if (!url) return null;
@@ -76,10 +89,32 @@ async function buildKbClient(): Promise<McpClient | null> {
     }
   }
 
-  return new McpClient({ url, headers, continueOnError: true });
+  const client = new McpClient({ url, headers, continueOnError: true });
+
+  // Eagerly connect with bounded retry. listTools() drives the actual connect; a
+  // successful call with ≥1 tool proves the hop works. continueOnError means a failed
+  // connect resolves to [] rather than throwing, so a 0-length result is also a
+  // "retry" signal, not just a thrown error. Return null on exhaustion so getKbClient
+  // re-arms (does NOT cache a dead client).
+  for (let attempt = 1; attempt <= CONNECT_RETRIES; attempt++) {
+    try {
+      const tools = await client.listTools();
+      if (tools.length > 0) return client;
+      console.warn(
+        `researcher: knowledge MCP returned 0 tools (attempt ${attempt}/${CONNECT_RETRIES})`,
+      );
+    } catch (err) {
+      console.warn(
+        `researcher: knowledge MCP connect failed (attempt ${attempt}/${CONNECT_RETRIES}) —`,
+        (err as Error).message,
+      );
+    }
+    if (attempt < CONNECT_RETRIES) await sleep(CONNECT_BACKOFF_MS * attempt);
+  }
+  return null;
 }
 
-function getKbClient(): Promise<McpClient | null> {
+async function getKbClient(): Promise<McpClient | null> {
   if (!mcpClientPromise) {
     mcpClientPromise = buildKbClient();
     // Schedule a refresh so the bearer token never goes stale on a long-lived runtime.
@@ -91,7 +126,15 @@ function getKbClient(): Promise<McpClient | null> {
       refreshTimer.unref?.();
     }
   }
-  return mcpClientPromise;
+
+  const client = await mcpClientPromise;
+  // Re-arm: a null result means "MCP not wired (KB_MCP_URL unset)" OR "connect retries
+  // exhausted on this instance". The first is permanent and cheap to recompute; the
+  // second is the cold-start race we want to recover from — so drop the memo and let
+  // the NEXT invocation rebuild. resolveKbMcpUrl gates the wasted-work case (unset URL
+  // returns null immediately without a network call), so re-arming is safe either way.
+  if (client === null) mcpClientPromise = null;
+  return client;
 }
 
 // Fresh researcher per invocation (the Agent carries an invocation lock + history —
@@ -127,21 +170,22 @@ export async function invokeResearcher(prompt: string): Promise<string> {
   return result.toString();
 }
 
-// One-time, non-fatal boot probe: log whether the MCP door is wired and how many
-// remote tools loaded. Mirrors the sibling's logGatewayStatus.
+// One-time, non-fatal boot probe: log whether the MCP door is wired. getKbClient now
+// connects-with-retry and only returns a non-null client once it has ≥1 tool, so a
+// non-null result here already means the hop is live. A null result means either
+// KB_MCP_URL is unset or the cold-start retries were exhausted — either way the
+// researcher serves from its own knowledge (always-green) and will retry on the next
+// real invocation. Mirrors the sibling's logGatewayStatus.
 export async function logMcpStatus(): Promise<void> {
   const client = await getKbClient();
-  if (!client) {
-    console.log('researcher: KB_MCP_URL unset — 0 remote tools (answering from own knowledge)');
-    return;
-  }
-  try {
+  if (client) {
     const tools = await client.listTools();
     console.log(`researcher: connected to knowledge MCP, ${tools.length} remote tool(s) loaded`);
-  } catch (err) {
+  } else if (!resolveKbMcpUrl()) {
+    console.log('researcher: KB_MCP_URL unset — 0 remote tools (answering from own knowledge)');
+  } else {
     console.warn(
-      'researcher: knowledge MCP connection failed, continuing with 0 remote tools —',
-      (err as Error).message,
+      'researcher: knowledge MCP not ready at boot — 0 remote tools; will retry on next invocation',
     );
   }
 }

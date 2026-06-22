@@ -121,3 +121,101 @@ internal (no A2A); only the researcher is public.
 - Whole iteration: `terraform destroy -target=module.researcher -target=module.knowledge` (+ researcher A2A runtime & Cognito pool). Existing agents untouched.
 - Caller only: unset `KB_MCP_URL` on the researcher (falls back to 0 remote tools).
 - Code: revert the iter-8 commit (supervisor/router/critic byte-unchanged).
+
+---
+
+# Follow-up (2026-06-21) — researcher MCP hop reliability
+
+## Prompt (verbatim)
+
+> [promptfoo eval output pasted: researcher 1/3 passing — "What does the knowledge
+> base say about MCP?" and "Tell me about AgentCore Runtime requirements." both FAIL;
+> "What is the capital of France?" PASS] still it is failing
+
+(Two rounds: the first eval showed refusals "I don't have access to a kb_lookup tool";
+after the first fix the second eval showed the model emitting literal
+`<function_calls><invoke name="kb_lookup">…` XML in its answer.)
+
+## Problem
+
+The post-deploy researcher eval failed 2/3. The agent did **not** ground its answers in
+the `kb_lookup` MCP tool — first refusing ("no kb_lookup tool"), then (after the prompt
+fix) **hallucinating the tool-call XML** with a wrong param name (`query` vs the real
+`topic`). Hallucinated tool-call syntax is the tell-tale of *a tool the model was told to
+use but that is not actually bound* — i.e. the researcher had **0 remote tools** at
+invocation.
+
+## Diagnosis (evidence, not inference)
+
+This was **not** the iter-8 URL/port bugs — those fixes are confirmed correct. The
+diagnosis came from two live probes:
+
+1. **Live CloudWatch** (`/aws/bedrock-agentcore/runtimes/multiagent_researcher-vu8evXGmcU-DEFAULT`):
+   interleaved `researcher: connected to knowledge MCP, 1 remote tool(s) loaded`
+   (success) and `client=<strands-agents-ts-sdk>, error=<TypeError: fetch failed> | MCP
+   server failed to connect` → `0 remote tool(s) loaded` (failure). At the exact eval
+   timestamp (21:34:14) three instances logged `fetch failed`; the *same* instances
+   recovered to `1 tool` at 21:34:28.
+2. **Endpoint probe** (mint Cognito token → `tools/list` ×6 against `knowledge_mcp_url`):
+   **6/6 HTTP 200, `kb_lookup` present**, ~1–2.5s. The knowledge server is rock-solid.
+
+**Root cause:** a freshly-scaled AgentCore instance's *first* outbound MCP connect
+occasionally fails with a bare `TypeError: fetch failed` (cold-start network race). With
+`continueOnError` the SDK swallows it into a permanent `'failed'` state, and the
+researcher's **one-shot memoized** `mcpClientPromise` froze that instance at 0 tools for
+its whole life. Eval requests that landed on a stuck instance failed; others passed →
+the nondeterminism.
+
+Confirmed along the way (so it's not re-litigated): the Strands `ToolList` type is
+`(Tool | McpClient | Agent | ToolList)[]`, so passing the `McpClient` object in
+`tools: [client]` **is** the documented usage; `Agent.initialize()` calls
+`client.listTools()` per MCP client — a failed connect with `continueOnError` simply
+registers `[]`. The wiring was never wrong.
+
+## Fix (decisions, with alternatives)
+
+`agents/researcher/src/agent.ts` only — two changes:
+
+1. **System prompt** — make `kb_lookup` mandatory for technical/project questions; tell
+   the model its own recollection is unreliable; restrict the self-knowledge fallback to
+   when the tool is genuinely *not wired*. (Alternative rejected: weaken the eval prompts
+   to be more imperative like the smoke test — that hides the bug rather than fixing the
+   agent; real users ask the non-leading way.)
+2. **Cold-start resilience** — `buildKbClient` eagerly connects with **bounded retry**
+   (`CONNECT_RETRIES=3`, `CONNECT_BACKOFF_MS=250` linear), returns the client only once
+   `listTools()` yields ≥1 tool, else `null`; `getKbClient` **re-arms** (drops the memo)
+   on `null` so a stuck instance retries on its next invocation. `logMcpStatus` updated:
+   non-null ⇒ live. (Alternatives considered: (a) drop `continueOnError` → rejected,
+   breaks always-green on a real outage; (b) eager connect at boot only → kept the boot
+   probe but added per-invocation re-arm too, since cold instances can appear *after*
+   boot; (c) a connection lock to prevent concurrent re-arm thundering-herd → rejected as
+   over-engineering for a POC: redundant connects are bounded and self-correct.)
+
+## Files touched
+
+| File | Change | Why |
+| --- | --- | --- |
+| `agents/researcher/src/agent.ts` | modified | mandatory-tool prompt; retry-with-re-arm MCP client; matching `logMcpStatus` |
+
+## Tests
+
+- [x] `npx vitest run agents/researcher` → **11 passed** (kb-auth 7, mcp-url 4). The
+  changed functions' exported signatures are unchanged, so the pure-seam tests still hold.
+- [x] `tsc` build (researcher workspace) → clean.
+- [x] Live knowledge-endpoint probe: Cognito token → `tools/list` ×6 → **6/6 HTTP 200,
+  `kb_lookup` present** (ruled out a server-side flake before changing the client).
+- [ ] Post-deploy researcher promptfoo eval green — the real end-to-end check. Runs only
+  after the new researcher image deploys (pipeline on merge).
+
+## Forward-compatibility
+
+- `CONNECT_RETRIES` / `CONNECT_BACKOFF_MS` are local constants — tune without an API change.
+- The **re-arm-on-failure** pattern is the template for any future memoized cross-runtime
+  client that must survive a cold-start race.
+- `resolveKbMcpUrl` still gates the unset-URL case, so re-arming never does wasted network
+  work when MCP is intentionally not wired.
+
+## Rollback (follow-up)
+
+- Code-only: revert this commit (restores the one-shot memoized client + softer prompt).
+  No infra change; all other agents and the researcher's env/wiring are untouched.
